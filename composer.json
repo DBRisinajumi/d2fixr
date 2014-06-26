@@ -13,6 +13,7 @@
      "require": {
         "php": ">=5.3.0",
         "dbrisinajumi/audittrail": "dev-master",
-        "vitalets/x-editable-yii": "dev-master"
+        "vitalets/x-editable-yii": "dev-master",
+        "dbrisinajumi/trucks": "dev-master"
      }
 }
