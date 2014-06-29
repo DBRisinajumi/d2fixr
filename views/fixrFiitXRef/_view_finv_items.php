@@ -25,13 +25,16 @@
         $this->widget('EFancyboxWidget',array(
             'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupServices\']',
             'options'=>array(
-                'height'         => 320,
-                'width'         => 500,
+                //'height'         => 720,
+                //'width'         => 500,
                 'autoDimensions' => false,
+                'autoScale' => true,
                 'live' => false,
             ),
         ));        
 
+     
+        
         foreach ($modelMain->fiitInvoiceItems as $fiit) {
             ?>
             <tr>

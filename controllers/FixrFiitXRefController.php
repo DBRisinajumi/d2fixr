@@ -22,7 +22,7 @@ public function accessRules()
      return array(
         array(
             'allow',
-            'actions' => array('popupServices','serviceSubForm','create', 'admin', 'view', 'update', 'editableSaver', 'delete','ajaxCreate','viewFinv'),
+            'actions' => array('popupServices','ShowSubForm','saveSubForm','create', 'admin', 'view', 'update', 'editableSaver', 'delete','ajaxCreate','viewFinv'),
             'roles' => array('D2finv.FixrFiitXRef.*'),
         ),
         array(
@@ -62,9 +62,9 @@ public function accessRules()
     }
     
     /**
-     * 
-     * @param type $fixr_id
-     * @todo jāpārnes uz citu kontrolieri (laikam popupFixr tjipa)
+     * Create popup with service type listbox and ajax loading form
+     * render partial for ajax
+     * @param int $fixr_id
      */
     public function actionPopupServices($fixr_id)
     {
@@ -98,7 +98,7 @@ public function accessRules()
         );        
         
         echo $this->renderPartial(
-                'popupServices', 
+                'fancyForm', 
                 array(
                     'model_fixr' => $model_fixr,
                     'model_form' => $model_form
@@ -108,41 +108,112 @@ public function accessRules()
     }    
 
     
-    
-    public function actionServiceSubForm($fret_id,$fixr_id){
+    /**
+     * Service Subform
+     * @param type $fret_id
+     * @param type $fixr_id
+     */
+    public function actionShowSubForm($fret_id,$fixr_id){
 
-        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
-
-        //save selected service type
-        $model_fixr->fixr_fret_id = $fret_id;
-        $model_fixr->save();
-        
         //get model form detqails
-        $form_model_ref_field = $model_fixr->fixrFret->getRefIfFIeldName();
-        $form_model_name = $model_fixr->fixrFret->fret_model;
+        $model_fret = FretRefType::model()->findByPk($fret_id);
+        $form_model_ref_field = $model_fret->getRefIdFIeldName();
+        $form_model_name = $model_fret->fret_model;
         
         //search model form record
+        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        
         $criteria = new CDbCriteria();
         $criteria->compare($form_model_ref_field, $fixr_id);
         $form_model = new $form_model_name;
         $form_model = $form_model->find($criteria);
+        
         if(!$form_model){
             $form_model = new $form_model_name;
         }
 
-        /**
-         * @todo views jāpārceļ uz truck moduli
-         */
         echo $this->renderPartial(
-                'form_'.$form_model_name, 
+                '/subform/'.$form_model_name, 
                 array(
-                    'model_form' => $model_form
+                    'model' => $form_model,
+                    'fixr_id' => $fixr_id,
+                    'fret_id' => $fret_id,
                 ),
                 true,
                 true);        
+    }
+
+    /**
+     * save fancy box sub form
+     * 
+     * @return boolean
+     * @todo mainot tipu (fret_id), jāizdzēs iepriekšejā tipa ieraksts
+     * @todo pēc saglabāšanas automātiski jāaiztaisa Fancy Box
+     * @todo pēc saglabāšanas jāmaina labels
+     */
+    public function actionSaveSubForm(){
+
+        if (!isset($_POST)) {
+            return false;
+        }
+
+        if (!isset($_POST['fixr_id'])) {
+            return false;
+        }        
+
+        $fixr_id = $_POST['fixr_id'];
+        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        if(!$model_fixr){
+            return false;
+        }
+
+        //save 
+        if (!isset($_POST['fret_id'])) {
+            return false;
+        }
+        $model_fixr->fixr_fret_id = $_POST['fret_id'];
+        if(!$model_fixr->save()){
+             print_r($model_fixr->getErrors());exit;
+        }
         
+        //get model form details
+        $form_model_ref_field = $model_fixr->fixrFret->getRefIdFIeldName();
+        $form_model_name = $model_fixr->fixrFret->fret_model;
         
-        
+        //vreate from model
+        $model = new $form_model_name;
+        $model->scenario = $this->scenario;
+
+        //$this->performAjaxValidation($model, 'fixr-fiit-xref-form');
+
+        if (isset($_POST[$form_model_name])) {
+            
+            $form_model_pk_name = $model->tableSchema->primaryKey;
+            if(isset($_POST[$form_model_name][$form_model_pk_name])){
+                $form_model_pk_value = $_POST[$form_model_name][$form_model_pk_name];
+                $model = $model->findByPk($form_model_pk_value);
+            }
+            
+            $model->attributes = $_POST[$form_model_name];
+            $model->$form_model_ref_field = $fixr_id;            
+
+            try {
+                if(!$model->save()){
+                    print_r($model->getErrors());exit;
+                }
+            } catch (Exception $e) {
+                $model->addError($model->tableSchema->primaryKey, $e->getMessage());
+            }
+        } 
+//        echo $this->renderPartial(
+//                '/subform/'.$form_model_name, 
+//                array(
+//                    'model' => $model,
+//                    'model_fixr' => $model_fixr,
+//                ),
+//                true,
+//                true
+//            );  
     }
     public function actionView($fixr_id, $ajax = false)
     {

@@ -1,10 +1,5 @@
 <div class="crud-form" id="periodDialogForm">
-    <?php  ?>    
     <?php
-//        Yii::app()->bootstrap->registerPackage('select2');
-//        Yii::app()->clientScript->registerScript('crud/variant/update','$("#fped-period-date-form select").select2();');
-
-
         $form=$this->beginWidget('TbActiveForm', array(
             'id' => 'period_dialog_form',
             'enableAjaxValidation' => true,
