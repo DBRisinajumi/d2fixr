@@ -30,6 +30,7 @@
                 'autoDimensions' => false,
                 'autoScale' => true,
                 'live' => false,
+                'onClosed' => 'function() {alert($(this).html();}',
             ),
         ));        
 
