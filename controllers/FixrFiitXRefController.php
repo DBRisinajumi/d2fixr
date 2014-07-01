@@ -22,7 +22,7 @@ public function accessRules()
      return array(
         array(
             'allow',
-            'actions' => array('popupServices','ShowSubForm','saveSubForm','create', 'admin', 'view', 'update', 'editableSaver', 'delete','ajaxCreate','viewFinv'),
+            'actions' => array('popupPosition','popupPeriod','ShowPositionSubForm','ShowPeriodSubForm','savePositionSubForm','savePeriodSubForm','create', 'admin', 'view', 'update', 'editableSaver', 'delete','ajaxCreate','viewFinv'),
             'roles' => array('D2finv.FixrFiitXRef.*'),
         ),
         array(
@@ -66,30 +66,16 @@ public function accessRules()
      * render partial for ajax
      * @param int $fixr_id
      */
-    public function actionPopupServices($fixr_id)
+    public function actionPopupPosition($fixr_id,$get_label = false)
     {
 
         $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
-        $model_form = false;
         
-        /**
-         * atrod formas modeli un inicializē
-         * @todo jāpārtaisa, lai ņem no tabulas fret_ref_type
-         */
-        switch ($model_fixr->fixr_fret_id){
-            case 1: //truck doc
-                $model_form = VtdcTruckDoc::model()->find();
-                break;
-            case 2: //truck service
-                break;
-            case 3: //trailer service
-                break;
-            case 4: //trailer doc
-                break;
-            default:
-                break;
+        if($get_label){
+            echo $model_fixr->getFretLabel();
+            return;
         }
-
+        
         $cs = Yii::app()->clientScript;
         $cs->reset();        
         $cs->scriptMap = array(
@@ -98,10 +84,40 @@ public function accessRules()
         );        
         
         echo $this->renderPartial(
-                'fancyForm', 
+                'fancyPositionForm', 
                 array(
                     'model_fixr' => $model_fixr,
-                    'model_form' => $model_form
+                ),
+                true,
+                true);
+    }    
+
+    /**
+     * Create popup with service type listbox and ajax loading form
+     * render partial for ajax
+     * @param int $fixr_id
+     */
+    public function actionPopupPeriod($fixr_id,$get_label = false)
+    {
+
+        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        
+        if($get_label){
+            echo $model_fixr->getFrepLabel();
+            return;
+        }
+        
+        $cs = Yii::app()->clientScript;
+        $cs->reset();        
+        $cs->scriptMap = array(
+            'jquery.js' => false, // prevent produce jquery.js in additional javascript data
+            'jquery.min.js' => false,
+        );        
+        
+        echo $this->renderPartial(
+                'fancyPeriodForm', 
+                array(
+                    'model_fixr' => $model_fixr,
                 ),
                 true,
                 true);
@@ -113,8 +129,12 @@ public function accessRules()
      * @param type $fret_id
      * @param type $fixr_id
      */
-    public function actionShowSubForm($fret_id,$fixr_id){
+    public function actionShowPositionSubForm($fret_id,$fixr_id){
 
+        if(empty($fret_id)){
+            return;
+        }
+        
         //get model form detqails
         $model_fret = FretRefType::model()->findByPk($fret_id);
         $form_model_ref_field = $model_fret->getRefIdFIeldName();
@@ -142,6 +162,44 @@ public function accessRules()
                 true,
                 true);        
     }
+    /**
+     * Service Subform
+     * @param type $fret_id
+     * @param type $fixr_id
+     */
+    public function actionShowPeriodSubForm($frep_id,$fixr_id){
+
+        if(empty($frep_id)){
+            return;
+        }
+        
+        //get model form detqails
+        $model_frep = FrepRefPeriod::model()->findByPk($frep_id);
+        $form_model_ref_field = $model_frep->getRefIdFIeldName();
+        $form_model_name = $model_frep->frep_model;
+        
+        //search model form record
+        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        
+        $criteria = new CDbCriteria();
+        $criteria->compare($form_model_ref_field, $fixr_id);
+        $form_model = new $form_model_name;
+        $form_model = $form_model->find($criteria);
+        
+        if(!$form_model){
+            $form_model = new $form_model_name;
+        }
+
+        echo $this->renderPartial(
+                '/subform/'.$form_model_name, 
+                array(
+                    'model' => $form_model,
+                    'fixr_id' => $fixr_id,
+                    'frep_id' => $frep_id,
+                ),
+                true,
+                true);        
+    }
 
     /**
      * save fancy box sub form
@@ -151,27 +209,24 @@ public function accessRules()
      * @todo pēc saglabāšanas automātiski jāaiztaisa Fancy Box
      * @todo pēc saglabāšanas jāmaina labels
      */
-    public function actionSaveSubForm(){
+    public function actionSavePositionSubForm(){
 
-        if (!isset($_POST)) {
+        $fixr_id = Yii::app()->request->getPost('fixr_id');
+        if (empty($fixr_id)) {
             return false;
         }
-
-        if (!isset($_POST['fixr_id'])) {
-            return false;
-        }        
-
-        $fixr_id = $_POST['fixr_id'];
+        
         $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
         if(!$model_fixr){
             return false;
         }
 
         //save 
-        if (!isset($_POST['fret_id'])) {
+        $fret_id = Yii::app()->request->getPost('fret_id');        
+        if (empty($fret_id)) {
             return false;
         }
-        $model_fixr->fixr_fret_id = $_POST['fret_id'];
+        $model_fixr->fixr_fret_id = $fret_id;
         if(!$model_fixr->save()){
              print_r($model_fixr->getErrors());exit;
         }
@@ -188,9 +243,71 @@ public function accessRules()
 
         if (isset($_POST[$form_model_name])) {
             
+            $post = Yii::app()->request->getPost($form_model_name);
             $form_model_pk_name = $model->tableSchema->primaryKey;
-            if(isset($_POST[$form_model_name][$form_model_pk_name])){
-                $form_model_pk_value = $_POST[$form_model_name][$form_model_pk_name];
+            if(isset($post[$form_model_pk_name])){
+                $form_model_pk_value = $post[$form_model_pk_name];
+                $model = $model->findByPk($form_model_pk_value);
+            }
+            
+            $model->attributes = $_POST[$form_model_name];;
+            $model->$form_model_ref_field = $fixr_id;            
+
+            try {
+                if(!$model->save()){
+                    print_r($model->getErrors());exit;
+                }
+            } catch (Exception $e) {
+                $model->addError($model->tableSchema->primaryKey, $e->getMessage());
+            }
+        } 
+
+    }
+    /**
+     * save fancy box sub form
+     * 
+     * @return boolean
+     * @todo mainot tipu (fret_id), jāizdzēs iepriekšejā tipa ieraksts
+     * @todo pēc saglabāšanas automātiski jāaiztaisa Fancy Box
+     * @todo pēc saglabāšanas jāmaina labels
+     */
+    public function actionSavePeriodSubForm(){
+
+        $fixr_id = Yii::app()->request->getPost('fixr_id');
+        if(empty($fixr_id)){
+            return false;
+        }
+
+        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        if(!$model_fixr){
+            return false;
+        }
+
+        //save 
+        $frep_id = Yii::app()->request->getPost('frep_id');
+        if(empty($frep_id)){
+            return false;
+        }        
+        $model_fixr->fixr_frep_id = $frep_id;
+        if(!$model_fixr->save()){
+             print_r($model_fixr->getErrors());exit;
+        }
+        
+        //get model form details
+        $form_model_ref_field = $model_fixr->fixrFrep->getRefIdFIeldName();
+        $form_model_name = $model_fixr->fixrFrep->frep_model;
+        
+        //vreate from model
+        $model = new $form_model_name;
+        $model->scenario = $this->scenario;
+
+        //$this->performAjaxValidation($model, 'fixr-fiit-xref-form');
+
+        if (isset($_POST[$form_model_name])) {
+            $post = Yii::app()->request->getPost($form_model_name);
+            $form_model_pk_name = $model->tableSchema->primaryKey;
+            if(isset($post[$form_model_pk_name])){
+                $form_model_pk_value = $post[$form_model_pk_name];
                 $model = $model->findByPk($form_model_pk_value);
             }
             
@@ -205,16 +322,8 @@ public function accessRules()
                 $model->addError($model->tableSchema->primaryKey, $e->getMessage());
             }
         } 
-//        echo $this->renderPartial(
-//                '/subform/'.$form_model_name, 
-//                array(
-//                    'model' => $model,
-//                    'model_fixr' => $model_fixr,
-//                ),
-//                true,
-//                true
-//            );  
     }
+    
     public function actionView($fixr_id, $ajax = false)
     {
         $model = $this->loadModel($fixr_id);

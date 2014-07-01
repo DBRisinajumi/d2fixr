@@ -23,17 +23,51 @@
             ');
         }
         $this->widget('EFancyboxWidget',array(
-            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupServices\']',
+            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']',
             'options'=>array(
                 //'height'         => 720,
                 //'width'         => 500,
                 'autoDimensions' => false,
                 'autoScale' => true,
                 'live' => false,
+                'onClosed' => 'js:function(){            
+                    var ajax_url = $(this).attr("href") + "&get_label=1";
+                    var elThis = this;
+                    $.ajax({
+                                    type: "GET",
+                                    url: ajax_url,
+                                    success: function(data) {
+                                        $(elThis).attr("orig").html(data);
+                                    }   
+                    });                      
+
+                }'
+            ),
+        ));    
+        
+        $this->widget('EFancyboxWidget',array(
+            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']',
+            'options'=>array(
+                //'height'         => 720,
+                //'width'         => 500,
+                'autoDimensions' => false,
+                'autoScale' => true,
+                'live' => false,
+                'onClosed' => 'js:function(){            
+                    var ajax_url = $(this).attr("href") + "&get_label=1";
+                    var elThis = this;
+                    $.ajax({
+                                    type: "GET",
+                                    url: ajax_url,
+                                    success: function(data) {
+                                        $(elThis).attr("orig").html(data);
+                                    }   
+                    });                      
+
+                }'
             ),
         ));        
-
-     
+        
         
         foreach ($modelMain->fiitInvoiceItems as $fiit) {
             ?>
@@ -109,51 +143,17 @@
                                 )
                             ),                            
                             array(
-                                'class' => 'editable.EditableColumn',
-                                'name' => 'fixr_fret_id',
-                                'editable' => array(
-                                    'type' => 'select',
-                                    'url' => $this->createUrl('/d2fixr/fixrFiitXRef/editableSaver'),
-                                    'source' => CHtml::listData(FretRefType::model()->findAll(array('limit' => 1000)), 'fret_id', 'itemLabel'),                        
-                                    //'placement' => 'right',
-                                    'options'  => array(  
-                                        'success'=>'js: function(response, newValue){alert(newValue);if(!response.success) return response.msg;}',
-                                    )    
-                                )
-                            ),
-                            array(
-                                'header' => Yii::t('D2fixrModule.model','Description'),
+                                'header' => Yii::t('D2fixrModule.model','Position'),
                                 'type' => 'raw',
-                                'value' => 'CHtml::link(Yii::t(\'D2fixrModule.model\', \'Empty\'),
-                                                array(\'/d2fixr/fixrFiitXRef/popupServices\',\'fixr_id\' =>$data->fixr_id)
+                                'value' => 'CHtml::link($data->getFretLabel(),
+                                                array(\'/d2fixr/fixrFiitXRef/popupPosition\',\'fixr_id\' =>$data->fixr_id)
                                             );'
                             ),
                             array(
-                                'class' => 'editable.EditableColumn',
-                                'name' => 'fixr_frep_id',
-                                'editable' => array(
-                                    'type' => 'select',
-                                    'url' => $this->createUrl('/d2fixr/fixrFiitXRef/editableSaver'),
-                                    'source' => CHtml::listData(FrepRefPeriod::model()->findAll(array('limit' => 1000)), 'frep_id', 'itemLabel'),                        
-                                    //'placement' => 'right',
-                                )
-                            ),
-//                            array(
-//                                'type' => 'raw',
-//                                'value' => 'CHtml::ajaxLink(
-//                                                \''.Yii::t('D2fixrModule.crud_static', 'Define Period').'\',
-//                                                \''.$this->createUrl('/d2fixr/fpedPeriodDate/createPopup').'\',
-//                                            array(
-//                                                \'onclick\'=>\'$("#periodDialog").dialog("open"); return false;\',
-//                                                \'update\'=>\'#periodDialog\'
-//                                            ),
-//                                            array(\'id\'=>\'showPeriodDialog\'));'
-//                            ),
-                            array(
+                                'header' => Yii::t('D2fixrModule.model','Period'),
                                 'type' => 'raw',
-                                'value' => 'CHtml::link(
-                                                \''.Yii::t('D2fixrModule.crud_static', 'Define Period').'\',
-                                                \''.$this->createUrl('/d2fixr/fpedPeriodDate/createPopup').'\'
+                                'value' => 'CHtml::link($data->getFrepLabel(),
+                                                array(\'/d2fixr/fixrFiitXRef/popupPeriod\',\'fixr_id\' =>$data->fixr_id)
                                             );'
                             ),
                             array(

@@ -23,6 +23,11 @@ class FrepRefPeriod extends BaseFrepRefPeriod
         return parent::getItemLabel();
     }
 
+    public function getRefIdFIeldName()
+    {
+        return strtolower(substr($this->frep_model,0,4)) . '_fixr_id';
+    }    
+    
     public function behaviors()
     {
         return array_merge(

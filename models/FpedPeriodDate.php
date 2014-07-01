@@ -1,10 +1,10 @@
 <?php
 
 // auto-loading
-Yii::setPathOfAlias('FpeoPeriodOdo', dirname(__FILE__));
-Yii::import('FpeoPeriodOdo.*');
+Yii::setPathOfAlias('FpedPeriodDate', dirname(__FILE__));
+Yii::import('FpedPeriodDate.*');
 
-class FpeoPeriodOdo extends BaseFpeoPeriodOdo
+class FpedPeriodDate extends BaseFpedPeriodDate
 {
 
     // Add your model-specific methods here. This file will not be overriden by gtc except you force it.
@@ -20,7 +20,7 @@ class FpeoPeriodOdo extends BaseFpeoPeriodOdo
 
     public function getItemLabel()
     {
-        return $this->fpeo_distance . ' km';
+        return $this->fped_start_date . ' ' . $this->fped_end_date;
     }
 
     public function behaviors()

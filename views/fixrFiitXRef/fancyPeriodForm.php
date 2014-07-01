@@ -1,10 +1,9 @@
-
 <div class="widget-box no-padding">
     <?php
     if (false) {
         ?>
         <div class="widget-header">
-            <h4><?= Yii::t('D2fixrModule.model', 'Set expenses position') ?></h4>
+            <h4><?= Yii::t('D2fixrModule.model', 'Set expenses period') ?></h4>
         </div>
         <?php
     }
@@ -28,21 +27,21 @@
                 <div class="control-group"></div>
                 <div class="control-group">
                     <div class='control-label'>
-                        <?php echo $form->labelEx($model_fixr, 'Set expenses positon') ?>
+                        <?php echo $form->labelEx($model_fixr, 'Set expenses period') ?>
                     </div>
                     <div class='controls'>
                         <?php
-                        $fret_id_list_box_id = 'fret_id_' . $model_fixr->fixr_id . '_' . date('Hms');
+                        $frep_id_list_box_id = 'frep_id_' . $model_fixr->fixr_id . '_' . date('Hms');
                         echo CHtml::dropDownList(
-                                'fret_id', 
-                                $model_fixr->fixr_fret_id, 
-                                CHtml::listData(FretRefType::model()->findAll(array('order' => 'fret_label')), 'fret_id', 'fret_label'), 
+                                'frep_id', 
+                                $model_fixr->fixr_frep_id, 
+                                CHtml::listData(FrepRefPeriod::model()->findAll(array('order' => 'frep_label')), 'frep_id', 'frep_label'), 
                                 array(
-                                    'id' => $fret_id_list_box_id, //izveidots dinamisks id
-                                    'prompt' => Yii::t('D2fixrModule.model', 'Select service type'),
+                                    'id' => $frep_id_list_box_id, //izveidots dinamisks id
+                                    'prompt' => Yii::t('D2fixrModule.model', 'Select period type'),
                                     'ajax' => array(
                                         'type' => 'GET',
-                                        'url' => $this->createUrl('FixrFiitXRef/ShowSubForm', array('fixr_id' => $model_fixr->fixr_id)),
+                                        'url' => $this->createUrl('FixrFiitXRef/ShowPeriodSubForm', array('fixr_id' => $model_fixr->fixr_id)),
                                         'update' => '#ajax_form',
                                     ),
                                 )
@@ -55,7 +54,9 @@
             </div>
 
 
-            <div class="form-horizontal" id="ajax_form"></div>
+            <div class="form-horizontal" id="ajax_form">
+                <?php $this->actionShowPeriodSubForm($model_fixr->fixr_frep_id,$model_fixr->fixr_id); ?>
+            </div>
 
             <div class="form-actions center">
                 <?php
@@ -75,7 +76,7 @@
 //                    });                      
 //                }    
 //                     ');               
-           $ajax_submit_url = $this->createUrl('FixrFiitXRef/SaveSubForm');
+           $ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePeriodSubForm');
                 $this->widget("bootstrap.widgets.TbButton", array(
                     "label" => Yii::t("D2finvModule.crud_static", "Save"),
                     "icon" => "icon-thumbs-up icon-white",
@@ -91,10 +92,20 @@
                                     data: $("#expense_data_form").serialize(), // read and prepare all form fields
                                     success: function(data) {
                                             // trigger fancybox close on same modal window 
-                                            alert("success");
+                                              alert("dati saglabāti");
+//                                            try{
+//                                                parent.jQuery.fancybox.close();
+//                                            }catch(err){
+//                                                parent.$(this).attr("orig").html("aaaa")
+//                                                parent.$("#fancybox-overlay").hide();
+//                                                parent.$("#fancybox-wrap").hide();
+//                                            }
+                                            //var label = $(this).attr("orig").html();
+                                            //alert(label);
+                                            
                                             //$.fancybox.close(); 
                                             //$.fn.fancybox.close();
-                                            parent.jQuery.fancybox.close();
+                                            //parent.jQuery.fancybox.close();
                                             //$("#fancybox-close").click();
                                             // trigger fancybox close from parent window
                                             // parent.$.fancybox.close()
