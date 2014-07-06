@@ -89,6 +89,50 @@ class FixrFiitXRef extends BaseFixrFiitXRef
           ) */
         );
     }
+    
+    /**
+     * create record with default values
+     * @param type $fiit_id
+     * @return boolean
+     * @throws CHttpException
+     */
+    public function addRecord($fiit_id){
+        
+        $fiit = FiitInvoiceItem::model()->findByPk($fiit_id);
+        if(!$fiit){
+            throw new CHttpException(400, Yii::t('D2fixrModule.crud', 'Invalid fiit_id value: ' . $fiit_id));            
+        }
+        
+        //calculate amt
+        $sql = " 
+                SELECT 
+                    SUM(fixr_amt) as amt_sum 
+                FROM 
+                    fixr_fiit_x_ref 
+                WHERE 
+                    fixr_fiit_id = " . $fiit_id;
+        $fixr_sum = Yii::app()->db->createCommand($sql)->queryScalar();
+
+        
+        //create fixr record
+        $model = new FixrFiitXRef;
+        $model->fixr_fiit_id = $fiit_id;
+        $model->fixr_fcrn_date = $fiit->fiitFinv->finv_date;
+        $model->fixr_fcrn_id = $fiit->fiitFinv->finv_fcrn_id;
+        $model->fixr_base_fcrn_id = $fiit->fiitFinv->finv_basic_fcrn_id;
+        $model->fixr_amt = $fiit->fiit_amt - $fixr_sum;
+        
+        //save
+        try {
+            if ($model->save()) {
+                return TRUE;
+            }else{
+                throw new CHttpException(500, var_export($model->getErrors()));
+            }            
+        } catch (Exception $e) {
+            throw new CHttpException(500, $e->getMessage());
+        }        
+    }
 
     public function search($criteria = null)
     {

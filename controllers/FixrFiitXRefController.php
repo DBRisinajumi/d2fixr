@@ -409,19 +409,19 @@ public function accessRules()
         $es->update();
     }
 
+    /**
+     * create fixr record
+     * @param string $field value "fixr_fiit_id"
+     * @param int $value fiit_id
+     * @return boolean
+     * @throws CHttpException
+     */
     public function actionAjaxCreate($field, $value) 
     {
+
+        //create fixr record
         $model = new FixrFiitXRef;
-        $model->$field = $value;
-        try {
-            if ($model->save()) {
-                return TRUE;
-            }else{
-                return var_export($model->getErrors());
-            }            
-        } catch (Exception $e) {
-            throw new CHttpException(500, $e->getMessage());
-        }
+        $model->addRecord($value);
     }
     
     public function actionDelete($fixr_id)

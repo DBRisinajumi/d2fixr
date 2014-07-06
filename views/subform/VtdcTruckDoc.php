@@ -1,7 +1,7 @@
 <div class="crud-form">
     <?php
-    Yii::app()->bootstrap->registerPackage('select2');
-    Yii::app()->clientScript->registerScript('crud/variant/update','$("#vtdc-truck-doc-form select").select2();');
+    //Yii::app()->bootstrap->registerPackage('select2');
+    //Yii::app()->clientScript->registerScript('crud/variant/update','$("#vtdc-truck-doc-form select").select2();');
 
     $form = $this->beginWidget('TbActiveForm', array(
         'id' => 'expense_data_form',
@@ -115,20 +115,23 @@
             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
                   title='<?php echo (($t = Yii::t('TrucksModule.model', 'tooltip.vtdc_issue_date')) != 'tooltip.vtdc_issue_date') ? $t : '' ?>'>
                       <?php
-                      $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-                          'model' => $model,
-                          'attribute' => 'vtdc_issue_date',
-                          'language' => strstr(Yii::app()->language . '_', '_', true),
-                          'htmlOptions' => array('size' => 10),
-                          'options' => array(
-                              'showButtonPanel' => true,
-                              'changeYear' => true,
-                              'changeYear' => true,
-                              'dateFormat' => 'yy-mm-dd',
-                          ),
+                      $this->widget('TbDatePicker', array(
+                            'model' => $model,
+                            'attribute' => 'vtdc_issue_date',
+                            'htmlOptions' => array(
+                                'size' => 10,
+                                'class' => 'input-small'
+                                ),
+                            'options' => array(
+                                'autoclose' => true,
+                                'todayHighlight' => true,
+                                'showButtonPanel' => true,
+                                'changeYear' => true,
+                                'format' => 'yyyy-mm-dd',
+                                ),
                               )
                       );
-                      ;
+         
                       echo $form->error($model, 'vtdc_issue_date')
                       ?>                            </span>
         </div>
@@ -144,20 +147,22 @@
             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
                   title='<?php echo (($t = Yii::t('TrucksModule.model', 'tooltip.vtdc_expire_date')) != 'tooltip.vtdc_expire_date') ? $t : '' ?>'>
                       <?php
-                      $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+                      $this->widget('TbDatePicker', array(
                           'model' => $model,
                           'attribute' => 'vtdc_expire_date',
-                          'language' => strstr(Yii::app()->language . '_', '_', true),
-                          'htmlOptions' => array('size' => 10),
-                          'options' => array(
-                              'showButtonPanel' => true,
-                              'changeYear' => true,
-                              'changeYear' => true,
-                              'dateFormat' => 'yy-mm-dd',
-                          ),
+                            'htmlOptions' => array(
+                                'size' => 10,
+                                'class' => 'input-small'
+                                ),
+                            'options' => array(
+                                'autoclose' => true,
+                                'todayHighlight' => true,
+                                'showButtonPanel' => true,
+                                'changeYear' => true,
+                                'format' => 'yyyy-mm-dd',
+                                ),
                               )
                       );
-                      ;
                       echo $form->error($model, 'vtdc_expire_date')
                       ?>                            </span>
         </div>

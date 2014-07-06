@@ -117,19 +117,22 @@
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
                                  title='<?php echo (($t = Yii::t('TrucksModule.model', 'tooltip.vtrd_issue_date')) != 'tooltip.vtrd_issue_date')?$t:'' ?>'>
                                 <?php
-                            $this->widget('zii.widgets.jui.CJuiDatePicker',
+                            $this->widget('TbDatePicker',
                          array(
-                                 'model' => $model,
-                                 'attribute' => 'vtrd_issue_date',
-                                 'language' =>  strstr(Yii::app()->language.'_','_',true),
-                                 'htmlOptions' => array('size' => 10),
-                                 'options' => array(
-                                     'showButtonPanel' => true,
-                                     'changeYear' => true,
-                                     'changeYear' => true,
-                                     'dateFormat' => 'yy-mm-dd',
-                                     ),
-                                 )
+                                'model' => $model,
+                                'attribute' => 'vtrd_issue_date',
+                                'htmlOptions' => array(
+                                    'size' => 10,
+                                    'class' => 'input-small'
+                                ),
+                                'options' => array(
+                                    'autoclose' => true,
+                                    'todayHighlight' => true,
+                                    'showButtonPanel' => true,
+                                    'changeYear' => true,
+                                    'format' => 'yyyy-mm-dd',
+                                    ),
+                                )
                              );
                     ;
                             echo $form->error($model,'vtrd_issue_date')
@@ -147,19 +150,22 @@
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
                                  title='<?php echo (($t = Yii::t('TrucksModule.model', 'tooltip.vtrd_expire_date')) != 'tooltip.vtrd_expire_date')?$t:'' ?>'>
                                 <?php
-                            $this->widget('zii.widgets.jui.CJuiDatePicker',
-                         array(
-                                 'model' => $model,
-                                 'attribute' => 'vtrd_expire_date',
-                                 'language' =>  strstr(Yii::app()->language.'_','_',true),
-                                 'htmlOptions' => array('size' => 10),
-                                 'options' => array(
-                                     'showButtonPanel' => true,
-                                     'changeYear' => true,
-                                     'changeYear' => true,
-                                     'dateFormat' => 'yy-mm-dd',
-                                     ),
-                                 )
+                            $this->widget('TbDatePicker',
+                                array(
+                                    'model' => $model,
+                                    'attribute' => 'vtrd_expire_date',
+                                    'htmlOptions' => array(
+                                        'size' => 10,
+                                        'class' => 'input-small'
+                                    ),
+                                    'options' => array(
+                                        'autoclose' => true,
+                                        'todayHighlight' => true,
+                                        'showButtonPanel' => true,
+                                        'changeYear' => true,
+                                        'format' => 'yyyy-mm-dd',
+                                        ),
+                                    )
                              );
                     ;
                             echo $form->error($model,'vtrd_expire_date')

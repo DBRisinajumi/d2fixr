@@ -89,23 +89,23 @@
                         
                         $this->widget(
                                 'bootstrap.widgets.TbButton', array(
-                            'buttonType' => 'ajaxButton',
-                            'type' => 'primary', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
-                            'size' => 'mini',
-                            'icon' => 'icon-plus',
-                            'url' => array(
-                                '//d2fixr/fixrFiitXRef/ajaxCreate',
-                                'field' => 'fixr_fiit_id',
-                                'value' => $fiit->primaryKey,
-                                'ajax' => $sub_grid_id,
-                            ),
-                            'ajaxOptions' => array(
-                                'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
-                            ),
-                            'htmlOptions' => array(
-                                'title' => Yii::t('D2fixrModule.crud_static', 'Add new record'),
-                                'data-toggle' => 'tooltip',
-                            ),
+                                    'buttonType' => 'ajaxButton',
+                                    'type' => 'primary', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+                                    'size' => 'mini',
+                                    'icon' => 'icon-plus',
+                                    'url' => array(
+                                        '//d2fixr/fixrFiitXRef/ajaxCreate',
+                                        'field' => 'fixr_fiit_id',
+                                        'value' => $fiit->primaryKey,
+                                        'ajax' => $sub_grid_id,
+                                    ),
+                                    'ajaxOptions' => array(
+                                        'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
+                                    ),
+                                    'htmlOptions' => array(
+                                        'title' => Yii::t('D2fixrModule.crud_static', 'Add new record'),
+                                        'data-toggle' => 'tooltip',
+                                    ),
                                 )
                         );
                         ?>
