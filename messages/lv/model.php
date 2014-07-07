@@ -20,6 +20,7 @@ return array (
   'Create Fixr Fiit Xref' => ' ',
   'Create Fped Period Date' => '',
   'Empty' => 'Nav uzdots',
+  'Exp.Postions Amount' => 'Izd.Poz. Summa',
   'Fiit Amt' => 'Summa',
   'Fiit Desc' => 'Apraksts',
   'Fiit Fqnt' => 'Daudzums',

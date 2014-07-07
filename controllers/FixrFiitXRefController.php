@@ -8,6 +8,7 @@ class FixrFiitXRefController extends Controller
     public $defaultAction = "admin";
     public $scenario = "crud";
     public $scope = "crud";
+    public $menu_route = "d2fixr/FixrFiitXRef/FinvInvoice";   
 
 
 public function filters()
@@ -32,7 +33,7 @@ public function accessRules()
         ),
         array(
             'allow',
-            'actions' => array('view', 'admin','FixrFiitXRef'), // let the user view the grid
+            'actions' => array('view','finvInvoice', 'admin','FixrFiitXRef'), // let the user view the grid
             'roles' => array('D2finv.FixrFiitXRef.View'),
         ),
         array(
@@ -422,6 +423,13 @@ public function accessRules()
         //create fixr record
         $model = new FixrFiitXRef;
         $model->addRecord($value);
+        
+        /**
+         * pielikts full view reload, kamēr ajax neiet
+         */
+        $fiit = FiitInvoiceItem::model()->findByPk($value);
+        $model = $fiit->fiitFinv;
+        $this->render('viewFinv', array('model' => $model,));        
     }
     
     public function actionDelete($fixr_id)
@@ -445,6 +453,23 @@ public function accessRules()
         }
     }
 
+    public function actionFinvInvoice()
+    {
+        $this->menu_route = 'd2fixr/FixrFiitXRef/FinvInvoice';
+        $model = new FinvInvoice('search');
+        $scopes = $model->scopes();
+        if (isset($scopes[$this->scope])) {
+            $model->{$this->scope}();
+        }
+        $model->unsetAttributes();
+
+        if (isset($_GET['FinvInvoice'])) {
+            $model->attributes = $_GET['FinvInvoice'];
+        }
+
+        $this->render('adminFinv', array('model' => $model,));
+    }    
+    
     public function actionAdmin()
     {
         $model = new FixrFiitXRef('search');

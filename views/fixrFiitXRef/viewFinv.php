@@ -10,7 +10,7 @@
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "icon"=>"chevron-left",
     "size"=>"large",
-    "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/admin"),
+    "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/FinvInvoice"),
     "visible"=>(Yii::app()->user->checkAccess("D2finv.FinvInvoice.*") || Yii::app()->user->checkAccess("D2finv.FinvInvoice.View")),
     "htmlOptions"=>array(
                     "class"=>"search-button",
@@ -29,22 +29,6 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
                 <i class=""></i>
                 <?php echo Yii::t('D2fixrModule.model','Finv Invoice');?>                <small><?php echo$model->itemLabel?></small>
             </h1>
-        </div>
-        <div class="btn-group">
-            <?php
-            
-            $this->widget("bootstrap.widgets.TbButton", array(
-                "label"=>Yii::t("D2fixrModule.crud_static","Delete"),
-                "type"=>"danger",
-                "icon"=>"icon-trash icon-white",
-                "size"=>"large",
-                "htmlOptions"=> array(
-                    "submit"=>array("delete","finv_id"=>$model->{$model->tableSchema->primaryKey}, "returnUrl"=>(Yii::app()->request->getParam("returnUrl"))?Yii::app()->request->getParam("returnUrl"):$this->createUrl("admin")),
-                    "confirm"=>Yii::t("D2fixrModule.crud_static","Do you want to delete this item?")
-                ),
-                "visible"=> (Yii::app()->request->getParam("finv_id")) && (Yii::app()->user->checkAccess("D2finv.FinvInvoice.*") || Yii::app()->user->checkAccess("D2finv.FinvInvoice.Delete"))
-            ));
-            ?>
         </div>
     </div>
 </div>

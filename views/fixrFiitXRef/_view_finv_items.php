@@ -87,9 +87,13 @@
                         
                         $sub_grid_id = 'fixr-grid-' . $fiit->primaryKey;
                         
+                        /**
+                         * @todo jāpārslēdz uz ajaxu atpakaļ, kad atrisinās fancy box linka iedarbināšanu jaunajam itemama
+                         */
                         $this->widget(
                                 'bootstrap.widgets.TbButton', array(
-                                    'buttonType' => 'ajaxButton',
+                                    //ajax: 'buttonType' => 'ajaxButton',
+                                    'buttonType' => 'link',
                                     'type' => 'primary', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                                     'size' => 'mini',
                                     'icon' => 'icon-plus',
@@ -97,11 +101,11 @@
                                         '//d2fixr/fixrFiitXRef/ajaxCreate',
                                         'field' => 'fixr_fiit_id',
                                         'value' => $fiit->primaryKey,
-                                        'ajax' => $sub_grid_id,
+                                        //ajax: 'ajax' => $sub_grid_id,
                                     ),
-                                    'ajaxOptions' => array(
-                                        'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
-                                    ),
+                                    //ajax: 'ajaxOptions' => array(
+                                    //ajax:     'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
+                                    //ajax: ),
                                     'htmlOptions' => array(
                                         'title' => Yii::t('D2fixrModule.crud_static', 'Add new record'),
                                         'data-toggle' => 'tooltip',

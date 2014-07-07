@@ -144,4 +144,19 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         ));
     }
 
+    public static function totalByFinvId($finv_id){
+     
+        $sql = " 
+                SELECT 
+                    SUM(fixr_amt) as amt_sum 
+                FROM 
+                    fixr_fiit_x_ref 
+                    inner join fiit_invoice_item
+                        ON fixr_fiit_id = fiit_id
+                    
+                WHERE 
+                    fiit_finv_id = " . $finv_id;
+        return Yii::app()->db->createCommand($sql)->queryScalar();        
+        
+    }
 }
