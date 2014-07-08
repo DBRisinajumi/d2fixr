@@ -6,7 +6,10 @@ function reinstallDatePicker(id, data) {
    }
 ");
 
-$this->setPageTitle(Yii::t('D2fixrModule.model', 'Invoice postions'));
+$fcrn_model = FcrnCurrency::model()->findByPk(Yii::app()->sysCompany->getAttribute('base_fcrn_id'));
+$title = Yii::t('D2fixrModule.model', 'Invoices expense postions') . ' - ' . $fcrn_model->fcrn_code;
+$this->setPageTitle(Yii::t('D2fixrModule.model', $title));
+
 
 ?>
 
@@ -15,7 +18,7 @@ $this->setPageTitle(Yii::t('D2fixrModule.model', 'Invoice postions'));
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model', 'Invoice postions');?>
+                <?php echo $title;?>
             </h1>
         </div>
     </div>
@@ -27,6 +30,7 @@ $this->widget('TbGridView',
     array(
         'id' => 'finv-invoice-grid',
         'dataProvider' => $model->search(),
+        'rowCssClassExpression' => '($data->finv_basic_amt != FixrFiitXRef::totalByFinvId($data->finv_id)) ? "alert alert-danger" : ""',
         'filter' => $model,
         #'responsiveTable' => true,
         'template' => '{summary}{pager}{items}{pager}',
@@ -76,15 +80,27 @@ $this->widget('TbGridView',
                 'name' => 'finv_fcrn_id',
             ),*/
             array(
+                //'class' => 'editable.EditableColumn',
+                'name' => 'finv_stst_id',
+                'value' => 'CHtml::value($data, \'finvStst.itemLabel\')',
+                'filter' => CHtml::listData(StstState::model()->findAll(array('limit' => 1000)), 'stst_id', 'itemLabel'),
+                //'editable' => array(
+                //    'type' => 'select',
+                //    'url' => $this->createUrl('/d2finv/finvInvoice/editableSaver'),
+                //    'source' => CHtml::listData(StstState::model()->findAll(array('limit' => 1000)), 'stst_id', 'itemLabel'),                        
+                //    //'placement' => 'right',
+                //)
+            ),            
+            array(
                 //decimal(10,2)
                 'htmlOptions' => array('class' => 'numeric-column'),
-                'name' => 'finv_amt',
+                'name' => 'finv_basic_amt',
                 'footer' => $model->getTotals('finv_amt'),
                 'footerHtmlOptions' => array('class' => 'total-row numeric-column'),
             ),
             array(
                 //decimal(10,2)
-                'header' => Yii::t('D2fixrModule.model', 'Exp.Postions Amount'),
+                'header' => Yii::t('D2fixrModule.model', 'Expenses Amount'),
                 'htmlOptions' => array('class' => 'numeric-column'),
                 'value' => 'FixrFiitXRef::totalByFinvId($data->finv_id)',
                 //'footer' => $model->getTotals('finv_amt'),
@@ -124,18 +140,7 @@ $this->widget('TbGridView',
                 //decimal(10,2)
                 'name' => 'finv_basic_payment_before',
             ),*/
-            array(
-                //'class' => 'editable.EditableColumn',
-                'name' => 'finv_stst_id',
-                'value' => 'CHtml::value($data, \'finvStst.itemLabel\')',
-                'filter' => CHtml::listData(StstState::model()->findAll(array('limit' => 1000)), 'stst_id', 'itemLabel'),
-                //'editable' => array(
-                //    'type' => 'select',
-                //    'url' => $this->createUrl('/d2finv/finvInvoice/editableSaver'),
-                //    'source' => CHtml::listData(StstState::model()->findAll(array('limit' => 1000)), 'stst_id', 'itemLabel'),                        
-                //    //'placement' => 'right',
-                //)
-            ),
+
             /*array(
                     'class' => 'editable.EditableColumn',
                     'name' => 'finv_ref',

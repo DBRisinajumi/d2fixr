@@ -1,4 +1,4 @@
-<h2><?= Yii::t('D2fixrModule.model', 'Invoce item dimensions') ?></h2>
+<h2><?= Yii::t('D2fixrModule.model', 'Items expense positions') ?></h2>
 <table id="sample-table-1" class="table table-striped table-bordered table-hover">
     <thead>
         <tr>
@@ -8,9 +8,6 @@
             <th><?= Yii::t('D2fixrModule.model', 'Fiit Fqnt') ?></th>
             <th><?= Yii::t('D2fixrModule.model', 'Fiit Price') ?></th>
             <th><?= Yii::t('D2fixrModule.model', 'Fiit Amt') ?></th>
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Vat') ?></th>
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Total') ?></th>
-
         </tr>
     </thead>
     <tbody>
@@ -77,11 +74,9 @@
                 <td><?= $fiit->fiit_fqnt_id ?></td>
                 <td class="numeric-column"><?= $fiit->fiit_price ?></td>
                 <td class="numeric-column"><?= $fiit->fiit_amt ?></td>
-                <td class="numeric-column"><?= $fiit->fiit_vat ?></td>
-                <td class="numeric-column"><?= $fiit->fiit_total ?></td>
             </tr>
             <tr>
-                <td colspan="7" class="rel_grid-sub">
+                <td colspan="5" class="rel_grid-sub">
                     <h3 class="rel_grid-sub">
                         <?php
                         

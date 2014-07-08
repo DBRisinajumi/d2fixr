@@ -1,11 +1,5 @@
 <?php
-    $this->setPageTitle(
-        Yii::t('D2fixrModule.model', 'Finv Dimension')
-        . ' - '
-        . Yii::t('D2fixrModule.crud_static', 'View')
-        . ': '   
-        . $model->getItemLabel()            
-);    
+    $this->setPageTitle(Yii::t('D2fixrModule.model', 'Invoice expension positions'));
 
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "icon"=>"chevron-left",
@@ -27,7 +21,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model','Finv Invoice');?>                <small><?php echo$model->itemLabel?></small>
+                <?php echo Yii::t('D2fixrModule.model','Invoice expension positions') . ' ' . $model->finvBasicFcrn->fcrn_code;?>
             </h1>
         </div>
     </div>
@@ -52,6 +46,10 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
                     'name' => 'finv_number',
                 ),
                 array(
+                    'name' => 'finv_type',
+                    'value' => $model->getEnumLabel("finv_type",$model->finv_type),    
+                ),                    
+                array(
                     'name' => 'finv_ccmp_id',
                     'value' => $model->finvCcmp->ccmp_name,
                 ),
@@ -62,47 +60,11 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
                     'name' => 'finv_budget_date',
                 ),
                 array(
-                    'name' => 'finv_due_date',
-                ),
-                array(
                     'name' => 'finv_notes',
-                ),
-                array(
-                    'name' => 'finv_fcrn_id',
-                    'value' => $model->finvFcrn->fcrn_code,
-                ),
-                array(
-                    'name' => 'finv_amt',
-                ),
-                /**
-                 * @todo japieliek modeli relacija uz fvat
-                 */     
-                array(
-                    'name' => 'finv_vat',
-                ),
-
-                array(
-                    'name' => 'finv_total',
-                ),
-                array(
-                    'name' => 'finv_basic_fcrn_id',
-                    'value' => $model->finvBasicFcrn->fcrn_code,
                 ),
 
                 array(
                     'name' => 'finv_basic_amt',
-                ),
-
-                array(
-                    'name' => 'finv_basic_vat',
-                ),
-                array(
-                    'name' => 'finv_basic_total',
-                ),
-
-                array(
-                    'name' => 'finv_type',
-                    'value' => $model->getEnumLabel("finv_type",$model->finv_type),    
                 ),
            ),
         )); ?>
