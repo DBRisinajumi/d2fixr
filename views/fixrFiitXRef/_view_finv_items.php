@@ -118,9 +118,9 @@
                     if (empty($fiit->fixrFiitXRefs)) {
                         $model = new FixrFiitXRef();
                         $model->fixr_fiit_id = $fiit->primaryKey;
-                        $model->fuxr_fcrn_date = $modelMain->finv_budget_date;
-                        $model->fuxr_fcrn_id = $modelMain->finv_fcrn_id;
-                        $model->fuxr_base_fcrn_id = $modelMain->finv_basic_fcrn_id;
+                        $model->fixr_fcrn_date = $modelMain->finv_budget_date;
+                        $model->fixr_fcrn_id = $modelMain->finv_fcrn_id;
+                        $model->fixr_base_fcrn_id = $modelMain->finv_basic_fcrn_id;
                         $model->save();
                         unset($model);
                     }
