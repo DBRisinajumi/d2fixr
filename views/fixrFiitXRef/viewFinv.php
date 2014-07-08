@@ -1,11 +1,5 @@
 <?php
-    $this->setPageTitle(
-        Yii::t('D2fixrModule.model', 'Finv Dimension')
-        . ' - '
-        . Yii::t('D2fixrModule.crud_static', 'View')
-        . ': '   
-        . $model->getItemLabel()            
-);    
+$this->setPageTitle(Yii::t('D2fixrModule.model', 'Invoice positions'));
 
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "icon"=>"chevron-left",
@@ -20,14 +14,14 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
  ),true);
     
 ?>
-<?php //$this->widget("TbBreadcrumbs", array("links"=>$this->breadcrumbs)) ?>
+
 <div class="clearfix">
     <div class="btn-toolbar pull-left">
         <div class="btn-group"><?php echo $cancel_buton;?></div>
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model','Finv Invoice');?>                <small><?php echo$model->itemLabel?></small>
+                <?php echo Yii::t('D2fixrModule.model','Invoice positions');?> 
             </h1>
         </div>
     </div>
