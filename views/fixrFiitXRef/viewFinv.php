@@ -1,5 +1,5 @@
 <?php
-    $this->setPageTitle(Yii::t('D2fixrModule.model', 'Invoice expension positions'));
+    $this->setPageTitle(Yii::t('D2fixrModule.model', 'Invoice expenses positions'));
 
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "icon"=>"chevron-left",
@@ -14,14 +14,14 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
  ),true);
     
 ?>
-<?php //$this->widget("TbBreadcrumbs", array("links"=>$this->breadcrumbs)) ?>
+
 <div class="clearfix">
     <div class="btn-toolbar pull-left">
         <div class="btn-group"><?php echo $cancel_buton;?></div>
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model','Invoice expension positions') . ' ' . $model->finvBasicFcrn->fcrn_code;?>
+                                <?php echo Yii::t('D2fixrModule.model','Invoice expenses positions') . ' ' . $model->finvBasicFcrn->fcrn_code;?>
             </h1>
         </div>
     </div>
