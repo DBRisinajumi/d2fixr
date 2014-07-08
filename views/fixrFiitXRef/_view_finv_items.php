@@ -116,12 +116,8 @@
                     </h3>                        
                     <?php
                     if (empty($fiit->fixrFiitXRefs)) {
-                        $model = new FixrFiitXRef();
-                        $model->fixr_fiit_id = $fiit->primaryKey;
-                        $model->fixr_fcrn_date = $modelMain->finv_budget_date;
-                        $model->fixr_fcrn_id = $modelMain->finv_fcrn_id;
-                        $model->fixr_base_fcrn_id = $modelMain->finv_basic_fcrn_id;
-                        $model->save();
+                        $model = new FixrFiitXRef;
+                        $model->addRecord($fiit->primaryKey);
                         unset($model);
                     }
 

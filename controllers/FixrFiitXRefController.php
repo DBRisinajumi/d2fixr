@@ -424,12 +424,9 @@ public function accessRules()
         $model = new FixrFiitXRef;
         $model->addRecord($value);
         
-        /**
-         * pielikts full view reload, kamēr ajax neiet
-         */
-        $fiit = FiitInvoiceItem::model()->findByPk($value);
-        $model = $fiit->fiitFinv;
-        $this->render('viewFinv', array('model' => $model,));        
+        //reload full page
+        $this->redirect(array('viewFinv','finv_id'=>$model->fixrFiit->fiit_finv_id));
+
     }
     
     public function actionDelete($fixr_id)
