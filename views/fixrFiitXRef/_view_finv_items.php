@@ -19,28 +19,28 @@
             td.rel_grid-sub{padding-top: 0px; border-top-width: 0px;}
             ');
         }
-        $this->widget('EFancyboxWidget',array(
-            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']',
-            'options'=>array(
-                //'height'         => 720,
-                //'width'         => 500,
-                'autoDimensions' => false,
-                'autoScale' => true,
-                'live' => false,
-                'onClosed' => 'js:function(){            
-                    var ajax_url = $(this).attr("href") + "&get_label=1";
-                    var elThis = this;
-                    $.ajax({
-                                    type: "GET",
-                                    url: ajax_url,
-                                    success: function(data) {
-                                        $(elThis).attr("orig").html(data);
-                                    }   
-                    });                      
-
-                }'
-            ),
-        ));    
+//        $this->widget('EFancyboxWidget',array(
+//            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']',
+//            'options'=>array(
+//                //'height'         => 720,
+//                //'width'         => 500,
+//                'autoDimensions' => false,
+//                'autoScale' => true,
+//                'live' => false,
+//                'onClosed' => 'js:function(){            
+//                    var ajax_url = $(this).attr("href") + "&get_label=1";
+//                    var elThis = this;
+//                    $.ajax({
+//                                    type: "GET",
+//                                    url: ajax_url,
+//                                    success: function(data) {
+//                                        $(elThis).attr("orig").html(data);
+//                                    }   
+//                    });                      
+//
+//                }'
+//            ),
+//        ));    
         
         $this->widget('EFancyboxWidget',array(
             'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']',
@@ -64,8 +64,6 @@
                 }'
             ),
         ));        
-        
-        
         foreach ($modelMain->fiitInvoiceItems as $fiit) {
             ?>
             <tr>
@@ -172,3 +170,92 @@
 ?>
     </tbody>
 </table>
+
+<?
+
+
+Yii::app()->clientScript->registerScript('mydialogOnClose', 
+   '
+       $("#mydialog").live("pagehide",function(event) {
+          console.log("pagehide");
+       })   
+    '    
+      
+);
+$ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePositionSubForm');        
+$this->beginWidget('vendor.uldisn.ace.widgets.CJuiAceDialog',array(
+    'id'=>'mydialog',
+    'title' => Yii::t('D2fixrModule.model', 'Set expenses position'),
+    //'title_icon' => 'icon-warning-sign red',
+    'options'=>array(
+        'resizable' => true,
+        'width'=>'auto',
+        'height'=>'auto',        
+        'modal' => true,
+        'autoOpen'=>false,
+//        'close' => 'function( event, ui ) {
+//                         
+//                    alert("OnClose");
+//                    //var ajax_url = $(this).attr("href") + "&get_label=1";
+//                    var ajax_url = "index.php?r=d2fixr/fixrFiitXRef/popupPosition&fixr_id=1&lang=en&get_label=1";
+//                    var elThis = this;
+//                    $.ajax({
+//                                    type: "GET",
+//                                    url: ajax_url,
+//                                    success: function(data) {
+//                                        //$(elThis).attr("orig").html(data);
+//                                        $("#ccccc").attr("orig").html(data);
+//                                    }   
+//                    });                      
+//                }
+//                            
+//          ',
+    ),
+));
+
+
+
+
+$this->endWidget('vendor.uldisn.ace.widgets.CJuiAceDialog');
+// the link that may open the dialog
+$ui_dialog_ajax_url = $this->createUrl('/d2fixr/fixrFiitXRef/popupPosition',array('fixr_id' =>1));
+echo CHtml::link('open dialog', '#', array(
+   'onclick'=>'$("#mydialog").data("opener", this).load("'.$ui_dialog_ajax_url.'").dialog("open"); return false;',
+));        
+
+Yii::app()->clientScript->registerScript('ui_postion_click', 
+   '
+       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function() {
+            alert("click");
+            //return false;
+          var ui_dialog_ajax_url = $(this).attr("href");
+          $("#mydialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
+          return false;
+       })   
+    '    
+      
+);
+//$this->widget('EFancyboxWidget',array(
+//    'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']',
+//    'options'=>array(
+//        //'height'         => 720,
+//        //'width'         => 500,
+//        'autoDimensions' => false,
+//        'autoScale' => true,
+//        'live' => false,
+//        'onClosed' => 'js:function(){            
+//            var ajax_url = $(this).attr("href") + "&get_label=1";
+//            var elThis = this;
+//            $.ajax({
+//                            type: "GET",
+//                            url: ajax_url,
+//                            success: function(data) {
+//                                $(elThis).attr("orig").html(data);
+//                            }   
+//            });                      
+//
+//        }'
+//    ),
+//));    
+?>
+<div id="ccccc">aaaa</div>

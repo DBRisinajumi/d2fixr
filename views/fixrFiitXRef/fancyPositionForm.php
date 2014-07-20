@@ -1,14 +1,5 @@
 <div class="widget-box no-padding">
-    <?php
-    if (false) {
-        ?>
-        <div class="widget-header">
-            <h4><?= Yii::t('D2fixrModule.model', 'Set expenses position') ?></h4>
-        </div>
-        <?php
-    }
-    ?>        
-    <div class="widget-body">
+    
         <div class="widget-main no-padding">
 
             <div class="form-horizontal">
@@ -58,7 +49,7 @@
                 <?php $this->actionShowPositionSubForm($model_fixr->fixr_fret_id,$model_fixr->fixr_id); ?>
             </div>
 
-            <div class="form-actions center">
+            <div class="form-actions center no-margin">
                 <?php
 //        Yii::app()->clientScript->registerScript('fancybox_submit_form', '  
 //                function submit_expense_data_form(){
@@ -80,35 +71,30 @@
                 $this->widget("bootstrap.widgets.TbButton", array(
                     "label" => Yii::t("D2finvModule.crud_static", "Save"),
                     "icon" => "icon-thumbs-up icon-white",
-                    "size" => "large",
+                    "size" => "btn-small",
                     "type" => "primary",
                     "htmlOptions" => array(
-                        //"onclick" => "$('#expense_data_form').submit();",
-                        //"onclick"=>"submit_expense_data_form();",
                        "onclick"=>' 
                             $.ajax({
                                     type: "POST",
                                     url: "' . $ajax_submit_url . '",
                                     data: $("#expense_data_form").serialize(), // read and prepare all form fields
                                     success: function(data) {
-                                            // trigger fancybox close on same modal window 
-                                              alert("dati saglabāti");
-//                                            try{
-//                                                parent.jQuery.fancybox.close();
-//                                            }catch(err){
-//                                                parent.$(this).attr("orig").html("aaaa")
-//                                                parent.$("#fancybox-overlay").hide();
-//                                                parent.$("#fancybox-wrap").hide();
-//                                            }
-                                            //var label = $(this).attr("orig").html();
-                                            //alert(label);
-                                            
-                                            //$.fancybox.close(); 
-                                            //$.fn.fancybox.close();
-                                            //parent.jQuery.fancybox.close();
-                                            //$("#fancybox-close").click();
-                                            // trigger fancybox close from parent window
-                                            // parent.$.fancybox.close()
+                                            $("#mydialog").dialog("close");
+                                            var ajax_url = "index.php?r=d2fixr/fixrFiitXRef/popupPosition&fixr_id=1&lang=en&get_label=1";
+                                            var elThis = this;
+                                            $.ajax({
+                                                    type: "GET",
+                                                    url: ajax_url,
+                                                    success: function(data) {
+                                                        //$(elThis).attr("orig").html(data);
+                                                        $("#ccccc").html(data);
+                                                        //var el = $("#mydialog").data("opener");
+                                                        //$(el).attr("href")
+    
+                                                    }   
+                                            });                      
+
                                     }   
                     });                                 
                            ' ,
@@ -119,6 +105,5 @@
 
             </div>    
         </div>                
-    </div>
 </div>
 
