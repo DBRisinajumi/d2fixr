@@ -226,8 +226,6 @@ echo CHtml::link('open dialog', '#', array(
 Yii::app()->clientScript->registerScript('ui_postion_click', 
    '
        $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function() {
-            alert("click");
-            //return false;
           var ui_dialog_ajax_url = $(this).attr("href");
           $("#mydialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
           return false;
@@ -258,4 +256,3 @@ Yii::app()->clientScript->registerScript('ui_postion_click',
 //    ),
 //));    
 ?>
-<div id="ccccc">aaaa</div>
