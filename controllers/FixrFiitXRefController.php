@@ -146,23 +146,22 @@ public function accessRules()
         
         //get model form detqails
         $model_fret = FretRefType::model()->findByPk($fret_id);
-        $form_model_ref_field = $model_fret->getRefIdFIeldName();
         $form_model_name = $model_fret->fret_model;
         
         //search model form record
         $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
         
         $criteria = new CDbCriteria();
-        $criteria->compare($form_model_ref_field, $fixr_id);
+        $criteria->compare($model_fret->fret_model_fixr_id_field, $fixr_id);
         $form_model = new $form_model_name;
         $form_model = $form_model->find($criteria);
         
         if(!$form_model){
-            $form_model = new $form_model_name;
+            $form_model = new fret_view_form;
         }
 
         echo $this->renderPartial(
-                '/subform/'.$form_model_name, 
+                '/subform/'.$model_fret->form_model_name, 
                 array(
                     'model' => $form_model,
                     'fixr_id' => $fixr_id,
