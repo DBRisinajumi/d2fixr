@@ -200,8 +200,7 @@ public function accessRules()
 
     public function actionEditableSaver()
     {
-        Yii::import('TbEditableSaver');
-        $es = new TbEditableSaver('FpedPeriodDate'); // classname of model to be updated
+        $es = new EditableSaver('FpedPeriodDate'); // classname of model to be updated
         $es->update();
     }
 

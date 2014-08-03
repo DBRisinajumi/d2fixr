@@ -405,8 +405,7 @@ public function accessRules()
 
     public function actionEditableSaver()
     {
-        Yii::import('TbEditableSaver');
-        $es = new TbEditableSaver('FixrFiitXRef'); // classname of model to be updated
+        $es = new EditableSaver('FixrFiitXRef'); // classname of model to be updated
         $es->update();
     }
 
