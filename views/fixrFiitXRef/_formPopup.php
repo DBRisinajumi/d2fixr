@@ -131,22 +131,23 @@
                                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_month')) != 'tooltip.fped_month')?$t:'' ?>'>
                                 <?php
                             $this->widget('zii.widgets.jui.CJuiDatePicker',
-                         array(
-                                 'model' => $model,
-                                 'attribute' => 'fped_month',
-                                 'language' =>  strstr(Yii::app()->language.'_','_',true),
-                                 'htmlOptions' => array('size' => 10),
-                                 'options' => array(
-                                     'showButtonPanel' => true,
-                                     'changeYear' => true,
-                                     'changeYear' => true,
-                                     'dateFormat' => 'yy-mm-dd',
-                                     ),
-                                 )
-                             );
-                    ;
-                            echo $form->error($model,'fped_month')
-                            ?>                            </span>
+                                array(
+                                        'model' => $model,
+                                        'attribute' => 'fped_month',
+                                        'language' =>  strstr(Yii::app()->language.'_','_',true),
+                                        'htmlOptions' => array('size' => 10),
+                                        'options' => array(
+                                            'showButtonPanel' => true,
+                                            'changeYear' => true,
+                                            'changeYear' => true,
+                                            'dateFormat' => 'yy-mm-dd',
+                                            ),
+                                        )
+                                    );
+
+                            echo $form->error($model,'fped_month');
+                            ?>                            
+                            </span>
                         </div>
                     </div>
                     <?php  ?>
@@ -177,4 +178,5 @@
     </p>
 
 
-    <?php $this->endWidget() ?>    <?php  ?></div> <!-- form -->
+    <?php $this->endWidget() ?>    <?php  ?>
+</div>

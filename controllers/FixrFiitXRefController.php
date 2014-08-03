@@ -72,10 +72,17 @@ public function accessRules()
 
         $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
         
+        //for ajax get caller label
         if($get_label){
             echo $model_fixr->getFretLabel();
             return;
         }
+        
+        $criteria = new CDbCriteria;
+        $criteria->compare('fret_finv_type',$model_fixr->fixrFiit->fiitFinv->finv_type);
+        $criteria->compare('fret_controller_action',$this->id.'/'.$this->action->id);
+        $criteria->order = 'fret_label';
+        $model_fret = FretRefType::model()->findAll($criteria);
         
         $cs = Yii::app()->clientScript;
         $cs->reset();        
@@ -85,9 +92,10 @@ public function accessRules()
         );        
         
         echo $this->renderPartial(
-                'fancyPositionForm', 
+                'uiDialogPositionForm', 
                 array(
                     'model_fixr' => $model_fixr,
+                    'model_fret' => $model_fret,
                 ),
                 true,
                 true);

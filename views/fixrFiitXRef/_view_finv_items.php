@@ -42,28 +42,28 @@
 //            ),
 //        ));    
         
-        $this->widget('EFancyboxWidget',array(
-            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']',
-            'options'=>array(
-                //'height'         => 720,
-                //'width'         => 500,
-                'autoDimensions' => false,
-                'autoScale' => true,
-                'live' => false,
-                'onClosed' => 'js:function(){            
-                    var ajax_url = $(this).attr("href") + "&get_label=1";
-                    var elThis = this;
-                    $.ajax({
-                                    type: "GET",
-                                    url: ajax_url,
-                                    success: function(data) {
-                                        $(elThis).attr("orig").html(data);
-                                    }   
-                    });                      
-
-                }'
-            ),
-        ));        
+//        $this->widget('EFancyboxWidget',array(
+//            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']',
+//            'options'=>array(
+//                //'height'         => 720,
+//                //'width'         => 500,
+//                'autoDimensions' => false,
+//                'autoScale' => true,
+//                'live' => false,
+//                'onClosed' => 'js:function(){            
+//                    var ajax_url = $(this).attr("href") + "&get_label=1";
+//                    var elThis = this;
+//                    $.ajax({
+//                                    type: "GET",
+//                                    url: ajax_url,
+//                                    success: function(data) {
+//                                        $(elThis).attr("orig").html(data);
+//                                    }   
+//                    });                      
+//
+//                }'
+//            ),
+//        ));        
         foreach ($modelMain->fiitInvoiceItems as $fiit) {
             ?>
             <tr>
@@ -173,7 +173,6 @@
 
 <?
 
-
 Yii::app()->clientScript->registerScript('mydialogOnClose', 
    '
        $("#mydialog").live("pagehide",function(event) {
@@ -213,16 +212,7 @@ $this->beginWidget('vendor.uldisn.ace.widgets.CJuiAceDialog',array(
     ),
 ));
 
-
-
-
 $this->endWidget('vendor.uldisn.ace.widgets.CJuiAceDialog');
-// the link that may open the dialog
-$ui_dialog_ajax_url = $this->createUrl('/d2fixr/fixrFiitXRef/popupPosition',array('fixr_id' =>1));
-echo CHtml::link('open dialog', '#', array(
-   'onclick'=>'$("#mydialog").data("opener", this).load("'.$ui_dialog_ajax_url.'").dialog("open"); return false;',
-));        
-
 Yii::app()->clientScript->registerScript('ui_postion_click', 
    '
        $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function() {
@@ -233,26 +223,3 @@ Yii::app()->clientScript->registerScript('ui_postion_click',
     '    
       
 );
-//$this->widget('EFancyboxWidget',array(
-//    'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']',
-//    'options'=>array(
-//        //'height'         => 720,
-//        //'width'         => 500,
-//        'autoDimensions' => false,
-//        'autoScale' => true,
-//        'live' => false,
-//        'onClosed' => 'js:function(){            
-//            var ajax_url = $(this).attr("href") + "&get_label=1";
-//            var elThis = this;
-//            $.ajax({
-//                            type: "GET",
-//                            url: ajax_url,
-//                            success: function(data) {
-//                                $(elThis).attr("orig").html(data);
-//                            }   
-//            });                      
-//
-//        }'
-//    ),
-//));    
-?>
