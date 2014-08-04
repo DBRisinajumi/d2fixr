@@ -16,7 +16,7 @@ class m140803_105100_alter_fret extends CDbMigration
               CHANGE `fret_label` `fret_label` VARCHAR(250) CHARSET utf8 COLLATE utf8_general_ci NOT NULL,
               ADD COLUMN `fret_finv_type` ENUM('in','out') DEFAULT 'out'   NOT NULL AFTER `fret_label`,
               ADD COLUMN `fret_controller_action` VARCHAR(100) CHARSET ASCII NULL AFTER `fret_finv_type`,
-              ADD COLUMN `fret_view_form` VARCHAR(100) NULL AFTER `fret_controlier_action`;
+              ADD COLUMN `fret_view_form` VARCHAR(100) NULL AFTER `fret_controller_action`;
         ");
 	}
 
