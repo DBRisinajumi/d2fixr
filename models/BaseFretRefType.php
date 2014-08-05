@@ -10,11 +10,12 @@
  * @property string $fret_modelpk_field
  * @property string $fret_label
  * @property string $fret_finv_type
- * @property string $fret_controlier_action
+ * @property string $fret_controller_action
  * @property string $fret_view_form
  *
  * Relations of table "fret_ref_type" available as properties of the model:
  * @property FixrFiitXRef[] $fixrFiitXRefs
+ * @property FixrFiitXRef[] $fixrFiitXRefs1
  */
 abstract class BaseFretRefType extends CActiveRecord
 {
@@ -39,12 +40,12 @@ abstract class BaseFretRefType extends CActiveRecord
         return array_merge(
             parent::rules(), array(
                 array('fret_model, fret_label', 'required'),
-                array('fret_model_fixr_id_field, fret_modelpk_field, fret_finv_type, fret_controlier_action, fret_view_form', 'default', 'setOnEmpty' => true, 'value' => null),
+                array('fret_model_fixr_id_field, fret_modelpk_field, fret_finv_type, fret_controller_action, fret_view_form', 'default', 'setOnEmpty' => true, 'value' => null),
                 array('fret_model', 'length', 'max' => 50),
-                array('fret_model_fixr_id_field, fret_modelpk_field, fret_controlier_action, fret_view_form', 'length', 'max' => 100),
+                array('fret_model_fixr_id_field, fret_modelpk_field, fret_controller_action, fret_view_form', 'length', 'max' => 100),
                 array('fret_label', 'length', 'max' => 250),
                 array('fret_finv_type', 'length', 'max' => 3),
-                array('fret_id, fret_model, fret_model_fixr_id_field, fret_modelpk_field, fret_label, fret_finv_type, fret_controlier_action, fret_view_form', 'safe', 'on' => 'search'),
+                array('fret_id, fret_model, fret_model_fixr_id_field, fret_modelpk_field, fret_label, fret_finv_type, fret_controller_action, fret_view_form', 'safe', 'on' => 'search'),
             )
         );
     }
@@ -69,7 +70,8 @@ abstract class BaseFretRefType extends CActiveRecord
     {
         return array_merge(
             parent::relations(), array(
-                'fixrFiitXRefs' => array(self::HAS_MANY, 'FixrFiitXRef', 'fixr_fret_id'),
+                'fixrFiitXRefs' => array(self::HAS_MANY, 'FixrFiitXRef', 'fixr_period_frep_id'),
+                'fixrFiitXRefs1' => array(self::HAS_MANY, 'FixrFiitXRef', 'fixr_position_fret_id'),
             )
         );
     }
@@ -83,7 +85,7 @@ abstract class BaseFretRefType extends CActiveRecord
             'fret_modelpk_field' => Yii::t('D2fixrModule.model', 'Fret Modelpk Field'),
             'fret_label' => Yii::t('D2fixrModule.model', 'Fret Label'),
             'fret_finv_type' => Yii::t('D2fixrModule.model', 'Fret Finv Type'),
-            'fret_controlier_action' => Yii::t('D2fixrModule.model', 'Fret Controlier Action'),
+            'fret_controller_action' => Yii::t('D2fixrModule.model', 'Fret Controller Action'),
             'fret_view_form' => Yii::t('D2fixrModule.model', 'Fret View Form'),
         );
     }
@@ -132,7 +134,7 @@ abstract class BaseFretRefType extends CActiveRecord
         $criteria->compare('t.fret_modelpk_field', $this->fret_modelpk_field, true);
         $criteria->compare('t.fret_label', $this->fret_label, true);
         $criteria->compare('t.fret_finv_type', $this->fret_finv_type, true);
-        $criteria->compare('t.fret_controlier_action', $this->fret_controlier_action, true);
+        $criteria->compare('t.fret_controller_action', $this->fret_controller_action, true);
         $criteria->compare('t.fret_view_form', $this->fret_view_form, true);
 
 

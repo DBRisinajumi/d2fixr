@@ -1,3 +1,17 @@
+<?php
+  $ajax_url = $this->createUrl('FixrFiitXRef/ShowPositionSubForm', array('fixr_id' => $model_fixr->fixr_id));
+if($this->action->id == 'popupPosition'){
+    $type_name = 'Set expenses positon';
+    $type_value = $model_fixr->fixr_position_fret_id;
+  
+    $fret_id = $model_fixr->fixr_position_fret_id;
+} else {
+    $type_name = 'Set expenses period'; 
+    $type_value = $model_fixr->fixr_period_fret_id;    
+    //$ajax_url = $this->createUrl('FixrFiitXRef/ShowPeriodSubForm', array('fixr_id' => $model_fixr->fixr_id));    
+    $fret_id = $model_fixr->fixr_period_fret_id;
+}
+?>
 <div class="widget-box no-padding">
 
     <div class="widget-main no-padding">
@@ -18,20 +32,20 @@
             <div class="control-group"></div>
             <div class="control-group">
                 <div class='control-label'>
-                    <?php echo $form->labelEx($model_fixr, 'Set expenses positon') ?>
+                    <?php echo $form->labelEx($model_fixr, $type_name) ?>
                 </div>
                 <div class='controls'>
                     <?php
                     $fret_id_list_box_id = 'fret_id_' . $model_fixr->fixr_id . '_' . date('Hms');
                     echo CHtml::dropDownList(
                             'fret_id', 
-                            $model_fixr->fixr_fret_id, CHtml::listData($model_fret, 'fret_id', 'fret_label'), 
+                            $fret_id, CHtml::listData($model_fret, 'fret_id', 'fret_label'), 
                             array(
                                 'id' => $fret_id_list_box_id, //izveidots dinamisks id
-                                'prompt' => Yii::t('D2fixrModule.model', 'Select service type'),
+                                'prompt' => Yii::t('D2fixrModule.model', 'Select type'),
                                 'ajax' => array(
                                     'type' => 'GET',
-                                    'url' => $this->createUrl('FixrFiitXRef/ShowPositionSubForm', array('fixr_id' => $model_fixr->fixr_id)),
+                                    'url' => $ajax_url,
                                     'update' => '#ajax_form',
                                 ),
                             )
@@ -45,7 +59,7 @@
 
 
         <div class="form-horizontal" id="ajax_form">
-            <?php $this->actionShowPositionSubForm($model_fixr->fixr_fret_id, $model_fixr->fixr_id); ?>
+            <?php $this->actionShowPositionSubForm($fret_id, $model_fixr->fixr_id); ?>
         </div>
 
         <div class="form-actions center no-margin">
@@ -57,6 +71,7 @@
             $this->widget("bootstrap.widgets.TbButton", array(
                 "label" => Yii::t("D2finvModule.crud_static", "Save"),
                 "icon" => "icon-thumbs-up icon-white",
+                "id" => "ajax_form_submit_buttn",
                 "size" => "btn-small",
                 "type" => "primary",
                 "htmlOptions" => array(
@@ -68,6 +83,7 @@
                             data: $("#expense_data_form").serialize(), // read and prepare all form fields
                             success: function(data) {
 
+                                    $("#ajax_form").html("");
                                     //get openner href
                                     $("#mydialog").dialog("close");
                                     var opener = $("#mydialog").data("opener");

@@ -1,20 +1,7 @@
 <div class="crud-form">
-    <?php  ?>    
-    <?php
-        Yii::app()->bootstrap->registerPackage('select2');
-        Yii::app()->clientScript->registerScript('crud/variant/update','$("#fped-period-date-form select").select2();');
-
-
-        $form=$this->beginWidget('TbActiveForm', array(
-            'id' => 'expense_data_form',
-            'enableAjaxValidation' => false,
-            'enableClientValidation' => true,
-            'htmlOptions' => array(
-                'enctype' => ''
-            )
-        ));
+    <?php 
         
-        echo CHtml::hiddenField('frep_id', $frep_id);     
+        echo CHtml::hiddenField('fret_id', $fret_id);     
         echo CHtml::hiddenField('fixr_id', $fixr_id);     
 
 
@@ -127,9 +114,3 @@
                     </div>
                 
             </div>
-
-        <!-- main inputs -->
-
-
-
-    <?php $this->endWidget(); 

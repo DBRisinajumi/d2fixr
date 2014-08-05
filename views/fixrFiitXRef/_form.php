@@ -69,17 +69,17 @@
                     <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
-                            <?php echo $form->labelEx($model, 'fixr_fret_id') ?>
+                            <?php echo $form->labelEx($model, 'fixr_position_fret_id') ?>
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fixr_fret_id')) != 'tooltip.fixr_fret_id')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fixr_position_fret_id')) != 'tooltip.fixr_position_fret_id')?$t:'' ?>'>
                                 <?php
                             $this->widget(
                 '\GtcRelation',
                 array(
                     'model' => $model,
-                    'relation' => 'fixrFret',
+                    'relation' => 'fixrPositionFret',
                     'fields' => 'itemLabel',
                     'allowEmpty' => true,
                     'style' => 'dropdownlist',
@@ -88,7 +88,7 @@
                     ),
                 )
                 );
-                            echo $form->error($model,'fixr_fret_id')
+                            echo $form->error($model,'fixr_position_fret_id')
                             ?>                            </span>
                         </div>
                     </div>
@@ -97,17 +97,17 @@
                     <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
-                            <?php echo $form->labelEx($model, 'fixr_frep_id') ?>
+                            <?php echo $form->labelEx($model, 'fixr_period_fret_id') ?>
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fixr_frep_id')) != 'tooltip.fixr_frep_id')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fixr_period_fret_id')) != 'tooltip.fixr_period_fret_id')?$t:'' ?>'>
                                 <?php
                             $this->widget(
                 '\GtcRelation',
                 array(
                     'model' => $model,
-                    'relation' => 'fixrFrep',
+                    'relation' => 'fixrPeriodFret',
                     'fields' => 'itemLabel',
                     'allowEmpty' => true,
                     'style' => 'dropdownlist',
@@ -116,7 +116,7 @@
                     ),
                 )
                 );
-                            echo $form->error($model,'fixr_frep_id')
+                            echo $form->error($model,'fixr_period_fret_id')
                             ?>                            </span>
                         </div>
                     </div>

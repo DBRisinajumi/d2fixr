@@ -162,10 +162,6 @@ public function accessRules()
         $criteria->compare($model_fret->fret_model_fixr_id_field, $fixr_id);
         $form_model = new $form_model_name;
         $form_model = $form_model->find($criteria);
-        
-        if(!$form_model){
-            $form_model = new fret_view_form;
-        }
 
         echo $this->renderPartial(
                 '/subform/'.$model_fret->fret_model, 
@@ -241,14 +237,14 @@ public function accessRules()
         if (empty($fret_id)) {
             return false;
         }
-        $model_fixr->fixr_fret_id = $fret_id;
+        $model_fixr->fixr_position_fret_id = $fret_id;
         if(!$model_fixr->save()){
              print_r($model_fixr->getErrors());exit;
         }
         
         //get model form details
-        $form_model_ref_field = $model_fixr->fixrFret->getRefIdFIeldName();
-        $form_model_name = $model_fixr->fixrFret->fret_model;
+        $form_model_ref_field = $model_fixr->fixrPositionFret->getRefIdFIeldName();
+        $form_model_name = $model_fixr->fixrPositionFret->fret_model;
         
         //vreate from model
         $model = new $form_model_name;
@@ -303,14 +299,14 @@ public function accessRules()
         if(empty($frep_id)){
             return false;
         }        
-        $model_fixr->fixr_frep_id = $frep_id;
+        $model_fixr->fixr_period_fret_id = $frep_id;
         if(!$model_fixr->save()){
              print_r($model_fixr->getErrors());exit;
         }
         
         //get model form details
-        $form_model_ref_field = $model_fixr->fixrFrep->getRefIdFIeldName();
-        $form_model_name = $model_fixr->fixrFrep->frep_model;
+        $form_model_ref_field = $model_fixr->fixrPeriodFret->getRefIdFIeldName();
+        $form_model_name = $model_fixr->fixrPeriodFret->frep_model;
         
         //vreate from model
         $model = new $form_model_name;
@@ -357,8 +353,22 @@ public function accessRules()
     public function actionViewFinv($finv_id, $ajax = false)
     {
         
-        $model = FinvInvoice::model()->findByPk($finv_id);
+
+        if($ajax){
+            $a = explode('-',$ajax);
+            $model = new FixrFiitXRef();
+            $model->fixr_fiit_id = end($a);
+            $this->renderPartial('_fixr_grid', 
+                    array(
+                        'model' => $model,
+                        'sub_grid_id' => $ajax,
+                        )
+                    );
+            return;
+        }
+        $model = FinvInvoice::model()->findByPk($finv_id);        
         $this->render('viewFinv', array('model' => $model,));
+        
 
     }
 
@@ -436,9 +446,6 @@ public function accessRules()
         //create fixr record
         $model = new FixrFiitXRef;
         $model->addRecord($value);
-        
-        //reload full page
-        $this->redirect(array('viewFinv','finv_id'=>$model->fixrFiit->fiit_finv_id));
 
     }
     
@@ -446,7 +453,8 @@ public function accessRules()
     {
         if (Yii::app()->request->isPostRequest) {
             try {
-                $this->loadModel($fixr_id)->delete();
+                $model_fixr = $this->loadModel($fixr_id);
+                $model_fixr->delete();
             } catch (Exception $e) {
                 throw new CHttpException(500, $e->getMessage());
             }

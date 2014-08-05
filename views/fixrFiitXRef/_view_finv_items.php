@@ -19,51 +19,7 @@
             td.rel_grid-sub{padding-top: 0px; border-top-width: 0px;}
             ');
         }
-//        $this->widget('EFancyboxWidget',array(
-//            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']',
-//            'options'=>array(
-//                //'height'         => 720,
-//                //'width'         => 500,
-//                'autoDimensions' => false,
-//                'autoScale' => true,
-//                'live' => false,
-//                'onClosed' => 'js:function(){            
-//                    var ajax_url = $(this).attr("href") + "&get_label=1";
-//                    var elThis = this;
-//                    $.ajax({
-//                                    type: "GET",
-//                                    url: ajax_url,
-//                                    success: function(data) {
-//                                        $(elThis).attr("orig").html(data);
-//                                    }   
-//                    });                      
-//
-//                }'
-//            ),
-//        ));    
-        
-//        $this->widget('EFancyboxWidget',array(
-//            'selector'=>'a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']',
-//            'options'=>array(
-//                //'height'         => 720,
-//                //'width'         => 500,
-//                'autoDimensions' => false,
-//                'autoScale' => true,
-//                'live' => false,
-//                'onClosed' => 'js:function(){            
-//                    var ajax_url = $(this).attr("href") + "&get_label=1";
-//                    var elThis = this;
-//                    $.ajax({
-//                                    type: "GET",
-//                                    url: ajax_url,
-//                                    success: function(data) {
-//                                        $(elThis).attr("orig").html(data);
-//                                    }   
-//                    });                      
-//
-//                }'
-//            ),
-//        ));        
+     
         foreach ($modelMain->fiitInvoiceItems as $fiit) {
             ?>
             <tr>
@@ -85,8 +41,7 @@
                          */
                         $this->widget(
                                 'bootstrap.widgets.TbButton', array(
-                                    //ajax: 'buttonType' => 'ajaxButton',
-                                    'buttonType' => 'link',
+                                    'buttonType' => 'ajaxButton',
                                     'type' => 'primary', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
                                     'size' => 'mini',
                                     'icon' => 'icon-plus',
@@ -94,11 +49,11 @@
                                         '//d2fixr/fixrFiitXRef/ajaxCreate',
                                         'field' => 'fixr_fiit_id',
                                         'value' => $fiit->primaryKey,
-                                        //ajax: 'ajax' => $sub_grid_id,
+                                        'ajax' => $sub_grid_id,
                                     ),
-                                    //ajax: 'ajaxOptions' => array(
-                                    //ajax:     'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
-                                    //ajax: ),
+                                    'ajaxOptions' => array(
+                                        'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
+                                    ),
                                     'htmlOptions' => array(
                                         'title' => Yii::t('D2fixrModule.crud_static', 'Add new record'),
                                         'data-toggle' => 'tooltip',
@@ -116,50 +71,12 @@
 
                     $model = new FixrFiitXRef();
                     $model->fixr_fiit_id = $fiit->primaryKey;
+                    
+                    $this->renderPartial('_fixr_grid',array(
+                        'model' => $model,
+                        'sub_grid_id' => $sub_grid_id,
+                        ));
 
-                    $this->widget('TbGridView', array(
-                        'id' => $sub_grid_id,
-                        'dataProvider' => $model->search(),
-                        'template' => '{summary}{items}',
-                        'summaryText' => '&nbsp;',
-                        'htmlOptions' => array(
-                            'class' => 'rel-grid-view-sub'
-                        ),
-                        'columns' => array(
-                            array(
-                                //decimal(10,2)
-                                'class' => 'editable.EditableColumn',
-                                'name' => 'fixr_amt',
-                                'editable' => array(
-                                    'url' => $this->createUrl('/d2fixr/fixrFiitXRef/editableSaver'),
-                                    //'placement' => 'right',
-                                )
-                            ),                            
-                            array(
-                                'header' => Yii::t('D2fixrModule.model','Position'),
-                                'type' => 'raw',
-                                'value' => 'CHtml::link($data->getFretLabel(),
-                                                array(\'/d2fixr/fixrFiitXRef/popupPosition\',\'fixr_id\' =>$data->fixr_id)
-                                            );'
-                            ),
-                            array(
-                                'header' => Yii::t('D2fixrModule.model','Period'),
-                                'type' => 'raw',
-                                'value' => 'CHtml::link($data->getFrepLabel(),
-                                                array(\'/d2fixr/fixrFiitXRef/popupPeriod\',\'fixr_id\' =>$data->fixr_id)
-                                            );'
-                            ),
-                            array(
-                                'class' => 'TbButtonColumn',
-                                'buttons' => array(
-                                    'view' => array('visible' => 'FALSE'),
-                                    'update' => array('visible' => 'FALSE'),
-                                    'delete' => array('visible' => 'Yii::app()->user->checkAccess("D2finv.FretRefType.DeletefixrFiitXRefs")'),
-                                ),
-                                'deleteButtonUrl' => 'Yii::app()->controller->createUrl("/d2fixr/fixrFiitXRef/delete", array("fixr_id" => $data->fixr_id))',
-                                'deleteButtonOptions' => array('data-toggle' => 'tooltip'),
-                            ),
-                        ),))
                     ?>
 
 

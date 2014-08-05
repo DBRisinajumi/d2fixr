@@ -29,12 +29,12 @@ class FixrFiitXRef extends BaseFixrFiitXRef
             return Yii::t('D2fixrModule.model', 'Empty');
         }
 
-        if(empty($this->fixr_fret_id)){
+        if(empty($this->fixr_position_fret_id)){
             return Yii::t('D2fixrModule.model', 'Empty');
         }
-        $fret_lable = $this->fixrFret->fret_label;
-        $fret_model = $this->fixrFret->fret_model;
-        $fret_ref_id_field = $this->fixrFret->fret_model_fixr_id_field;
+        $fret_lable = $this->fixrPositionFret->fret_label;
+        $fret_model = $this->fixrPositionFret->fret_model;
+        $fret_ref_id_field = $this->fixrPositionFret->fret_model_fixr_id_field;
         
         $criteria = new CDbCriteria();
         $criteria->compare($fret_ref_id_field, $this->fixr_id);
@@ -53,12 +53,12 @@ class FixrFiitXRef extends BaseFixrFiitXRef
             return Yii::t('D2fixrModule.model', 'Empty');
         }
 
-        if(empty($this->fixr_frep_id)){
+        if(empty($this->fixr_period_fret_id)){
             return Yii::t('D2fixrModule.model', 'Empty');
         }
-        $frep_lable = $this->fixrFrep->fret_label;
-        $frep_model = $this->fixrFrep->fret_model;
-        $frep_ref_id_field = $this->fixrFrep->fret_model_fixr_id_field;
+        $frep_lable = $this->fixrPeriodFret->fret_label;
+        $frep_model = $this->fixrPeriodFret->fret_model;
+        $frep_ref_id_field = $this->fixrPeriodFret->fret_model_fixr_id_field;
         
         $criteria = new CDbCriteria();
         $criteria->compare($frep_ref_id_field, $this->fixr_id);
@@ -158,5 +158,18 @@ class FixrFiitXRef extends BaseFixrFiitXRef
                     fiit_finv_id = " . $finv_id;
         return Yii::app()->db->createCommand($sql)->queryScalar();        
         
+    }
+    
+    public function delete(){
+        $model_fret = FretRefType::model()->findAll();
+        foreach($model_fret as $fret){
+            $criteria = new CDbCriteria();
+            $criteria->compare($fret->fret_model_fixr_id_field,$this->fixr_id);
+            $ref_model = new $fret->fret_model;
+            foreach($ref_model->findAll($criteria) as $ref){
+                $ref->delete();
+            }
+        }
+        parent::delete();
     }
 }

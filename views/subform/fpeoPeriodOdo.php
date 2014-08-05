@@ -1,20 +1,7 @@
 <div class="crud-form">
-    <?php  ?>    
-    <?php
-        Yii::app()->bootstrap->registerPackage('select2');
-        Yii::app()->clientScript->registerScript('crud/variant/update','$("#fpeo-period-odo-form select").select2();');
+    <?php  
 
-
-        $form=$this->beginWidget('TbActiveForm', array(
-            'id' => 'expense_data_form',
-            'enableAjaxValidation' => false,
-            'enableClientValidation' => true,
-            'htmlOptions' => array(
-                'enctype' => ''
-            )
-        ));
-
-    echo CHtml::hiddenField('frep_id', $frep_id);     
+    echo CHtml::hiddenField('fret_id', $fret_id);     
     echo CHtml::hiddenField('fixr_id', $fixr_id);     
     
    
@@ -23,11 +10,8 @@
     }   
     echo $form->hiddenField($model,'fpeo_fixr_id');        
         
-        echo $form->errorSummary($model);
+    echo $form->errorSummary($model);
     ?>
-    
-
-                                    
                     <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
@@ -58,9 +42,6 @@
                             ?>                            </span>
                         </div>
                     </div>
-                    <?php  ?>
-                                    
-                    <?php  ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'fpeo_end_abs_odo') ?>
@@ -87,8 +68,4 @@
                             ?>                            </span>
                         </div>
                     </div>
-                    <?php  ?>
-                
             </div>
-
-    <?php $this->endWidget();

@@ -55,7 +55,7 @@ abstract class BaseFrepRefPeriod extends CActiveRecord
     {
         return array_merge(
             parent::relations(), array(
-                'fixrFiitXRefs' => array(self::HAS_MANY, 'FixrFiitXRef', 'fixr_frep_id'),
+                'fixrFiitXRefs' => array(self::HAS_MANY, 'FixrFiitXRef', 'fixr_period_fret_id'),
             )
         );
     }

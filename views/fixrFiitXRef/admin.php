@@ -75,7 +75,7 @@ $this->widget('TbGridView',
             ),
             array(
                 'class' => 'editable.EditableColumn',
-                'name' => 'fixr_fret_id',
+                'name' => 'fixr_position_fret_id',
                 'editable' => array(
                     'type' => 'select',
                     'url' => $this->createUrl('/d2fixr/fixrFiitXRef/editableSaver'),
@@ -85,7 +85,7 @@ $this->widget('TbGridView',
             ),
             array(
                 'class' => 'editable.EditableColumn',
-                'name' => 'fixr_frep_id',
+                'name' => 'fixr_period_fret_id',
                 'editable' => array(
                     'type' => 'select',
                     'url' => $this->createUrl('/d2fixr/fixrFiitXRef/editableSaver'),

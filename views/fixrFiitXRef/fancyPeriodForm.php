@@ -34,7 +34,7 @@
                         $frep_id_list_box_id = 'frep_id_' . $model_fixr->fixr_id . '_' . date('Hms');
                         echo CHtml::dropDownList(
                                 'frep_id', 
-                                $model_fixr->fixr_frep_id, 
+                                $model_fixr->fixr_period_fret_id, 
                                 CHtml::listData(FrepRefPeriod::model()->findAll(array('order' => 'frep_label')), 'frep_id', 'frep_label'), 
                                 array(
                                     'id' => $frep_id_list_box_id, //izveidots dinamisks id
@@ -55,7 +55,7 @@
 
 
             <div class="form-horizontal" id="ajax_form">
-                <?php $this->actionShowPeriodSubForm($model_fixr->fixr_frep_id,$model_fixr->fixr_id); ?>
+                <?php $this->actionShowPeriodSubForm($model_fixr->fixr_period_fret_id,$model_fixr->fixr_id); ?>
             </div>
 
             <div class="form-actions center">
