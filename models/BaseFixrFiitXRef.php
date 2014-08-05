@@ -73,7 +73,7 @@ abstract class BaseFixrFiitXRef extends CActiveRecord
                 'fixrBaseFcrn' => array(self::BELONGS_TO, 'FcrnCurrency', 'fixr_base_fcrn_id'),
                 'fixrFiit' => array(self::BELONGS_TO, 'FiitInvoiceItem', 'fixr_fiit_id'),
                 'fixrFret' => array(self::BELONGS_TO, 'FretRefType', 'fixr_fret_id'),
-                'fixrFrep' => array(self::BELONGS_TO, 'FrepRefPeriod', 'fixr_frep_id'),
+                'fixrFrep' => array(self::BELONGS_TO, 'FretRefType', 'fixr_frep_id'),
                 'fixrFcrn' => array(self::BELONGS_TO, 'FcrnCurrency', 'fixr_fcrn_id'),
                 'fpedPeriodDates' => array(self::HAS_MANY, 'FpedPeriodDate', 'fped_fixr_id'),
                 'fpeoPeriodOdos' => array(self::HAS_MANY, 'FpeoPeriodOdo', 'fpeo_fixr_id'),

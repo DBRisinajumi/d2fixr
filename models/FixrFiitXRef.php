@@ -34,7 +34,7 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         }
         $fret_lable = $this->fixrFret->fret_label;
         $fret_model = $this->fixrFret->fret_model;
-        $fret_ref_id_field = $this->fixrFret->getRefIdFIeldName();
+        $fret_ref_id_field = $this->fixrFret->fret_model_fixr_id_field;
         
         $criteria = new CDbCriteria();
         $criteria->compare($fret_ref_id_field, $this->fixr_id);
@@ -56,9 +56,9 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         if(empty($this->fixr_frep_id)){
             return Yii::t('D2fixrModule.model', 'Empty');
         }
-        $frep_lable = $this->fixrFrep->frep_label;
-        $frep_model = $this->fixrFrep->frep_model;
-        $frep_ref_id_field = $this->fixrFrep->getRefIdFIeldName();
+        $frep_lable = $this->fixrFrep->fret_label;
+        $frep_model = $this->fixrFrep->fret_model;
+        $frep_ref_id_field = $this->fixrFrep->fret_model_fixr_id_field;
         
         $criteria = new CDbCriteria();
         $criteria->compare($frep_ref_id_field, $this->fixr_id);

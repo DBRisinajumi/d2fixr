@@ -116,6 +116,12 @@ public function accessRules()
             return;
         }
         
+        $criteria = new CDbCriteria;
+        $criteria->compare('fret_finv_type',$model_fixr->fixrFiit->fiitFinv->finv_type);
+        $criteria->compare('fret_controller_action',$this->id.'/'.$this->action->id);
+        $criteria->order = 'fret_label';
+        $model_fret = FretRefType::model()->findAll($criteria);        
+        
         $cs = Yii::app()->clientScript;
         $cs->reset();        
         $cs->scriptMap = array(
@@ -124,9 +130,10 @@ public function accessRules()
         );        
         
         echo $this->renderPartial(
-                'fancyPeriodForm', 
+                'uiDialogPositionForm', 
                 array(
                     'model_fixr' => $model_fixr,
+                    'model_fret' => $model_fret,
                 ),
                 true,
                 true);
@@ -161,7 +168,7 @@ public function accessRules()
         }
 
         echo $this->renderPartial(
-                '/subform/'.$model_fret->form_model_name, 
+                '/subform/'.$model_fret->fret_model, 
                 array(
                     'model' => $form_model,
                     'fixr_id' => $fixr_id,

@@ -192,30 +192,14 @@ $this->beginWidget('vendor.uldisn.ace.widgets.CJuiAceDialog',array(
         'height'=>'auto',        
         'modal' => true,
         'autoOpen'=>false,
-//        'close' => 'function( event, ui ) {
-//                         
-//                    alert("OnClose");
-//                    //var ajax_url = $(this).attr("href") + "&get_label=1";
-//                    var ajax_url = "index.php?r=d2fixr/fixrFiitXRef/popupPosition&fixr_id=1&lang=en&get_label=1";
-//                    var elThis = this;
-//                    $.ajax({
-//                                    type: "GET",
-//                                    url: ajax_url,
-//                                    success: function(data) {
-//                                        //$(elThis).attr("orig").html(data);
-//                                        $("#ccccc").attr("orig").html(data);
-//                                    }   
-//                    });                      
-//                }
-//                            
-//          ',
     ),
 ));
 
 $this->endWidget('vendor.uldisn.ace.widgets.CJuiAceDialog');
+
 Yii::app()->clientScript->registerScript('ui_postion_click', 
    '
-       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function() {
+       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\'],a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']",function() {
           var ui_dialog_ajax_url = $(this).attr("href");
           $("#mydialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
           return false;
