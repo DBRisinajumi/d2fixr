@@ -51,5 +51,32 @@ class FpeoPeriodOdo extends BaseFpeoPeriodOdo
             'criteria' => $this->searchCriteria($criteria),
         ));
     }
+    
+    public function save($runValidation = true, $attributes = NULL) 
+    {
+
+                if (
+                        !empty($this->fpeo_start_abs_odo)
+                     && !empty($this->fpeo_end_abs_odo)
+                     && empty($this->fpeo_distance)
+                        )
+                {
+                    $this->fpeo_distance = $this->fpeo_end_abs_odo - $this->fpeo_start_abs_odo;
+                    $attributes[] = 'fpeo_distance';
+                } elseif (
+                        !empty($this->fpeo_start_abs_odo)
+                     && !empty($this->fpeo_distance)
+                     && empty($this->fpeo_end_abs_odo)
+                        )
+                {
+                    $this->fpeo_end_abs_odo = $this->fpeo_start_abs_odo - $this->fpeo_start_abs_odo;
+                    $attributes[] = 'fpeo_end_abs_odo';
+                }        
+         
+
+        
+        return parent::save($runValidation, $attributes);
+    
+    }            
 
 }

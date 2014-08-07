@@ -1,17 +1,3 @@
-<?php
-  $ajax_url = $this->createUrl('FixrFiitXRef/ShowPositionSubForm', array('fixr_id' => $model_fixr->fixr_id));
-if($this->action->id == 'popupPosition'){
-    $dialog_id = 'PositionDialog';
-    $type_name = 'Set expenses positon';
-    $type_value = $model_fixr->fixr_position_fret_id;
-    $fret_id = $model_fixr->fixr_position_fret_id;
-} else {
-    $dialog_id = 'PeriodDialog';
-    $type_name = 'Set expenses period'; 
-    $type_value = $model_fixr->fixr_period_fret_id;    
-    $fret_id = $model_fixr->fixr_period_fret_id;
-}
-?>
 <div class="widget-box no-padding">
 
     <div class="widget-main no-padding">
@@ -32,10 +18,12 @@ if($this->action->id == 'popupPosition'){
             <div class="control-group"></div>
             <div class="control-group">
                 <div class='control-label'>
-                    <?php echo $form->labelEx($model_fixr, $type_name) ?>
+                    <?php echo $form->labelEx($model_fixr, 'Set expenses period') ?>
                 </div>
                 <div class='controls'>
                     <?php
+                    $fret_id = $model_fixr->fixr_period_fret_id;
+                    $ajax_url = $this->createUrl('FixrFiitXRef/ShowPositionSubForm', array('fixr_id' => $model_fixr->fixr_id));                    
                     $fret_id_list_box_id = 'fret_id_' . $model_fixr->fixr_id . '_' . date('Hms');
                     echo CHtml::dropDownList(
                             'fret_id', 
@@ -60,11 +48,7 @@ if($this->action->id == 'popupPosition'){
 
         <div class="form-horizontal" id="ajax_form">
             <?php 
-            //if($this->action->id == 'popupPosition'){
-                $this->actionShowPositionSubForm($fret_id, $model_fixr->fixr_id); 
-//            } else {
-//                $this->actionShowPeriodSubForm($fret_id, $model_fixr->fixr_id);                 
-//            }
+                $this->actionShowPeriodSubForm($fret_id, $model_fixr->fixr_id); 
             ?>
         </div>
 

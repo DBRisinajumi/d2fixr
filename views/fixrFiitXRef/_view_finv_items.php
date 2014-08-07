@@ -35,10 +35,7 @@
                         <?php
                         
                         $sub_grid_id = 'fixr-grid-' . $fiit->primaryKey;
-                        
-                        /**
-                         * @todo jāpārslēdz uz ajaxu atpakaļ, kad atrisinās fancy box linka iedarbināšanu jaunajam itemama
-                         */
+
                         $this->widget(
                                 'bootstrap.widgets.TbButton', array(
                                     'buttonType' => 'ajaxButton',
@@ -90,18 +87,33 @@
 
 <?
 
-Yii::app()->clientScript->registerScript('mydialogOnClose', 
-   '
-       $("#mydialog").live("pagehide",function(event) {
-          console.log("pagehide");
-       })   
-    '    
-      
-);
+//Yii::app()->clientScript->registerScript('PositionDialogOnClose', 
+//   '
+//       $("#PositionDialog").live("pagehide",function(event) {
+//          console.log("pagehide");
+//       })   
+//    '    
+//      
+//);
 $ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePositionSubForm');        
 $this->beginWidget('vendor.uldisn.ace.widgets.CJuiAceDialog',array(
-    'id'=>'mydialog',
+    'id'=>'PositionDialog',
     'title' => Yii::t('D2fixrModule.model', 'Set expenses position'),
+    //'title_icon' => 'icon-warning-sign red',
+    'options'=>array(
+        'resizable' => true,
+        'width'=>'auto',
+        'height'=>'auto',        
+        'modal' => true,
+        'autoOpen'=>false,
+    ),
+));
+
+$this->endWidget('vendor.uldisn.ace.widgets.CJuiAceDialog');
+
+$this->beginWidget('vendor.uldisn.ace.widgets.CJuiAceDialog',array(
+    'id'=>'PeriodDialog',
+    'title' => Yii::t('D2fixrModule.model', 'Set expenses period'),
     //'title_icon' => 'icon-warning-sign red',
     'options'=>array(
         'resizable' => true,
@@ -116,9 +128,14 @@ $this->endWidget('vendor.uldisn.ace.widgets.CJuiAceDialog');
 
 Yii::app()->clientScript->registerScript('ui_postion_click', 
    '
-       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\'],a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']",function() {
+       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function() {
           var ui_dialog_ajax_url = $(this).attr("href");
-          $("#mydialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
+          $("#PositionDialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
+          return false;
+       })   
+       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']",function() {
+          var ui_dialog_ajax_url = $(this).attr("href");
+          $("#PeriodDialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
           return false;
        })   
     '    

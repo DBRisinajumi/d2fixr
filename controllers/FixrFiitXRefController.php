@@ -109,10 +109,13 @@ public function accessRules()
     public function actionPopupPeriod($fixr_id,$get_label = false)
     {
 
-        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+         $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
         
+        //for ajax get caller label
         if($get_label){
-            echo $model_fixr->getFrepLabel();
+            if($model_fixr){
+                echo $model_fixr->getFrepLabel();
+            }
             return;
         }
         
@@ -120,7 +123,7 @@ public function accessRules()
         $criteria->compare('fret_finv_type',$model_fixr->fixrFiit->fiitFinv->finv_type);
         $criteria->compare('fret_controller_action',$this->id.'/'.$this->action->id);
         $criteria->order = 'fret_label';
-        $model_fret = FretRefType::model()->findAll($criteria);        
+        $model_fret = FretRefType::model()->findAll($criteria);
         
         $cs = Yii::app()->clientScript;
         $cs->reset();        
@@ -130,13 +133,14 @@ public function accessRules()
         );        
         
         echo $this->renderPartial(
-                'uiDialogPositionForm', 
+                'uiDialogPperiodForm', 
                 array(
                     'model_fixr' => $model_fixr,
                     'model_fret' => $model_fret,
                 ),
                 true,
                 true);
+
     }    
 
     
@@ -162,7 +166,17 @@ public function accessRules()
         $criteria->compare($model_fret->fret_model_fixr_id_field, $fixr_id);
         $form_model = new $form_model_name;
         $form_model = $form_model->find($criteria);
+        if(!$form_model){
+            $form_model = new $form_model_name;
+        }
 
+        $cs = Yii::app()->clientScript;
+        $cs->reset();        
+        $cs->scriptMap = array(
+            'jquery.js' => false, // prevent produce jquery.js in additional javascript data
+            'jquery.min.js' => false,
+        );     
+        
         echo $this->renderPartial(
                 '/subform/'.$model_fret->fret_model, 
                 array(
@@ -178,7 +192,7 @@ public function accessRules()
      * @param type $fret_id
      * @param type $fixr_id
      */
-    public function actionShowPeriodSubForm($frep_id,$fixr_id){
+    public function actionShowPeriodSubForm($fre_id,$fixr_id){
 
         if(empty($frep_id)){
             return;
@@ -237,14 +251,26 @@ public function accessRules()
         if (empty($fret_id)) {
             return false;
         }
-        $model_fixr->fixr_position_fret_id = $fret_id;
+        
+        $fret = FretRefType::model()->findByPk($fret_id);
+        
+        if($fret->fret_controller_action == 'FixrFiitXRef/popupPosition'){
+            $model_fixr->fixr_position_fret_id = $fret_id;
+        }  else {
+            $model_fixr->fixr_period_fret_id = $fret_id;            
+        }
         if(!$model_fixr->save()){
              print_r($model_fixr->getErrors());exit;
         }
         
         //get model form details
-        $form_model_ref_field = $model_fixr->fixrPositionFret->getRefIdFIeldName();
-        $form_model_name = $model_fixr->fixrPositionFret->fret_model;
+        if($fret->fret_controller_action == 'FixrFiitXRef/popupPosition'){
+            $form_model_ref_field = $model_fixr->fixrPositionFret->getRefIdFIeldName();
+            $form_model_name = $model_fixr->fixrPositionFret->fret_model;
+        } else {
+            $form_model_ref_field = $model_fixr->fixrPeriodFret->getRefIdFIeldName();
+            $form_model_name = $model_fixr->fixrPeriodFret->fret_model;            
+        }
         
         //vreate from model
         $model = new $form_model_name;
