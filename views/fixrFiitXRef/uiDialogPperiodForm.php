@@ -18,7 +18,7 @@
             <div class="control-group"></div>
             <div class="control-group">
                 <div class='control-label'>
-                    <?php echo $form->labelEx($model_fixr, 'Set expenses period') ?>
+                    <?php echo $form->labelEx($model_fixr, 'fixr_period_fret_id') ?>
                 </div>
                 <div class='controls'>
                     <?php
@@ -38,7 +38,7 @@
                                 ),
                             )
                     );
-                    $cs = Yii::app()->clientScript->registerScript(
+                    Yii::app()->clientScript->registerScript(
                       'update-ui-period-ajax-form',
                       '
                           $(document).ready(function() {
@@ -110,7 +110,6 @@
                     });                                 
                     ',
                 ),
-                    //"visible"=> (Yii::app()->user->checkAccess("D2finv.FinvInvoice.*") || Yii::app()->user->checkAccess("D2finv.FinvInvoice.View"))
             ));
             ?>
 

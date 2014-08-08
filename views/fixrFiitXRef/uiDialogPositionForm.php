@@ -1,17 +1,3 @@
-<?php
-  $ajax_url = $this->createUrl('FixrFiitXRef/ShowPositionSubForm', array('fixr_id' => $model_fixr->fixr_id));
-if($this->action->id == 'popupPosition'){
-    $dialog_id = 'PositionDialog';
-    $type_name = 'Set expenses positon';
-    $type_value = $model_fixr->fixr_position_fret_id;
-    $fret_id = $model_fixr->fixr_position_fret_id;
-} else {
-    $dialog_id = 'PeriodDialog';
-    $type_name = 'Set expenses period'; 
-    $type_value = $model_fixr->fixr_period_fret_id;    
-    $fret_id = $model_fixr->fixr_period_fret_id;
-}
-?>
 <div class="widget-box no-padding" id="ui_position_box">
 
     <div class="widget-main no-padding">
@@ -32,10 +18,13 @@ if($this->action->id == 'popupPosition'){
             <div class="control-group"></div>
             <div class="control-group">
                 <div class='control-label'>
-                    <?php echo $form->labelEx($model_fixr, $type_name) ?>
+                    <?php echo $form->labelEx($model_fixr, 'fixr_position_fret_id') ?>
                 </div>
                 <div class='controls'>
                     <?php
+                    
+                    $fret_id = $model_fixr->fixr_position_fret_id;                    
+                    $ajax_url = $this->createUrl('FixrFiitXRef/ShowPositionSubForm', array('fixr_id' => $model_fixr->fixr_id));                    
                     $fret_id_list_box_id = 'fret_id_' . $model_fixr->fixr_id . '_' . date('Hms');
                     echo CHtml::dropDownList(
                             'fret_id', 
@@ -46,10 +35,25 @@ if($this->action->id == 'popupPosition'){
                                 'ajax' => array(
                                     'type' => 'GET',
                                     'url' => $ajax_url,
-                                    'update' => '#ajax_form',
+                                    'update' => '#ui_position_ajax_form',
                                 ),
                             )
                     );
+                    Yii::app()->clientScript->registerScript(
+                      'update-ui-postion-ajax-form',
+                      '
+                          $(document).ready(function() {
+                            $.ajax({
+                                url: "'.$ajax_url.'",
+                                type: "GET",
+                                data: {fret_id:"'.$fret_id.'"},
+                                success: function(result){
+                                    $("#ui_position_ajax_form").html(result);
+                                  }});
+                            });
+                        '
+                    );                    
+                    
                     ?>                            
                 </div>
             </div>
@@ -57,15 +61,7 @@ if($this->action->id == 'popupPosition'){
 
         </div>
 
-
-        <div class="form-horizontal" id="ajax_form">
-            <?php 
-            //if($this->action->id == 'popupPosition'){
-                $this->actionShowPositionSubForm($fret_id, $model_fixr->fixr_id); 
-//            } else {
-//                $this->actionShowPeriodSubForm($fret_id, $model_fixr->fixr_id);                 
-//            }
-            ?>
+        <div class="form-horizontal" id="ui_position_ajax_form">
         </div>
 
         <div class="form-actions center no-margin">
@@ -88,7 +84,7 @@ if($this->action->id == 'popupPosition'){
                             data: $("#expense_data_form").serialize(), // read and prepare all form fields
                             success: function(data) {
 
-                                    $("#ajax_form").html("");
+                                    $("#ui_position_ajax_form").html("");
                                     
                                     //get dialog id
                                     var dialog_id= $("div.ui-dialog-content:visible").attr("id");
@@ -116,7 +112,6 @@ if($this->action->id == 'popupPosition'){
                     });                                 
                     ',
                 ),
-                    //"visible"=> (Yii::app()->user->checkAccess("D2finv.FinvInvoice.*") || Yii::app()->user->checkAccess("D2finv.FinvInvoice.View"))
             ));
             ?>
 

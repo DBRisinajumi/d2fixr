@@ -74,7 +74,9 @@ public function accessRules()
         
         //for ajax get caller label
         if($get_label){
-            echo $model_fixr->getFretLabel();
+            if($model_fixr){
+                echo $model_fixr->getFretLabel();
+            }
             return;
         }
         
