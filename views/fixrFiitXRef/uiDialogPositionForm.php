@@ -12,7 +12,7 @@ if($this->action->id == 'popupPosition'){
     $fret_id = $model_fixr->fixr_period_fret_id;
 }
 ?>
-<div class="widget-box no-padding">
+<div class="widget-box no-padding" id="ui_position_box">
 
     <div class="widget-main no-padding">
 

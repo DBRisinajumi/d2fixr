@@ -76,4 +76,16 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     </div>
 </div>
 
-<?php echo $cancel_buton; ?>
+<?php 
+$cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
+    "icon"=>"chevron-left",
+    "size"=>"large",
+    "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/FinvInvoice"),
+    "visible"=>(Yii::app()->user->checkAccess("D2finv.FinvInvoice.*") || Yii::app()->user->checkAccess("D2finv.FinvInvoice.View")),
+    "htmlOptions"=>array(
+                    "class"=>"search-button",
+                    "data-toggle"=>"tooltip",
+                    "title"=>Yii::t("D2fixrModule.crud_static","Back"),
+                )
+ ),true);
+echo $cancel_buton;

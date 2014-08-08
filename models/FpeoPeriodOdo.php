@@ -62,7 +62,7 @@ class FpeoPeriodOdo extends BaseFpeoPeriodOdo
                         )
                 {
                     $this->fpeo_distance = $this->fpeo_end_abs_odo - $this->fpeo_start_abs_odo;
-                    $attributes[] = 'fpeo_distance';
+                    
                 } elseif (
                         !empty($this->fpeo_start_abs_odo)
                      && !empty($this->fpeo_distance)
@@ -70,7 +70,7 @@ class FpeoPeriodOdo extends BaseFpeoPeriodOdo
                         )
                 {
                     $this->fpeo_end_abs_odo = $this->fpeo_start_abs_odo - $this->fpeo_start_abs_odo;
-                    $attributes[] = 'fpeo_end_abs_odo';
+                    
                 }        
          
 

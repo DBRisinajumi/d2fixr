@@ -1,4 +1,4 @@
-<div class="widget-box no-padding">
+<div class="widget-box no-padding" id="ui_period_box">
 
     <div class="widget-main no-padding">
 
@@ -34,10 +34,24 @@
                                 'ajax' => array(
                                     'type' => 'GET',
                                     'url' => $ajax_url,
-                                    'update' => '#ajax_form',
+                                    'update' => '#ui_period_ajax_form',
                                 ),
                             )
                     );
+                    $cs = Yii::app()->clientScript->registerScript(
+                      'update-ui-period-ajax-form',
+                      '
+                          $(document).ready(function() {
+                            $.ajax({
+                                url: "'.$ajax_url.'",
+                                type: "GET",
+                                data: {fret_id:"'.$fret_id.'"},
+                                success: function(result){
+                                    $("#ui_period_ajax_form").html(result);
+                                  }});
+                            });
+                        '
+                    );                    
                     ?>                            
                 </div>
             </div>
@@ -45,11 +59,7 @@
 
         </div>
 
-
-        <div class="form-horizontal" id="ajax_form">
-            <?php 
-                $this->actionShowPeriodSubForm($fret_id, $model_fixr->fixr_id); 
-            ?>
+        <div class="form-horizontal" id="ui_period_ajax_form">
         </div>
 
         <div class="form-actions center no-margin">
@@ -61,7 +71,7 @@
             $this->widget("bootstrap.widgets.TbButton", array(
                 "label" => Yii::t("D2finvModule.crud_static", "Save"),
                 "icon" => "icon-thumbs-up icon-white",
-                "id" => "ajax_form_submit_buttn",
+                "id" => "ui_period_ajax_form_submit_buttn",
                 "size" => "btn-small",
                 "type" => "primary",
                 "htmlOptions" => array(
@@ -72,7 +82,7 @@
                             data: $("#expense_data_form").serialize(), // read and prepare all form fields
                             success: function(data) {
 
-                                    $("#ajax_form").html("");
+                                    $("#ui_period_ajax_form").html("");
                                     
                                     //get dialog id
                                     var dialog_id= $("div.ui-dialog-content:visible").attr("id");

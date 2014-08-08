@@ -132,14 +132,15 @@ public function accessRules()
             'jquery.min.js' => false,
         );        
         
-        echo $this->renderPartial(
+        $this->renderPartial(
                 'uiDialogPperiodForm', 
                 array(
                     'model_fixr' => $model_fixr,
                     'model_fret' => $model_fret,
                 ),
-                true,
-                true);
+                false,
+                true
+                );
 
     }    
 
@@ -192,14 +193,14 @@ public function accessRules()
      * @param type $fret_id
      * @param type $fixr_id
      */
-    public function actionShowPeriodSubForm($fre_id,$fixr_id){
+    public function actionShowPeriodSubForm($fret_id,$fixr_id){
 
-        if(empty($frep_id)){
+        if(empty($fret_id)){
             return;
         }
         
         //get model form detqails
-        $model_frep = FrepRefPeriod::model()->findByPk($frep_id);
+        $model_frep = FrepRefPeriod::model()->findByPk($fret_id);
         $form_model_ref_field = $model_frep->getRefIdFIeldName();
         $form_model_name = $model_frep->frep_model;
         
@@ -220,7 +221,7 @@ public function accessRules()
                 array(
                     'model' => $form_model,
                     'fixr_id' => $fixr_id,
-                    'frep_id' => $frep_id,
+                    'fret_id' => $fret_id,
                 ),
                 true,
                 true);        
