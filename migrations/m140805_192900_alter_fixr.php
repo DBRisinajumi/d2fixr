@@ -14,8 +14,8 @@ class m140805_192900_alter_fixr extends CDbMigration
             ALTER TABLE `fixr_fiit_x_ref`   
                 CHANGE `fixr_position_fret_id` `fixr_position_fret_id` TINYINT(3) UNSIGNED NULL,
                 CHANGE `fixr_period_fret_id` `fixr_period_fret_id` TINYINT(3) UNSIGNED NULL;
-            ALTER TABLE `fixr_fiit_x_ref` ADD FOREIGN KEY (`fixr_position_fret_id`) REFERENCES `eu`.`fret_ref_type`(`fret_id`); 
-            ALTER TABLE `fixr_fiit_x_ref` ADD FOREIGN KEY (`fixr_period_fret_id`) REFERENCES `eu`.`fret_ref_type`(`fret_id`); 
+            ALTER TABLE `fixr_fiit_x_ref` ADD FOREIGN KEY (`fixr_position_fret_id`) REFERENCES `fret_ref_type`(`fret_id`); 
+            ALTER TABLE `fixr_fiit_x_ref` ADD FOREIGN KEY (`fixr_period_fret_id`) REFERENCES `fret_ref_type`(`fret_id`); 
             DROP TABLE `frep_ref_period`;
             
         ");
