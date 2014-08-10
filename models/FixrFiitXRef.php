@@ -43,7 +43,7 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         if(!$model){
             return Yii::t('D2fixrModule.model', 'Empty');
         }
-        return $fret_lable . ' ' . $model->itemLabel;        
+        return $fret_lable . ' ' . $model->itemPositionLabel;        
         
     }
 
@@ -67,7 +67,7 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         if(!$model){
             return Yii::t('D2fixrModule.model', 'Empty');
         }
-        return $frep_lable . ' ' . $model->itemLabel;        
+        return $frep_lable . ' ' . $model->itemPeriodLabel;        
         
     }
 

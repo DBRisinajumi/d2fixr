@@ -20,8 +20,14 @@ class FpedPeriodDate extends BaseFpedPeriodDate
 
     public function getItemLabel()
     {
-        return $this->fped_start_date . ' ' . $this->fped_end_date;
+        return (string) $this->fped_start_date . ' ' . $this->fped_end_date;
     }
+    
+    public function getItemPeriodLabel()
+    {
+            return $this->getItemLabel();
+    }
+    
 
     public function behaviors()
     {

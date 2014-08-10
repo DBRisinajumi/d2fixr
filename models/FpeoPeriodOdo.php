@@ -20,7 +20,12 @@ class FpeoPeriodOdo extends BaseFpeoPeriodOdo
 
     public function getItemLabel()
     {
-        return $this->fpeo_distance . ' km';
+        return (string) $this->fpeo_distance . ' km';
+    }
+
+    public function getItemPeriodLabel()
+    {
+        return $this->getItemLabel();
     }
 
     public function behaviors()

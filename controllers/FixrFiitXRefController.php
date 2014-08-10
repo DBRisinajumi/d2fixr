@@ -181,7 +181,7 @@ public function accessRules()
         );     
         
         echo $this->renderPartial(
-                '/subform/'.$model_fret->fret_model, 
+                '/subform/'.$model_fret->fret_view_form, 
                 array(
                     'model' => $form_model,
                     'fixr_id' => $fixr_id,
