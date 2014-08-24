@@ -14,34 +14,34 @@
 
 
     if (!$model->getIsNewRecord()) {
-        echo $form->hiddenField($model, 'fped_id');
+        echo $form->hiddenField($model, 'fdda_id');
     }
-    echo $form->hiddenField($model, 'fped_fixr_id');
+    echo $form->hiddenField($model, 'fdda_fixr_id');
 
     echo $form->errorSummary($model);
     ?>
     <div class="control-group">
         <div class='controls'>
             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_id')) != 'tooltip.fped_id') ? $t : '' ?>'>
+                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fdda_id')) != 'tooltip.fdda_id') ? $t : '' ?>'>
                       <?php
                       ;
-                      echo $form->error($model, 'fped_id')
+                      echo $form->error($model, 'fdda_id')
                       ?>                            </span>
         </div>
     </div>
 
     <div class="control-group">
         <div class='control-label'>
-            <?php echo $form->labelEx($model, 'fped_start_date') ?>
+            <?php echo $form->labelEx($model, 'fdda_date_from') ?>
         </div>
         <div class='controls'>
             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_start_date')) != 'tooltip.fped_start_date') ? $t : '' ?>'>
+                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fdda_date_from')) != 'tooltip.fdda_date_from') ? $t : '' ?>'>
                       <?php
                       $this->widget('TbDatePicker', array(
                           'model' => $model,
-                          'attribute' => 'fped_start_date',
+                          'attribute' => 'fdda_date_from',
                           'htmlOptions' => array(
                               'size' => 10,
                               'class' => 'input-small'
@@ -55,22 +55,22 @@
                           ),
                               )
                       );
-                      echo $form->error($model, 'fped_start_date')
+                      echo $form->error($model, 'fdda_date_from')
                       ?>                            </span>
         </div>
     </div>
 
     <div class="control-group">
         <div class='control-label'>
-            <?php echo $form->labelEx($model, 'fped_end_date') ?>
+            <?php echo $form->labelEx($model, 'fdda_date_to') ?>
         </div>
         <div class='controls'>
             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_end_date')) != 'tooltip.fped_end_date') ? $t : '' ?>'>
+                  title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fdda_date_to')) != 'tooltip.fdda_date_to') ? $t : '' ?>'>
                       <?php
                       $this->widget('TbDatePicker', array(
                           'model' => $model,
-                          'attribute' => 'fped_end_date',
+                          'attribute' => 'fdda_date_to',
                           'htmlOptions' => array(
                               'size' => 10,
                               'class' => 'input-small'
@@ -84,7 +84,7 @@
                           ),
                               )
                       );
-                      echo $form->error($model, 'fped_end_date')
+                      echo $form->error($model, 'fdda_date_to')
                       ?>                            </span>
         </div>
     </div>

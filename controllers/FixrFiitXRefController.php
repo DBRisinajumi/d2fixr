@@ -124,6 +124,7 @@ public function accessRules()
         $criteria = new CDbCriteria;
         $criteria->compare('fret_finv_type',$model_fixr->fixrFiit->fiitFinv->finv_type);
         $criteria->compare('fret_controller_action',$this->id.'/'.$this->action->id);
+        $criteria->addCondition("CONCAT(',',fret_period_fret_id_list,',') LIKE '%,".$model_fixr->fixr_position_fret_id.",%'");        
         $criteria->order = 'fret_label';
         $model_fret = FretRefType::model()->findAll($criteria);
         
