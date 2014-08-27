@@ -3,11 +3,11 @@
     <thead>
         <tr>
 
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Desc') ?></th>
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Quantity') ?></th>
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Fqnt') ?></th>
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Price') ?></th>
-            <th><?= Yii::t('D2fixrModule.model', 'Fiit Amt') ?></th>
+            <th><?= Yii::t('D2finvModule.model', 'Fiit Desc') ?></th>
+            <th><?= Yii::t('D2finvModule.model', 'Fiit Quantity') ?></th>
+            <th><?= Yii::t('D2finvModule.model', 'Fiit Fqnt') ?></th>
+            <th><?= Yii::t('D2finvModule.model', 'Fiit Price') ?></th>
+            <th><?= Yii::t('D2finvModule.model', 'Fiit Amt') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -52,7 +52,7 @@
                                         'success' => 'function(html) {$.fn.yiiGridView.update(\'' . $sub_grid_id . '\');}'
                                     ),
                                     'htmlOptions' => array(
-                                        'title' => Yii::t('D2fixrModule.crud_static', 'Add new record'),
+                                        'title' => Yii::t('D2fixrModule.crud', 'Add new record'),
                                         'data-toggle' => 'tooltip',
                                     ),
                                 )

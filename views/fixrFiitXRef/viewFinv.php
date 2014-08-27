@@ -9,7 +9,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "htmlOptions"=>array(
                     "class"=>"search-button",
                     "data-toggle"=>"tooltip",
-                    "title"=>Yii::t("D2fixrModule.crud_static","Back"),
+                    "title"=>Yii::t("D2fixrModule.crud","Back"),
                 )
  ),true);
     
@@ -85,7 +85,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "htmlOptions"=>array(
                     "class"=>"search-button",
                     "data-toggle"=>"tooltip",
-                    "title"=>Yii::t("D2fixrModule.crud_static","Back"),
+                    "title"=>Yii::t("D2fixrModule.crud","Back"),
                 )
  ),true);
 echo $cancel_buton;

@@ -67,11 +67,11 @@ abstract class BaseFpedPeriodDate extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'fped_id' => Yii::t('D2finvModule.model', 'Fped'),
-            'fped_fixr_id' => Yii::t('D2finvModule.model', 'Fped Fixr'),
-            'fped_start_date' => Yii::t('D2finvModule.model', 'Fped Start Date'),
-            'fped_end_date' => Yii::t('D2finvModule.model', 'Fped End Date'),
-            'fped_month' => Yii::t('D2finvModule.model', 'Fped Month'),
+            'fped_id' => Yii::t('D2fixrModule.model', 'Fped'),
+            'fped_fixr_id' => Yii::t('D2fixrModule.model', 'Fped Fixr'),
+            'fped_start_date' => Yii::t('D2fixrModule.model', 'Fped Start Date'),
+            'fped_end_date' => Yii::t('D2fixrModule.model', 'Fped End Date'),
+            'fped_month' => Yii::t('D2fixrModule.model', 'Fped Month'),
         );
     }
 

@@ -1,11 +1,11 @@
 <?php
 $this->setPageTitle(
-    Yii::t('D2finvModule.model', 'Fped Period Dates')
+    Yii::t('D2fixrModule.model', 'Fped Period Dates')
     . ' - '
-    . Yii::t('D2finvModule.crud', 'Manage')
+    . Yii::t('D2fixrModule.crud', 'Manage')
 );
 
-//$this->breadcrumbs[] = Yii::t('D2finvModule.model', 'Fped Period Dates');
+//$this->breadcrumbs[] = Yii::t('D2fixrModule.model', 'Fped Period Dates');
 
 ?>
 
@@ -15,7 +15,7 @@ $this->setPageTitle(
         <div class="btn-group">
         <?php 
         $this->widget('bootstrap.widgets.TbButton', array(
-             'label'=>Yii::t('D2finvModule.crud','Create'),
+             'label'=>Yii::t('D2fixrModule.crud','Create'),
              'icon'=>'icon-plus',
              'size'=>'large',
              'type'=>'success',
@@ -27,7 +27,7 @@ $this->setPageTitle(
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2finvModule.model', 'Fped Period Dates');?>            </h1>
+                <?php echo Yii::t('D2fixrModule.model', 'Fped Period Dates');?>            </h1>
         </div>
     </div>
 </div>

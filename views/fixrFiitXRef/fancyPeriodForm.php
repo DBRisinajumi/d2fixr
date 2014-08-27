@@ -78,7 +78,7 @@
 //                     ');               
            $ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePeriodSubForm');
                 $this->widget("bootstrap.widgets.TbButton", array(
-                    "label" => Yii::t("D2finvModule.crud_static", "Save"),
+                    "label" => Yii::t("D2fixrModule.crud", "Save"),
                     "icon" => "icon-thumbs-up icon-white",
                     "size" => "large",
                     "type" => "primary",

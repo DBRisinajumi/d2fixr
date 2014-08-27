@@ -1,14 +1,14 @@
 <?php
 $this->setPageTitle(
-    Yii::t('D2finvModule.model', 'Fped Period Date')
+    Yii::t('D2fixrModule.model', 'Fped Period Date')
     . ' - '
-    . Yii::t('D2finvModule.crud', 'Create')
+    . Yii::t('D2fixrModule.crud', 'Create')
 );
 
-//$this->breadcrumbs[Yii::t('D2finvModule.model', 'Fped Period Dates')] = array('admin');
-//$this->breadcrumbs[] = Yii::t('D2finvModule.crud', 'Create');
+//$this->breadcrumbs[Yii::t('D2fixrModule.model', 'Fped Period Dates')] = array('admin');
+//$this->breadcrumbs[] = Yii::t('D2fixrModule.crud', 'Create');
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
-    #"label"=>Yii::t("D2finvModule.crud","Cancel"),
+    #"label"=>Yii::t("D2fixrModule.crud","Cancel"),
     "icon"=>"chevron-left",
     "size"=>"large",
     "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/admin"),
@@ -16,7 +16,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "htmlOptions"=>array(
                     "class"=>"search-button",
                     "data-toggle"=>"tooltip",
-                    "title"=>Yii::t("D2finvModule.crud","Cancel"),
+                    "title"=>Yii::t("D2fixrModule.crud","Cancel"),
                 )
  ),true);
     
@@ -28,7 +28,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2finvModule.model','Create Fped Period Date');?>            </h1>
+                <?php echo Yii::t('D2fixrModule.model','Create Fped Period Date');?>            </h1>
         </div>
     </div>
 </div>
@@ -41,7 +41,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
             
                 <?php  
                     $this->widget("bootstrap.widgets.TbButton", array(
-                       "label"=>Yii::t("D2finvModule.crud","Save"),
+                       "label"=>Yii::t("D2fixrModule.crud","Save"),
                        "icon"=>"icon-thumbs-up icon-white",
                        "size"=>"large",
                        "type"=>"primary",

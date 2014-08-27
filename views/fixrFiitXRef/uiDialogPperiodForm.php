@@ -69,7 +69,7 @@
              */
             $ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePositionSubForm');
             $this->widget("bootstrap.widgets.TbButton", array(
-                "label" => Yii::t("D2finvModule.crud_static", "Save"),
+                "label" => Yii::t("D2fixrModule.crud", "Save"),
                 "icon" => "icon-thumbs-up icon-white",
                 "id" => "ui_period_ajax_form_submit_buttn",
                 "size" => "btn-small",

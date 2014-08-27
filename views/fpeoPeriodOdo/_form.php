@@ -126,20 +126,10 @@
         <!-- main inputs -->
 
             </div>
-    <div class="row">
-        
-        <div class="span12"><!-- sub inputs -->
-            <h2>
-                <?php echo Yii::t('D2fixrModule.crud','Relations')?>            </h2>
-            <div class="well">
-                                        </div>
-        </div>
-        <!-- sub inputs -->
-    </div>
 
-    <p class="alert">
+    <div class="alert">
         <?php echo Yii::t('D2fixrModule.crud','Fields with <span class="required">*</span> are required.');?>
-    </p>
+    </div>
 
     <!-- TODO: We need the buttons inside the form, when a user hits <enter> -->
     <div class="form-actions" style="visibility: hidden; height: 1px">

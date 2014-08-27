@@ -161,7 +161,7 @@
         
     </div>
 
-    <p class="alert">
+    <div class="alert">
         
         <?php 
             echo Yii::t('D2fixrModule.crud','Fields with <span class="required">*</span> are required.');
@@ -175,7 +175,7 @@
             ));
                 
         ?>
-    </p>
+    </div>
 
 
     <?php $this->endWidget() ?>    <?php  ?>

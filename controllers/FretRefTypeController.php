@@ -169,7 +169,7 @@ public function accessRules()
                 }
             }
         } else {
-            throw new CHttpException(400, Yii::t('D2finvModule.crud', 'Invalid request. Please do not repeat this request again.'));
+            throw new CHttpException(400, Yii::t('D2fixrModule.crud', 'Invalid request. Please do not repeat this request again.'));
         }
     }
 
@@ -199,7 +199,7 @@ public function accessRules()
         }
         $model = $m->findByPk($id);
         if ($model === null) {
-            throw new CHttpException(404, Yii::t('D2finvModule.crud', 'The requested page does not exist.'));
+            throw new CHttpException(404, Yii::t('D2fixrModule.crud', 'The requested page does not exist.'));
         }
         return $model;
     }

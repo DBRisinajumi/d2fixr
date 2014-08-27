@@ -66,11 +66,11 @@ abstract class BaseFpeoPeriodOdo extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'fpeo_id' => Yii::t('D2finvModule.model', 'Fpeo'),
-            'fpeo_fixr_id' => Yii::t('D2finvModule.model', 'Fpeo Fixr'),
-            'fpeo_start_abs_odo' => Yii::t('D2finvModule.model', 'Fpeo Start Abs Odo'),
-            'fpeo_end_abs_odo' => Yii::t('D2finvModule.model', 'Fpeo End Abs Odo'),
-            'fpeo_distance' => Yii::t('D2finvModule.model', 'Fpeo Distance'),
+            'fpeo_id' => Yii::t('D2fixrModule.model', 'Fpeo'),
+            'fpeo_fixr_id' => Yii::t('D2fixrModule.model', 'Fpeo Fixr'),
+            'fpeo_start_abs_odo' => Yii::t('D2fixrModule.model', 'Fpeo Start Abs Odo'),
+            'fpeo_end_abs_odo' => Yii::t('D2fixrModule.model', 'Fpeo End Abs Odo'),
+            'fpeo_distance' => Yii::t('D2fixrModule.model', 'Fpeo Distance'),
         );
     }
 

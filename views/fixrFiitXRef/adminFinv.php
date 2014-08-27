@@ -102,7 +102,7 @@ $this->widget('TbGridView',
                 //decimal(10,2)
                 'header' => Yii::t('D2fixrModule.model', 'Expenses Amount'),
                 'htmlOptions' => array('class' => 'numeric-column'),
-                'value' => 'FixrFiitXRef::totalByFinvId($data->finv_id)',
+                'value' => 'FixrFiitXRef::totalBaseAmtByFinvId($data->finv_id)',
                 //'footer' => $model->getTotals('finv_amt'),
                 //'footerHtmlOptions' => array('class' => 'total-row numeric-column'),
             ),

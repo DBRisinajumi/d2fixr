@@ -63,9 +63,9 @@ abstract class BaseFrepRefPeriod extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'frep_id' => Yii::t('D2finvModule.model', 'Frep'),
-            'frep_model' => Yii::t('D2finvModule.model', 'Frep Model'),
-            'frep_label' => Yii::t('D2finvModule.model', 'Frep Label'),
+            'frep_id' => Yii::t('D2fixrModule.model', 'Frep'),
+            'frep_model' => Yii::t('D2fixrModule.model', 'Frep Model'),
+            'frep_label' => Yii::t('D2fixrModule.model', 'Frep Label'),
         );
     }
 

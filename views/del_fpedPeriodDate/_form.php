@@ -29,7 +29,7 @@
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2finvModule.model', 'tooltip.fped_id')) != 'tooltip.fped_id')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_id')) != 'tooltip.fped_id')?$t:'' ?>'>
                                 <?php
                             ;
                             echo $form->error($model,'fped_id')
@@ -45,7 +45,7 @@
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2finvModule.model', 'tooltip.fped_fixr_id')) != 'tooltip.fped_fixr_id')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_fixr_id')) != 'tooltip.fped_fixr_id')?$t:'' ?>'>
                                 <?php
                             $this->widget(
                 '\GtcRelation',
@@ -73,7 +73,7 @@
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2finvModule.model', 'tooltip.fped_start_date')) != 'tooltip.fped_start_date')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_start_date')) != 'tooltip.fped_start_date')?$t:'' ?>'>
                                 <?php
                             $this->widget('zii.widgets.jui.CJuiDatePicker',
                          array(
@@ -103,7 +103,7 @@
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2finvModule.model', 'tooltip.fped_end_date')) != 'tooltip.fped_end_date')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_end_date')) != 'tooltip.fped_end_date')?$t:'' ?>'>
                                 <?php
                             $this->widget('zii.widgets.jui.CJuiDatePicker',
                          array(
@@ -133,7 +133,7 @@
                         </div>
                         <div class='controls'>
                             <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
-                                 title='<?php echo (($t = Yii::t('D2finvModule.model', 'tooltip.fped_month')) != 'tooltip.fped_month')?$t:'' ?>'>
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fped_month')) != 'tooltip.fped_month')?$t:'' ?>'>
                                 <?php
                             $this->widget('zii.widgets.jui.CJuiDatePicker',
                          array(
@@ -165,21 +165,21 @@
         
     </div>
 
-    <p class="alert">
+    <div class="alert">
         
         <?php 
-            echo Yii::t('D2finvModule.crud','Fields with <span class="required">*</span> are required.');
+            echo Yii::t('D2fixrModule.crud','Fields with <span class="required">*</span> are required.');
                 
             /**
              * @todo: We need the buttons inside the form, when a user hits <enter>
              */                
-            echo ' '.CHtml::submitButton(Yii::t('D2finvModule.crud', 'Save'), array(
+            echo ' '.CHtml::submitButton(Yii::t('D2fixrModule.crud', 'Save'), array(
                 'class' => 'btn btn-primary',
                 'style'=>'visibility: hidden;'                
             ));
                 
         ?>
-    </p>
+    </div>
 
 
     <?php $this->endWidget() ?>    <?php  ?></div> <!-- form -->

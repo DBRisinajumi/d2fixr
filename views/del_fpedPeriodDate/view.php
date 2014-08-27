@@ -1,16 +1,16 @@
 <?php
     $this->setPageTitle(
-        Yii::t('D2finvModule.model', 'Fped Period Date')
+        Yii::t('D2fixrModule.model', 'Fped Period Date')
         . ' - '
-        . Yii::t('D2finvModule.crud', 'View')
+        . Yii::t('D2fixrModule.crud', 'View')
         . ': '   
         . $model->getItemLabel()            
 );    
-//$this->breadcrumbs[Yii::t('D2finvModule.model','Fped Period Dates')] = array('admin');
+//$this->breadcrumbs[Yii::t('D2fixrModule.model','Fped Period Dates')] = array('admin');
 //$this->breadcrumbs[$model->{$model->tableSchema->primaryKey}] = array('view','id' => $model->{$model->tableSchema->primaryKey});
-//$this->breadcrumbs[] = Yii::t('D2finvModule.crud', 'View');
+//$this->breadcrumbs[] = Yii::t('D2fixrModule.crud', 'View');
 $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
-    #"label"=>Yii::t("D2finvModule.crud","Cancel"),
+    #"label"=>Yii::t("D2fixrModule.crud","Cancel"),
     "icon"=>"chevron-left",
     "size"=>"large",
     "url"=>(isset($_GET["returnUrl"]))?$_GET["returnUrl"]:array("{$this->id}/admin"),
@@ -18,7 +18,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
     "htmlOptions"=>array(
                     "class"=>"search-button",
                     "data-toggle"=>"tooltip",
-                    "title"=>Yii::t("D2finvModule.crud","Back"),
+                    "title"=>Yii::t("D2fixrModule.crud","Back"),
                 )
  ),true);
     
@@ -30,20 +30,20 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2finvModule.model','Fped Period Date');?>                <small><?php echo$model->itemLabel?></small>
+                <?php echo Yii::t('D2fixrModule.model','Fped Period Date');?>                <small><?php echo$model->itemLabel?></small>
             </h1>
         </div>
         <div class="btn-group">
             <?php
             
             $this->widget("bootstrap.widgets.TbButton", array(
-                "label"=>Yii::t("D2finvModule.crud","Delete"),
+                "label"=>Yii::t("D2fixrModule.crud","Delete"),
                 "type"=>"danger",
                 "icon"=>"icon-trash icon-white",
                 "size"=>"large",
                 "htmlOptions"=> array(
                     "submit"=>array("delete","fped_id"=>$model->{$model->tableSchema->primaryKey}, "returnUrl"=>(Yii::app()->request->getParam("returnUrl"))?Yii::app()->request->getParam("returnUrl"):$this->createUrl("admin")),
-                    "confirm"=>Yii::t("D2finvModule.crud","Do you want to delete this item?")
+                    "confirm"=>Yii::t("D2fixrModule.crud","Do you want to delete this item?")
                 ),
                 "visible"=> (Yii::app()->request->getParam("fped_id")) && (Yii::app()->user->checkAccess("D2finv.FpedPeriodDate.*") || Yii::app()->user->checkAccess("D2finv.FpedPeriodDate.Delete"))
             ));
@@ -57,7 +57,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
 <div class="row">
     <div class="span12">
         <h2>
-            <?php echo Yii::t('D2finvModule.crud','Data')?>            <small>
+            <?php echo Yii::t('D2fixrModule.crud','Data')?>            <small>
                 #<?php echo $model->fped_id ?>            </small>
         </h2>
 
