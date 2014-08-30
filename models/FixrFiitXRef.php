@@ -7,6 +7,7 @@ Yii::import('FixrFiitXRef.*');
 class FixrFiitXRef extends BaseFixrFiitXRef
 {
 
+   
     // Add your model-specific methods here. This file will not be overriden by gtc except you force it.
     public static function model($className = __CLASS__)
     {
@@ -23,7 +24,32 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         return parent::getItemLabel();
     }
 
-    public function getFretLabel()
+    
+    
+    public function isPeriodEditable(){
+
+        if(empty($this->fixr_id)){
+            return true;
+        }        
+
+        if(empty($this->fixr_position_fret_id)){
+            return true;
+        }        
+        
+        $fret_model = $this->fixrPositionFret->fret_model;
+        $fret_ref_id_field = $this->fixrPositionFret->fret_model_fixr_id_field;
+        $criteria = new CDbCriteria();
+        $criteria->compare($fret_ref_id_field, $this->fixr_id);
+        $model = new $fret_model;
+        $model = $model->find($criteria);            
+        
+        if(method_exists($model,'isPeriodEditable') && !$model->isPeriodEditable()){
+            return false;
+        }        
+        return true;
+    }
+            
+    public function getPositionLabel($get_period_label = false)
     {
         if(empty($this->fixr_id)){
             return Yii::t('D2fixrModule.model', 'Empty');
@@ -41,13 +67,29 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         $model = new $fret_model;
         $model = $model->find($criteria);            
         if(!$model){
-            return Yii::t('D2fixrModule.model', 'Empty');
+            $position_label = Yii::t('D2fixrModule.model', 'Empty');
+        }else{
+            $position_label = $fret_lable . ' ' . $model->itemPositionLabel;
         }
-        return $fret_lable . ' ' . $model->itemPositionLabel;        
+        
+        $period_label = '';
+        if($get_period_label && method_exists($model,'isPeriodEditable') && !$model->isPeriodEditable()){
+            $period_label = $this->getPeriodLabel(false);
+        }
+        
+        if($get_period_label){
+            return array(
+                'position' => $position_label,
+                'period' => $period_label,
+            );
+            
+        }
+        
+        return $position_label;        
         
     }
 
-    public function getFrepLabel()
+    public function getPeriodLabel($add_type = true)
     {
         if(empty($this->fixr_id)){
             return Yii::t('D2fixrModule.model', 'Empty');
@@ -67,7 +109,11 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         if(!$model){
             return Yii::t('D2fixrModule.model', 'Empty');
         }
-        return $frep_lable . ' ' . $model->itemPeriodLabel;        
+        
+        if ($add_type){
+            return $frep_lable . ' ' . $model->itemPeriodLabel;        
+        }
+        return $model->itemPeriodLabel;        
         
     }
 
@@ -184,11 +230,32 @@ class FixrFiitXRef extends BaseFixrFiitXRef
                     $this->fixr_fcrn_id, Yii::app()->currency->base, $this->fixr_amt, $this->fixr_fcrn_date
             );
         }
+        
+        $this->fixr_period_fret_id = $this->fixr_position_fret_id;
 
-        parent::save($runValidation, $attributes);
+        return parent::save($runValidation, $attributes);
     }    
     
-    public function delete(){
+    public function afterSave() {
+        
+        //update in fret defined related records 
+        $model_fret = FretRefType::model()->findAll();
+        foreach($model_fret as $fret){
+            $criteria = new CDbCriteria();
+            $criteria->compare($fret->fret_model_fixr_id_field,$this->fixr_id);
+            $ref_model = new $fret->fret_model;
+            foreach($ref_model->findAll($criteria) as $ref){
+                $ref->save();
+            }
+        }
+        
+        parent::afterSave();
+    }
+    
+    
+   public function beforeDelete() {
+        
+        //delete all in fret defined related records
         $model_fret = FretRefType::model()->findAll();
         foreach($model_fret as $fret){
             $criteria = new CDbCriteria();
@@ -198,6 +265,15 @@ class FixrFiitXRef extends BaseFixrFiitXRef
                 $ref->delete();
             }
         }
-        parent::delete();
-    }
+        
+        //delete related recrd from FddaDimData
+        $criteria = new CDbCriteria();
+        $criteria->compare('fdda_fixr_id',$this->fixr_id);
+        //$fdda = FddaDimData::model()->findAll($criteria);
+        foreach(FddaDimData::model()->findAll($criteria) as $fdda){
+            $fdda->delete();
+        }        
+        return parent::beforeDelete();
+    }    
+
 }

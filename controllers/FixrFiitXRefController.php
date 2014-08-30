@@ -72,12 +72,10 @@ public function accessRules()
 
         $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
         
-        //for ajax get caller label
-        if($get_label){
-            if($model_fixr){
-                echo $model_fixr->getFretLabel();
-            }
-            return;
+        //for ajax get caller position label an if need period
+        if($get_label && $model_fixr){
+            $labels = $model_fixr->getPositionLabel(true);
+            $this->renderJSON($labels);
         }
         
         $criteria = new CDbCriteria;
@@ -116,7 +114,7 @@ public function accessRules()
         //for ajax get caller label
         if($get_label){
             if($model_fixr){
-                echo $model_fixr->getFrepLabel();
+                echo $model_fixr->getPeriodLabel();
             }
             return;
         }
@@ -296,7 +294,8 @@ public function accessRules()
 
             try {
                 if(!$model->save()){
-                    print_r($model->getErrors());exit;
+                    //print_r($model->getErrors());exit;
+                    $model->addError($model->tableSchema->primaryKey, $e->getMessage());
                 }
             } catch (Exception $e) {
                 $model->addError($model->tableSchema->primaryKey, $e->getMessage());

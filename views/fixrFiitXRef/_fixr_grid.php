@@ -21,16 +21,22 @@ $this->widget('TbGridView', array(
         array(
             'header' => Yii::t('D2fixrModule.model', 'Position'),
             'type' => 'raw',
-            'value' => 'CHtml::link($data->getFretLabel(),
+            'value' => 'CHtml::link($data->getPositionLabel(),
                                                 array(\'/d2fixr/fixrFiitXRef/popupPosition\',\'fixr_id\' =>$data->fixr_id)
                                             );'
         ),
         array(
             'header' => Yii::t('D2fixrModule.model', 'Period'),
             'type' => 'raw',
-            'value' => 'CHtml::link($data->getFrepLabel(),
-                                                array(\'/d2fixr/fixrFiitXRef/popupPeriod\',\'fixr_id\' =>$data->fixr_id)
-                                            );'
+            'value' => '(!$data->isPeriodEditable())?
+                            $data->getPeriodLabel(false)
+                            :CHtml::link(
+                                $data->getPeriodLabel(),
+                                array(
+                                    \'/d2fixr/fixrFiitXRef/popupPeriod\',
+                                    \'fixr_id\' =>$data->fixr_id,
+                                    )
+                            );'
         ),
         array(
             'class' => 'TbButtonColumn',

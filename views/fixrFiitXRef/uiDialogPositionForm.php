@@ -104,7 +104,10 @@
                                             url: ajax_url,
                                             success: function(data) {
                                                 //fix opener label
-                                                $(\'a[href="\'+href+\'"]\').html(data);                                    
+                                                $(\'a[href="\'+href+\'"]\').html(data.position);                                    
+                                                if(data.period){
+                                                    $(\'a[href="\'+href+\'"]\').parent().next().html(data.period);
+                                                }
                                             }   
                                     });                      
 

@@ -51,5 +51,38 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
             'criteria' => $this->searchCriteria($criteria),
         ));
     }
+    
+    /**
+     * get or create record for table
+     * @param int $fret_id - ref type (first dimension level)
+     * @param int $ref_id - refernce table record id
+     * @param string $code 
+     * @param string $name
+     * @return type
+     */
+    public static function getDim2Id($fret_id,$ref_id,$code,$name = false){
+
+        if(!$name){
+            $name = $code;
+        }
+        //search existing record
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdm2_fret_id', $fret_id);
+        $criteria->compare('fdm2_ref_id', $ref_id);
+        
+        if($fdm2 = Fdm2Dimension2::model()->find($criteria)){
+            return $fdm2->fdm2_id;
+        }
+        
+        //add record
+        $fdm2 = new Fdm2Dimension2;
+        $fdm2->fdm2_fret_id = $fret_id;
+        $fdm2->fdm2_ref_id = $ref_id;
+        $fdm2->fdm2_code = substr($code,0,10);
+        $fdm2->fdm2_name = $name;
+        $fdm2->save();
+        return $fdm2->primaryKey;
+        
+    }
 
 }

@@ -52,4 +52,40 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
         ));
     }
 
+    /**
+     * get or create record for table
+     * @param int $fret_id - ref type (first dimension level)
+     * @param int $ref_id - refernce table record id
+     * @param string $code 
+     * @param string $name
+     * @return type
+     */
+    public static function getDim3Id($fret_id,$fdm2_id,$ref_id,$code,$name = false){
+
+        if(!$name){
+            $name = $code;
+        }
+        
+        //search existing record
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdm3_fret_id', $fret_id);
+        $criteria->compare('fdm3_fdm2_id', $fdm2_id);
+        $criteria->compare('fdm3_ref_id', $ref_id);
+        
+        if($fdm3 = Fdm3Dimension3::model()->find($criteria)){
+            return $fdm3->fdm3_id;
+        }
+        
+        //add record
+        $fdm3 = new Fdm3Dimension3;
+        $fdm3->fdm3_fret_id = $fret_id;
+        $fdm3->fdm3_ref_id = $ref_id;
+        $fdm3->fdm3_fdm2_id = $fdm2_id;
+        $fdm3->fdm3_code = substr($code,0,10);
+        $fdm3->fdm3_name = $name;
+        $fdm3->save();
+        return $fdm3->primaryKey;
+        
+    }    
+
 }
