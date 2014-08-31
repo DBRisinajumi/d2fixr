@@ -74,10 +74,13 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
             return $fdm2->fdm2_id;
         }
         
+        $fret = FretRefType::model()->findByPk($fret_id);
+        
         //add record
         $fdm2 = new Fdm2Dimension2;
         $fdm2->fdm2_fret_id = $fret_id;
         $fdm2->fdm2_ref_id = $ref_id;
+        $fdm2->fdm2_fdm1_id = $fret->fret_fdm1_id;
         $fdm2->fdm2_code = substr($code,0,10);
         $fdm2->fdm2_name = $name;
         $fdm2->save();

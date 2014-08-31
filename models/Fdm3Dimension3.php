@@ -76,10 +76,13 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
             return $fdm3->fdm3_id;
         }
         
+        $fret = FretRefType::model()->findByPk($fret_id);
+
         //add record
         $fdm3 = new Fdm3Dimension3;
         $fdm3->fdm3_fret_id = $fret_id;
         $fdm3->fdm3_ref_id = $ref_id;
+        $fdm3->fdm3_fdm1_id = $fret->fret_fdm1_id;        
         $fdm3->fdm3_fdm2_id = $fdm2_id;
         $fdm3->fdm3_code = substr($code,0,10);
         $fdm3->fdm3_name = $name;

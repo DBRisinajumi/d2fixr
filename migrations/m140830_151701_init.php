@@ -180,6 +180,27 @@ class m140830_151701_init extends CDbMigration
                 ADD CONSTRAINT `vtdc_truck_doc_ibfk_3` 
                 FOREIGN KEY (`vtdc_fixr_id`) REFERENCES `fixr_fiit_x_ref` (`fixr_id`) ;
 
+            CREATE TABLE `fdm1_dimension1` (
+              `fdm1_id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+              `fdm1_code` VARCHAR (10) NOT NULL,
+              `fdm1_name` VARCHAR (50) NOT NULL,
+              `fdm1_hidden` TINYINT NOT NULL DEFAULT 0,
+              PRIMARY KEY (`fdm1_id`)
+            ) ENGINE = INNODB CHARSET = utf8 ;
+
+            ALTER TABLE `fdm2_dimension2` ADD COLUMN `fdm2_fdm1_id` TINYINT UNSIGNED NULL AFTER `fdm2_ref_id`; 
+            ALTER TABLE `fdm2_dimension2` ADD FOREIGN KEY (`fdm2_fdm1_id`) REFERENCES `fdm1_dimension1`(`fdm1_id`); 
+            ALTER TABLE `fdm3_dimension3` ADD COLUMN `fdm3_fdm1_id` TINYINT UNSIGNED NULL AFTER `fdm3_ref_id`; 
+            ALTER TABLE `fddp_dim_data_period` ADD COLUMN `fddp_fdm1_id` TINYINT UNSIGNED NULL AFTER `fddp_fret_id`; 
+            ALTER TABLE `fdm3_dimension3` ADD FOREIGN KEY (`fdm3_fdm1_id`) REFERENCES `fdm1_dimension1`(`fdm1_id`); 
+            ALTER TABLE `fddp_dim_data_period` ADD FOREIGN KEY (`fddp_fdm1_id`) REFERENCES `fdm1_dimension1`(`fdm1_id`); 
+
+            ALTER TABLE `fret_ref_type` ADD COLUMN `fret_fdm1_id` TINYINT UNSIGNED NULL COMMENT 'use for autodetecting fdm1_id' AFTER `fret_period_fret_id_list`; 
+            ALTER TABLE `fret_ref_type` ADD FOREIGN KEY (`fret_fdm1_id`) REFERENCES `eu`.`fdm1_dimension1`(`fdm1_id`); 
+
+            ALTER TABLE `fdda_dim_data` ADD COLUMN `fdda_fdm1_id` TINYINT UNSIGNED NULL AFTER `fdda_fret_id`; 
+            ALTER TABLE `fdda_dim_data` ADD FOREIGN KEY (`fdda_fdm1_id`) REFERENCES `eu`.`fdm1_dimension1`(`fdm1_id`); 
+
             SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
             

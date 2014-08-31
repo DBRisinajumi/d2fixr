@@ -66,6 +66,7 @@ class FddaDimData extends BaseFddaDimData
         
         //get additional data for fdda
         $fdm3 = $this->fddaFdm3;
+        $this->fdda_fdm1_id = $fdm3->fdm3_fdm1_id;
         $this->fdda_fdm2_id = $fdm3->fdm3_fdm2_id;
         $this->fdda_fret_id = $fdm3->fdm3_fret_id;
 

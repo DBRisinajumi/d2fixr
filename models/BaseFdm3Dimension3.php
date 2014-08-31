@@ -6,6 +6,8 @@
  * Columns in table "fdm3_dimension3" available as properties of the model:
  * @property string $fdm3_id
  * @property integer $fdm3_fret_id
+ * @property string $fdm3_ref_id
+ * @property integer $fdm3_fdm1_id
  * @property string $fdm3_fdm2_id
  * @property string $fdm3_code
  * @property string $fdm3_name
@@ -13,8 +15,10 @@
  *
  * Relations of table "fdm3_dimension3" available as properties of the model:
  * @property FddaDimData[] $fddaDimDatas
- * @property Fdm2Dimension2 $fdm3Fdm2
+ * @property FddpDimDataPeriod[] $fddpDimDataPeriods
+ * @property Fdm1Dimension1 $fdm3Fdm1
  * @property FretRefType $fdm3Fret
+ * @property Fdm2Dimension2 $fdm3Fdm2
  */
 abstract class BaseFdm3Dimension3 extends CActiveRecord
 {
@@ -34,18 +38,18 @@ abstract class BaseFdm3Dimension3 extends CActiveRecord
         return array_merge(
             parent::rules(), array(
                 array('fdm3_fret_id, fdm3_fdm2_id', 'required'),
-                array('fdm3_code, fdm3_name, fdm3_hidden', 'default', 'setOnEmpty' => true, 'value' => null),
-                array('fdm3_fret_id, fdm3_hidden', 'numerical', 'integerOnly' => true),
-                array('fdm3_fdm2_id, fdm3_code', 'length', 'max' => 10),
+                array('fdm3_ref_id, fdm3_fdm1_id, fdm3_code, fdm3_name, fdm3_hidden', 'default', 'setOnEmpty' => true, 'value' => null),
+                array('fdm3_fret_id, fdm3_fdm1_id, fdm3_hidden', 'numerical', 'integerOnly' => true),
+                array('fdm3_ref_id, fdm3_fdm2_id, fdm3_code', 'length', 'max' => 10),
                 array('fdm3_name', 'length', 'max' => 50),
-                array('fdm3_id, fdm3_fret_id, fdm3_fdm2_id, fdm3_code, fdm3_name, fdm3_hidden', 'safe', 'on' => 'search'),
+                array('fdm3_id, fdm3_fret_id, fdm3_ref_id, fdm3_fdm1_id, fdm3_fdm2_id, fdm3_code, fdm3_name, fdm3_hidden', 'safe', 'on' => 'search'),
             )
         );
     }
 
     public function getItemLabel()
     {
-        return (string) $this->fdm3_fdm2_id;
+        return (string) $this->fdm3_ref_id;
     }
 
     public function behaviors()
@@ -64,8 +68,10 @@ abstract class BaseFdm3Dimension3 extends CActiveRecord
         return array_merge(
             parent::relations(), array(
                 'fddaDimDatas' => array(self::HAS_MANY, 'FddaDimData', 'fdda_fdm3_id'),
-                'fdm3Fdm2' => array(self::BELONGS_TO, 'Fdm2Dimension2', 'fdm3_fdm2_id'),
+                'fddpDimDataPeriods' => array(self::HAS_MANY, 'FddpDimDataPeriod', 'fddp_fdm3_id'),
+                'fdm3Fdm1' => array(self::BELONGS_TO, 'Fdm1Dimension1', 'fdm3_fdm1_id'),
                 'fdm3Fret' => array(self::BELONGS_TO, 'FretRefType', 'fdm3_fret_id'),
+                'fdm3Fdm2' => array(self::BELONGS_TO, 'Fdm2Dimension2', 'fdm3_fdm2_id'),
             )
         );
     }
@@ -75,6 +81,8 @@ abstract class BaseFdm3Dimension3 extends CActiveRecord
         return array(
             'fdm3_id' => Yii::t('D2fixrModule.model', 'Fdm3'),
             'fdm3_fret_id' => Yii::t('D2fixrModule.model', 'Fdm3 Fret'),
+            'fdm3_ref_id' => Yii::t('D2fixrModule.model', 'Fdm3 Ref'),
+            'fdm3_fdm1_id' => Yii::t('D2fixrModule.model', 'Fdm3 Fdm1'),
             'fdm3_fdm2_id' => Yii::t('D2fixrModule.model', 'Fdm3 Fdm2'),
             'fdm3_code' => Yii::t('D2fixrModule.model', 'Fdm3 Code'),
             'fdm3_name' => Yii::t('D2fixrModule.model', 'Fdm3 Name'),
@@ -90,6 +98,8 @@ abstract class BaseFdm3Dimension3 extends CActiveRecord
 
         $criteria->compare('t.fdm3_id', $this->fdm3_id, true);
         $criteria->compare('t.fdm3_fret_id', $this->fdm3_fret_id);
+        $criteria->compare('t.fdm3_ref_id', $this->fdm3_ref_id, true);
+        $criteria->compare('t.fdm3_fdm1_id', $this->fdm3_fdm1_id);
         $criteria->compare('t.fdm3_fdm2_id', $this->fdm3_fdm2_id);
         $criteria->compare('t.fdm3_code', $this->fdm3_code, true);
         $criteria->compare('t.fdm3_name', $this->fdm3_name, true);

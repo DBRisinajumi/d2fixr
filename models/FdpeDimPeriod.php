@@ -219,6 +219,7 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
                             fddp_amt = {$period['period_amt']},
                             fddp_fixr_id = {$fdda->fdda_fixr_id},
                             fddp_fret_id = {$fdda->fdda_fret_id},
+                            fddp_fdm1_id = {$fdda->fdda_fdm1_id},
                             fddp_fdm2_id = {$fdda->fdda_fdm2_id},
                             fddp_fdm3_id = {$fdda->fdda_fdm3_id}
                         WHERE

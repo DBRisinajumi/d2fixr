@@ -10,16 +10,18 @@
  * @property integer $fddp_amt
  * @property string $fddp_fixr_id
  * @property integer $fddp_fret_id
+ * @property integer $fddp_fdm1_id
  * @property string $fddp_fdm2_id
  * @property string $fddp_fdm3_id
  *
  * Relations of table "fddp_dim_data_period" available as properties of the model:
- * @property Fdm3Dimension3 $fddpFdm3
+ * @property Fdm1Dimension1 $fddpFdm1
  * @property FddaDimData $fddpFdda
  * @property FdpeDimPeriod $fddpFdpe
  * @property FixrFiitXRef $fddpFixr
  * @property FretRefType $fddpFret
  * @property Fdm2Dimension2 $fddpFdm2
+ * @property Fdm3Dimension3 $fddpFdm3
  */
 abstract class BaseFddpDimDataPeriod extends CActiveRecord
 {
@@ -39,9 +41,10 @@ abstract class BaseFddpDimDataPeriod extends CActiveRecord
         return array_merge(
             parent::rules(), array(
                 array('fddp_fdda_id, fddp_fdpe_id, fddp_amt, fddp_fixr_id, fddp_fret_id, fddp_fdm2_id, fddp_fdm3_id', 'required'),
-                array('fddp_amt, fddp_fret_id', 'numerical', 'integerOnly' => true),
+                array('fddp_fdm1_id', 'default', 'setOnEmpty' => true, 'value' => null),
+                array('fddp_amt, fddp_fret_id, fddp_fdm1_id', 'numerical', 'integerOnly' => true),
                 array('fddp_fdda_id, fddp_fdpe_id, fddp_fixr_id, fddp_fdm2_id, fddp_fdm3_id', 'length', 'max' => 10),
-                array('fddp_id, fddp_fdda_id, fddp_fdpe_id, fddp_amt, fddp_fixr_id, fddp_fret_id, fddp_fdm2_id, fddp_fdm3_id', 'safe', 'on' => 'search'),
+                array('fddp_id, fddp_fdda_id, fddp_fdpe_id, fddp_amt, fddp_fixr_id, fddp_fret_id, fddp_fdm1_id, fddp_fdm2_id, fddp_fdm3_id', 'safe', 'on' => 'search'),
             )
         );
     }
@@ -66,12 +69,13 @@ abstract class BaseFddpDimDataPeriod extends CActiveRecord
     {
         return array_merge(
             parent::relations(), array(
-                'fddpFdm3' => array(self::BELONGS_TO, 'Fdm3Dimension3', 'fddp_fdm3_id'),
+                'fddpFdm1' => array(self::BELONGS_TO, 'Fdm1Dimension1', 'fddp_fdm1_id'),
                 'fddpFdda' => array(self::BELONGS_TO, 'FddaDimData', 'fddp_fdda_id'),
                 'fddpFdpe' => array(self::BELONGS_TO, 'FdpeDimPeriod', 'fddp_fdpe_id'),
                 'fddpFixr' => array(self::BELONGS_TO, 'FixrFiitXRef', 'fddp_fixr_id'),
                 'fddpFret' => array(self::BELONGS_TO, 'FretRefType', 'fddp_fret_id'),
                 'fddpFdm2' => array(self::BELONGS_TO, 'Fdm2Dimension2', 'fddp_fdm2_id'),
+                'fddpFdm3' => array(self::BELONGS_TO, 'Fdm3Dimension3', 'fddp_fdm3_id'),
             )
         );
     }
@@ -85,6 +89,7 @@ abstract class BaseFddpDimDataPeriod extends CActiveRecord
             'fddp_amt' => Yii::t('D2fixrModule.model', 'Fddp Amt'),
             'fddp_fixr_id' => Yii::t('D2fixrModule.model', 'Fddp Fixr'),
             'fddp_fret_id' => Yii::t('D2fixrModule.model', 'Fddp Fret'),
+            'fddp_fdm1_id' => Yii::t('D2fixrModule.model', 'Fddp Fdm1'),
             'fddp_fdm2_id' => Yii::t('D2fixrModule.model', 'Fddp Fdm2'),
             'fddp_fdm3_id' => Yii::t('D2fixrModule.model', 'Fddp Fdm3'),
         );
@@ -102,6 +107,7 @@ abstract class BaseFddpDimDataPeriod extends CActiveRecord
         $criteria->compare('t.fddp_amt', $this->fddp_amt);
         $criteria->compare('t.fddp_fixr_id', $this->fddp_fixr_id);
         $criteria->compare('t.fddp_fret_id', $this->fddp_fret_id);
+        $criteria->compare('t.fddp_fdm1_id', $this->fddp_fdm1_id);
         $criteria->compare('t.fddp_fdm2_id', $this->fddp_fdm2_id);
         $criteria->compare('t.fddp_fdm3_id', $this->fddp_fdm3_id);
 
