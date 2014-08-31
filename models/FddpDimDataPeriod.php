@@ -52,4 +52,66 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         ));
     }
 
+    public static function getDataLevelDim1($year){
+        $next_year = $year + 1;
+        $sql = " 
+            SELECT 
+              fddp_fdm1_id,
+              fddp_fdpe_id,
+              SUM(fddp_amt) amt 
+            FROM
+              fddp_dim_data_period 
+              INNER JOIN fdpe_dim_period 
+                ON fddp_fdpe_id = fdpe_id 
+            WHERE fdpe_dt_from > '{$year}.01.01' 
+              AND fdpe_dt_from < '{$next_year}.01.01' 
+            GROUP BY fddp_fdm1_id,
+              fddp_fdpe_id 
+            ORDER BY fddp_fdm1_id,
+              fdpe_dt_from 
+               ";
+        $d = Yii::app()->db->createCommand($sql)->queryAll();
+        $data = array();
+        foreach($d as $r){
+            $key = $r['fddp_fdm1_id'] . '-' . $r['fddp_fdpe_id'];
+            if(!isset($data[$r['fddp_fdm1_id']][$r['fddp_fdpe_id']])){
+                $data[$r['fddp_fdm1_id']][$r['fddp_fdpe_id']] = 0;
+            }
+            
+            $data[$r['fddp_fdm1_id']][$r['fddp_fdpe_id']] += $r['amt'];
+        }
+        return $data;
+    }       
+    
+    public static function createTable($months,$positions,$data){
+        $table = array();
+        foreach($positions as $p){
+            foreach ($months as $m){
+                if(isset($data[$p['fdm1_id']][$m['fdpe_id']])){
+                    $table[$p['fdm1_id']][$m['month']] = self::formatAmt($data[$p['fdm1_id']][$m['fdpe_id']]);
+                }else{
+                    $table[$p['fdm1_id']][$m['month']] = self::formatAmt(0);
+                }
+            }
+        }
+        
+        return $table;
+    }
+    
+    /**
+     * get formatted amount of money
+     * 
+     * @assert (0) == '0.00'
+     * @param int $nAmt
+     * @return string
+     */
+    public static function formatAmt($nAmt,$bForExcel = FALSE)
+    {
+        //money_format() ?
+        if($bForExcel){
+            return number_format($nAmt/100, 2, '.', '');
+        }
+        return number_format($nAmt/100, 2, '.', ' ');
+    }    
+    
 }

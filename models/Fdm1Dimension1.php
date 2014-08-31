@@ -52,4 +52,16 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
         ));
     }
 
+    public static function getPositions($year){
+        $sql = " 
+            SELECT 
+              fdm1_id,
+              fdm1_name name 
+            FROM
+              fdm1_dimension1 
+            ORDER BY fdm1_name 
+               ";
+        return Yii::app()->db->createCommand($sql)->queryAll();
+    }    
+    
 }

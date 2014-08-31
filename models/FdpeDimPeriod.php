@@ -52,6 +52,15 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         ));
     }
     
+    
+    /**
+     * 
+     * @param int $amt  amount in cents
+     * @param datetime $dt_from
+     * @param datetime $dt_to
+     * @param string $period_type only Montly
+     * @return array(array('period_id'=>22,'in_period_sec'=>555),...)
+     */
     public static function splitAmtInPeriods($amt, $dt_from, $dt_to,$period_type)
     {
         /**
@@ -107,7 +116,13 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         return $periods;
     }
     
-    
+    /**
+     * get period id and time in period
+     * @param datetime $date_time_from
+     * @param datetime $date_time_to
+     * @param string $period_type only montly
+     * @return array('id' => 22, 'in_period_sec'=>333)
+     */
     public static function getPeriodLengthDataFromDb($date_time_from,$date_time_to,$period_type){
         $sql = "SET @date_from = STR_TO_DATE('{$date_time_from}', '%Y-%m-%d %H:%i:%s');";
         Yii::app()->db->createCommand($sql)->execute();      
@@ -147,6 +162,15 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         return Yii::app()->db->createCommand($sql)->queryRow();
         
     }
+    
+    
+    /**
+     * try get from db period  and length for interval start. If no exist, create it.
+     * @param datetime $date_time_from
+     * @param datetime $date_time_to
+     * @param string $period_type
+     * @return array('id' => 22, 'in_period_sec'=>333)
+     */
     public static function getPeriodLengthData($date_time_from,$date_time_to,$period_type){
         
         $row = self::getPeriodLengthDataFromDb($date_time_from,$date_time_to,$period_type);
@@ -159,20 +183,20 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         return $row;
         
     }
-    
+
+    /**
+     * create first month period for interval
+     * @param datetime $date_time_from
+     * @param datetime $date_time_to
+     * @param string $period_type Only 'Montly' work
+     * @return type
+     */
     private static function createPeriod($date_time_from, $date_time_to,$period_type)
     {
         //create period
         $date = new DateTime($date_time_from);
-//        $this->current_period->jumpToPeriodStart($date);
-//        $sPeriodFrom = $date->format("Y-m-d H:i:s");
-
         $sPeriodFrom = $date->modify('first day of this month')->format("Y-m-d H:i:s");
-        
-//        $this->current_period->jumpToNextPeriod($date);
-//        $sPeriodTo = $date->format("Y-m-d H:i:s");        
         $sPeriodTo = $date->modify('first day of next month')->format("Y-m-d H:i:s");
-
         
         $sql = "INSERT INTO `fdpe_dim_period`
                 (
@@ -267,6 +291,37 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         
 
         return true;
+    }
+    
+    public static function getYearMonths($year){
+        $sql = " 
+            SELECT 
+                fdpe_id,
+                DATE_FORMAT(`fdpe_dt_from`, '%m.%Y') label,
+                month(`fdpe_dt_from`) month
+            FROM
+              fdpe_dim_period 
+            WHERE YEAR(fdpe_dt_from) = {$year} 
+               ";
+        $data = Yii::app()->db->createCommand($sql)->queryAll();
+        
+        $months = array();
+        foreach($data as $record){
+            $months[$record['month']] = $record;
+        }
+        
+        for ($m = 1; $m < 13; $m++) {
+            if(!isset($months[$m])){
+                $months[$m] = array(
+                    'label' => $m.'.'.$year,
+                    'fdpe_id' => NULL,
+                    'month' => $m, 
+                    );
+            }
+        }
+        ksort($months,SORT_NUMERIC);
+        return $months;
+        
     }
 
 }
