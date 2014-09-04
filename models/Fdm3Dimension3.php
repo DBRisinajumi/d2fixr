@@ -90,5 +90,45 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
         return $fdm3->primaryKey;
         
     }    
+    
+    public static function getPositions($year,$fdm2_id){
+//        $sql = " 
+//            SELECT 
+//              fdm3_id row_id,
+//              fdm3_name name 
+//            FROM
+//              fdm3_dimension3
+//            WHERE 
+//              fdm3_fdm2_id = {$fdm2_id}
+//            ORDER BY fdm3_name 
+//               ";
+              
+        $sql = " 
+                SELECT 
+                  CONCAT(fdm3_id, '-', fdst_id) row_id,
+                  CONCAT(fdm3_name, '/', fdst_name) name 
+                FROM
+                  fdm3_dimension3 
+                  INNER JOIN fdsp_dimension_split 
+                    ON fdm3_fdm1_id = fdsp_fdm1_id 
+                    AND fdsp_fdm2_id IS NULL 
+                    AND fdsp_fdm3_id IS NULL 
+                    OR fdm3_fdm2_id = fdsp_fdm2_id 
+                    AND fdsp_fdm3_id IS NULL 
+                    OR fdm3_id = fdsp_fdm3_id 
+                  INNER JOIN fdst_dim_split_type 
+                    ON fdsp_fdst_id = fdst_id 
+                WHERE fdm3_fdm2_id = {$fdm2_id}
+                UNION
+                SELECT 
+                  fdm3_id row_id,
+                  fdm3_name name 
+                FROM
+                  fdm3_dimension3 
+                WHERE fdm3_fdm2_id = {$fdm2_id} 
+                ORDER BY NAME             
+                  ";      
+        return Yii::app()->db->createCommand($sql)->queryAll();
+    }         
 
 }

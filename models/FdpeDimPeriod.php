@@ -116,6 +116,72 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         return $periods;
     }
     
+    public static function splitPeriodAmtInTypes($periods, $fdda_id) {
+
+        $sql = "  
+            SELECT 
+              fdsp_fdst_id,
+              fdsp_procenti,
+              CASE
+                WHEN fdda_fdm3_id = fdsp_fdm3_id 
+                THEN 3 
+                WHEN fdda_fdm2_id = fdsp_fdm2_id 
+                THEN 2 
+                WHEN fdda_fdm1_id = fdsp_fdm1_id 
+                THEN 1 
+              END level              
+            FROM
+              fdda_dim_data 
+              INNER JOIN fdsp_dimension_split 
+                ON fdda_fdm1_id = fdsp_fdm1_id 
+                OR fdda_fdm2_id = fdsp_fdm2_id 
+                OR fdda_fdm3_id = fdsp_fdm3_id 
+            WHERE fdda_id = {$fdda_id}
+            ORDER BY 
+              CASE
+                WHEN fdda_fdm3_id = fdsp_fdm3_id 
+                THEN 1 
+                WHEN fdda_fdm2_id = fdsp_fdm2_id 
+                THEN 2 
+                WHEN fdda_fdm1_id = fdsp_fdm1_id 
+                THEN 3 
+              END 
+                 ";
+
+        $rows = Yii::app()->db->createCommand($sql)->queryAll();
+
+        if (empty($rows)) {
+            return $periods;
+        }
+        $new_periods = array();
+        $included_amt = 0;
+        foreach ($periods as $period) {
+
+            $level = $rows[0]['level'];
+            foreach ($rows as $row) {
+                if ($level != $row['level']) {
+                    break;
+                }
+                $amt = round($period['period_amt'] * $row['fdsp_procenti']/100);
+
+                $new_period = $period;
+                $new_period['fdst_id'] = $row['fdsp_fdst_id'];
+                $new_period['period_amt'] = $amt;
+                $new_periods[] = $new_period;
+                
+                $included_amt += $amt;
+            }
+            
+            //atlikumu piefikseejam
+            $new_period = $period;
+            $new_period['period_amt'] = $period['period_amt'] - $included_amt;
+            $new_periods[] = $new_period;
+            
+        }
+        
+        return $new_periods;
+    }
+
     /**
      * get period id and time in period
      * @param datetime $date_time_from
@@ -227,16 +293,29 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         $fddp_records = Yii::app()->db->createCommand($sql)->queryAll();
         $fddp = array();
         foreach ($fddp_records as $key => $fddp_row) {
-            $fddp[$fddp_row['fddp_fdpe_id']] = $fddp_row;
+            $new_key = $fddp_row['fddp_fdpe_id'];
+            if(!empty($fddp_row['fddp_fdst_id'])){
+                $new_key .= '-' . $fddp_row['fddp_fdst_id'];
+            }
+            $fddp[$new_key] = $fddp_row;
         }
 
         // get new data
         $periods = self::splitAmtInPeriods($fdda->fdda_amt, $fdda->fdda_date_from, $fdda->fdda_date_to, $period_type);
         
+        $periods = self::splitPeriodAmtInTypes($periods, $fdda->fdda_id);
+        
         //udate or insert records
         foreach ($periods as $kp => $period) {
 
-            if (isset($fddp[$period['period_id']])) {
+            $key = $period['period_id'];
+            if(isset($period['fdst_id'])){
+                $key .= '-' . $period['fdst_id'];
+            }else{
+                $period['fdst_id'] = 'null';
+            }
+
+            if (isset($fddp[$key])) {
                 //update
                 $sql = "UPDATE `fddp_dim_data_period`
                         SET
@@ -260,13 +339,13 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
                         (
                             `fddp_fdda_id`, `fddp_fdpe_id`, `fddp_amt`, 
                             `fddp_fixr_id`,fddp_fret_id,fddp_fdm2_id,
-                            fddp_fdm3_id
+                            fddp_fdm3_id,fddp_fdst_id
                         )
                         VALUES
                         (
                             {$fdda->fdda_id},{$period['period_id']},{$period['period_amt']},
                             {$fdda->fdda_fixr_id},{$fdda->fdda_fret_id},{$fdda->fdda_fdm2_id},
-                            {$fdda->fdda_fdm3_id}
+                            {$fdda->fdda_fdm3_id},{$period['fdst_id']}
                         )";
                 Yii::app()->db->createCommand($sql)->query();
                 unset($periods[$kp]);
@@ -313,7 +392,7 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         for ($m = 1; $m < 13; $m++) {
             if(!isset($months[$m])){
                 $months[$m] = array(
-                    'label' => $m.'.'.$year,
+                    'label' => str_pad($m,2,'0',STR_PAD_LEFT).'.'.$year,
                     'fdpe_id' => NULL,
                     'month' => $m, 
                     );

@@ -56,7 +56,7 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         $next_year = $year + 1;
         $sql = " 
             SELECT 
-              fddp_fdm1_id,
+              fddp_fdm1_id row_id,
               fddp_fdpe_id,
               SUM(fddp_amt) amt 
             FROM
@@ -73,12 +73,78 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         $d = Yii::app()->db->createCommand($sql)->queryAll();
         $data = array();
         foreach($d as $r){
-            $key = $r['fddp_fdm1_id'] . '-' . $r['fddp_fdpe_id'];
-            if(!isset($data[$r['fddp_fdm1_id']][$r['fddp_fdpe_id']])){
-                $data[$r['fddp_fdm1_id']][$r['fddp_fdpe_id']] = 0;
+            if(!isset($data[$r['row_id']][$r['fddp_fdpe_id']])){
+                $data[$r['row_id']][$r['fddp_fdpe_id']] = 0;
             }
             
-            $data[$r['fddp_fdm1_id']][$r['fddp_fdpe_id']] += $r['amt'];
+            $data[$r['row_id']][$r['fddp_fdpe_id']] += $r['amt'];
+        }
+        return $data;
+    }       
+    
+    public static function getDataLevelDim2($year,$fddp_fdm1_id){
+        $next_year = $year + 1;
+        $sql = " 
+            SELECT 
+              fddp_fdm2_id row_id,
+              fddp_fdpe_id,
+              SUM(fddp_amt) amt 
+            FROM
+              fddp_dim_data_period 
+              INNER JOIN fdpe_dim_period 
+                ON fddp_fdpe_id = fdpe_id 
+            WHERE fdpe_dt_from > '{$year}.01.01' 
+              AND fdpe_dt_from < '{$next_year}.01.01' 
+              AND fddp_fdm1_id = {$fddp_fdm1_id}
+            GROUP BY fddp_fdm2_id,
+              fddp_fdpe_id 
+            ORDER BY fddp_fdm2_id,
+              fdpe_dt_from 
+               ";
+        $d = Yii::app()->db->createCommand($sql)->queryAll();
+        $data = array();
+        foreach($d as $r){
+            if(!isset($data[$r['row_id']][$r['fddp_fdpe_id']])){
+                $data[$r['row_id']][$r['fddp_fdpe_id']] = 0;
+            }
+            
+            $data[$r['row_id']][$r['fddp_fdpe_id']] += $r['amt'];
+        }
+        return $data;
+    }       
+
+    public static function getDataLevelDim3($year,$fddp_fdm2_id){
+        $next_year = $year + 1;
+        $sql = " 
+            SELECT 
+                case when fddp_fdst_id is null then 
+                    fddp_fdm3_id
+                else    
+                    concat(fddp_fdm3_id,'-',fddp_fdst_id)
+                end row_id,
+              fddp_fdpe_id,
+              SUM(fddp_amt) amt 
+            FROM
+              fddp_dim_data_period 
+              INNER JOIN fdpe_dim_period 
+                ON fddp_fdpe_id = fdpe_id 
+            WHERE fdpe_dt_from > '{$year}.01.01' 
+              AND fdpe_dt_from < '{$next_year}.01.01' 
+              AND fddp_fdm2_id = {$fddp_fdm2_id}
+            GROUP BY fddp_fdm3_id,
+              fddp_fdpe_id,fddp_fdst_id 
+            ORDER BY fddp_fdm3_id,
+              fdpe_dt_from 
+               ";
+        $d = Yii::app()->db->createCommand($sql)->queryAll();
+
+        $data = array();
+        foreach($d as $r){
+            if(!isset($data[$r['row_id']][$r['fddp_fdpe_id']])){
+                $data[$r['row_id']][$r['fddp_fdpe_id']] = 0;
+            }
+            
+            $data[$r['row_id']][$r['fddp_fdpe_id']] += $r['amt'];
         }
         return $data;
     }       
@@ -87,10 +153,10 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         $table = array();
         foreach($positions as $p){
             foreach ($months as $m){
-                if(isset($data[$p['fdm1_id']][$m['fdpe_id']])){
-                    $table[$p['fdm1_id']][$m['month']] = self::formatAmt($data[$p['fdm1_id']][$m['fdpe_id']]);
+                if(isset($data[$p['row_id']][$m['fdpe_id']])){
+                    $table[$p['row_id']][$m['month']] = self::formatAmtFromInt($data[$p['row_id']][$m['fdpe_id']]);
                 }else{
-                    $table[$p['fdm1_id']][$m['month']] = self::formatAmt(0);
+                    $table[$p['row_id']][$m['month']] = self::formatAmtFromInt(0);
                 }
             }
         }
@@ -98,6 +164,54 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         return $table;
     }
     
+    public static function calcTotoals($table){
+        
+        $r_total = array();
+        $c_total = array();
+        $total = 0;
+        foreach ($table as $k_row => $row){
+            $r_total[$k_row] = 0;
+            $row_total = 0;
+            foreach ($row as $k_column => $cell){
+                $row_total += $cell;
+                if(!isset($c_total[$k_column])){
+                    $c_total[$k_column] = 0;
+                }
+                $c_total[$k_column] += $cell;
+            }
+            $r_total[$k_row] = self::formatAmt($row_total);
+            $total += $row_total;
+        }
+        
+        foreach($c_total as $k => $v){
+            $c_total[$k] = self::formatAmt($v);
+        }
+        
+        return array(
+            'row' => $r_total, 
+            'column' => $c_total,
+            'total' => $total,
+            );
+        
+    }
+    
+    
+    /**
+     * get formatted amount of money
+     * 
+     * @assert (0) == '0.00'
+     * @param int $nAmt
+     * @return string
+     */
+    public static function formatAmtFromInt($nAmt,$bForExcel = FALSE)
+    {
+        //money_format() ?
+        if($bForExcel){
+            return number_format($nAmt/100, 2, '.', '');
+        }
+        return number_format($nAmt/100, 2, '.', ' ');
+    }    
+
     /**
      * get formatted amount of money
      * 
@@ -109,9 +223,9 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
     {
         //money_format() ?
         if($bForExcel){
-            return number_format($nAmt/100, 2, '.', '');
+            return number_format($nAmt, 2, '.', '');
         }
-        return number_format($nAmt/100, 2, '.', ' ');
+        return number_format($nAmt, 2, '.', ' ');
     }    
     
 }

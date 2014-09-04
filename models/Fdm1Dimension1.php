@@ -55,7 +55,7 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
     public static function getPositions($year){
         $sql = " 
             SELECT 
-              fdm1_id,
+              fdm1_id row_id,
               fdm1_name name 
             FROM
               fdm1_dimension1 
