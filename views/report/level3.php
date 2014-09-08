@@ -1,11 +1,14 @@
 <?php
-$breadcrumbs[Yii::t('D2fixrModule.model', 'Level 1')] = array('level1','year'=>$year);
-$breadcrumbs[Yii::t('D2fixrModule.model', 'Level 2')] = array(
+
+$fdm1 = Fdm1Dimension1::model()->findByPk($fdm1_id);
+$fdm2 = Fdm2Dimension2::model()->findByPk($fdm2_id);
+$breadcrumbs[Yii::t('D2fixrModule.model', 'Home')] = array('level1','year'=>$year);
+$breadcrumbs[$fdm1->itemLabel] = array(
     'level2',
     'year'=>$year,
     'fdm1_id'=>$fdm1_id,
     );
-$breadcrumbs[] = Yii::t('D2fixrModule.model', 'Level 3');
+$breadcrumbs[] = $fdm2->itemLabel;
 $this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array(
     'links' => $breadcrumbs,
     ));
@@ -14,7 +17,7 @@ $this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array(
 <div class="table-header">
     <?php
     echo Yii::t('D2fixrModule.model', 'Dimensions:'). ' ';
-    echo Yii::t('D2fixrModule.model', 'Level 1'). ' / ';
+    echo $fdm1->itemLabel . ' > ' . $fdm2->itemLabel . ' / ';
     echo Yii::t('D2fixrModule.model', 'Year:');
     $prev_year = $year - 1;
     $next_year = $year + 1;

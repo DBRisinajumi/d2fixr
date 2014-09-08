@@ -300,6 +300,14 @@ public function accessRules()
             } catch (Exception $e) {
                 $model->addError($model->tableSchema->primaryKey, $e->getMessage());
             }
+            
+            //if period, do postion save() for full calculation
+            if($fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
+                $form_model_ref_field = $model_fixr->fixrPositionFret->getRefIdFIeldName();
+                $form_model_name = $model_fixr->fixrPositionFret->fret_model;   
+                $period_model = new $form_model_name;
+                $period_model->save();
+            }
         } 
 
     }

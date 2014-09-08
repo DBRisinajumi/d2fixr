@@ -20,7 +20,7 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
 
     public function getItemLabel()
     {
-        return parent::getItemLabel();
+        return (string) $this->fdm2_name;
     }
 
     public function behaviors()
@@ -67,6 +67,7 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
         }
         //search existing record
         $criteria = new CDbCriteria;
+        $criteria->compare('fdm2_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
         $criteria->compare('fdm2_fret_id', $fret_id);
         $criteria->compare('fdm2_ref_id', $ref_id);
         
@@ -78,6 +79,7 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
         
         //add record
         $fdm2 = new Fdm2Dimension2;
+        $fdm2->fdm2_sys_ccmp_id = Yii::app()->sysCompany->getActiveCompany();
         $fdm2->fdm2_fret_id = $fret_id;
         $fdm2->fdm2_ref_id = $ref_id;
         $fdm2->fdm2_fdm1_id = $fret->fret_fdm1_id;
@@ -97,6 +99,7 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
               fdm2_dimension2
             WHERE 
               fdm2_fdm1_id = {$fdm1_id}
+              AND fdm2_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."
             ORDER BY fdm2_name 
                ";
         return Yii::app()->db->createCommand($sql)->queryAll();

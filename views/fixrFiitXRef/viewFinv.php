@@ -40,9 +40,6 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
                 'attributes' => array(
 
                 array(
-                    'name' => 'finv_series_number',
-                ),
-                array(
                     'name' => 'finv_number',
                 ),
                 array(

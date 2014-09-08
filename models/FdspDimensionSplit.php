@@ -1,10 +1,10 @@
 <?php
 
 // auto-loading
-Yii::setPathOfAlias('Fdm1Dimension1', dirname(__FILE__));
-Yii::import('Fdm1Dimension1.*');
+Yii::setPathOfAlias('FdspDimensionSplit', dirname(__FILE__));
+Yii::import('FdspDimensionSplit.*');
 
-class Fdm1Dimension1 extends BaseFdm1Dimension1
+class FdspDimensionSplit extends BaseFdspDimensionSplit
 {
 
     // Add your model-specific methods here. This file will not be overriden by gtc except you force it.
@@ -20,7 +20,7 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
 
     public function getItemLabel()
     {
-                return (string) $this->fdm1_name;
+        return parent::getItemLabel();
     }
 
     public function behaviors()
@@ -52,18 +52,4 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
         ));
     }
 
-    public static function getPositions($year){
-        $sql = " 
-            SELECT 
-              fdm1_id row_id,
-              fdm1_name name 
-            FROM
-              fdm1_dimension1 
-            WHERE
-              fdm1_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."
-            ORDER BY fdm1_name 
-               ";
-        return Yii::app()->db->createCommand($sql)->queryAll();
-    }    
-    
 }

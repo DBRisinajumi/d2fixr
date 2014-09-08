@@ -145,4 +145,8 @@ return array (
   'Select period type' => 'Izvēlaties perioda tipu',
   'Set expenses period' => 'Izvēlaties perioda tipu',
   'Set expenses position' => 'Izvēlaties uzturēšanas pozīciju',
+  'Dimensions:' => 'Dimensijas:',
+  'Home' => 'Sākums',  
+  'Year:' => 'Gads:',  
+  'Total' => 'Kopā',  
 );

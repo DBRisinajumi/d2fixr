@@ -15,6 +15,8 @@
  * @property string $fixr_base_amt
  *
  * Relations of table "fixr_fiit_x_ref" available as properties of the model:
+ * @property FddaDimData[] $fddaDimDatas
+ * @property FddpDimDataPeriod[] $fddpDimDataPeriods
  * @property FretRefType $fixrPeriodFret
  * @property FiitInvoiceItem $fixrFiit
  * @property FcrnCurrency $fixrFcrn
@@ -22,6 +24,7 @@
  * @property FretRefType $fixrPositionFret
  * @property FpedPeriodDate[] $fpedPeriodDates
  * @property FpeoPeriodOdo[] $fpeoPeriodOdos
+ * @property VexpExpenses[] $vexpExpenses
  * @property VtdcTruckDoc[] $vtdcTruckDocs
  */
 abstract class BaseFixrFiitXRef extends CActiveRecord
@@ -70,6 +73,8 @@ abstract class BaseFixrFiitXRef extends CActiveRecord
     {
         return array_merge(
             parent::relations(), array(
+                'fddaDimDatas' => array(self::HAS_MANY, 'FddaDimData', 'fdda_fixr_id'),
+                'fddpDimDataPeriods' => array(self::HAS_MANY, 'FddpDimDataPeriod', 'fddp_fixr_id'),
                 'fixrPeriodFret' => array(self::BELONGS_TO, 'FretRefType', 'fixr_period_fret_id'),
                 'fixrFiit' => array(self::BELONGS_TO, 'FiitInvoiceItem', 'fixr_fiit_id'),
                 'fixrFcrn' => array(self::BELONGS_TO, 'FcrnCurrency', 'fixr_fcrn_id'),
@@ -77,6 +82,7 @@ abstract class BaseFixrFiitXRef extends CActiveRecord
                 'fixrPositionFret' => array(self::BELONGS_TO, 'FretRefType', 'fixr_position_fret_id'),
                 'fpedPeriodDates' => array(self::HAS_MANY, 'FpedPeriodDate', 'fped_fixr_id'),
                 'fpeoPeriodOdos' => array(self::HAS_MANY, 'FpeoPeriodOdo', 'fpeo_fixr_id'),
+                'vexpExpenses' => array(self::HAS_MANY, 'VexpExpenses', 'vexp_fixr_id'),
                 'vtdcTruckDocs' => array(self::HAS_MANY, 'VtdcTruckDoc', 'vtdc_fixr_id'),
             )
         );

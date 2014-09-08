@@ -231,7 +231,13 @@ class FixrFiitXRef extends BaseFixrFiitXRef
             );
         }
         
-        $this->fixr_period_fret_id = $this->fixr_position_fret_id;
+        //identifcē modeļus, kuros uzdodas periods
+        if(!empty($this->fixr_position_fret_id) 
+                && empty($this->fixr_period_fret_id) 
+                && $this->fixrPositionFret->fret_period_fret_id_list == $this->fixr_position_fret_id
+                ){
+            $this->fixr_period_fret_id = $this->fixr_position_fret_id;
+        }
 
         return parent::save($runValidation, $attributes);
     }    

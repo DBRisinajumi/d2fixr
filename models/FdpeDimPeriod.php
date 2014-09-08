@@ -73,12 +73,15 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         /**
          * split in periods
          */
+        $kTotal = 0;
         while ($period_data = self::getPeriodLengthData($dt_from, $dt_to,$period_type)) {
             $periods_seconds += $period_data['in_period_sec'];
 
             $periods[] = array(
                 'period_id' => $period_data['id'],
-                'in_period_sec' => $period_data['in_period_sec']
+                'in_period_sec' => $period_data['in_period_sec'],
+                'from' => $dt_from,
+                'to' => $period_data['date_to'],
             );
 
             $dt_from = $period_data['date_to'];
@@ -100,8 +103,10 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
             } else {
                 $nK = $aPeriod['in_period_sec']/$periods_seconds;
             }
+            $kTotal += $nK;
             $nPeriodAmt = floor($amt * $nK);
             $periods[$kP]['period_amt'] = $nPeriodAmt;
+            $periods[$kP]['k'] = $nK;
             $total_period_amt += $nPeriodAmt;
         }
 
@@ -112,7 +117,10 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
             $nLastPeriodKey = count($periods) - 1;
             $periods[$nLastPeriodKey]['period_amt'] += $amt - $total_period_amt;
         }
-
+//        var_dump($amt);
+//        var_dump($total_period_amt);
+//        var_dump($kTotal);
+//        var_dump($periods);exit;
         return $periods;
     }
     
@@ -289,7 +297,14 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
     public static function savePeriodData($fdda, $period_type) {
 
         //get old data
-        $sql = "select * from fddp_dim_data_period where fddp_fdda_id = {$fdda->fdda_id}";
+        $sql = "select 
+                * 
+                from 
+                    fddp_dim_data_period 
+                where 
+                    fddp_fdda_id = {$fdda->fdda_id}
+                    AND  fddp_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."
+                   ";
         $fddp_records = Yii::app()->db->createCommand($sql)->queryAll();
         $fddp = array();
         foreach ($fddp_records as $key => $fddp_row) {
@@ -339,13 +354,13 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
                         (
                             `fddp_fdda_id`, `fddp_fdpe_id`, `fddp_amt`, 
                             `fddp_fixr_id`,fddp_fret_id,fddp_fdm2_id,
-                            fddp_fdm3_id,fddp_fdst_id
+                            fddp_fdm3_id,fddp_fdst_id,fddp_sys_ccmp_id
                         )
                         VALUES
                         (
                             {$fdda->fdda_id},{$period['period_id']},{$period['period_amt']},
                             {$fdda->fdda_fixr_id},{$fdda->fdda_fret_id},{$fdda->fdda_fdm2_id},
-                            {$fdda->fdda_fdm3_id},{$period['fdst_id']}
+                            {$fdda->fdda_fdm3_id},{$period['fdst_id']},".Yii::app()->sysCompany->getActiveCompany()."
                         )";
                 Yii::app()->db->createCommand($sql)->query();
                 unset($periods[$kp]);

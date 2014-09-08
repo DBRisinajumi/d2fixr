@@ -1,5 +1,5 @@
 <?php
-$breadcrumbs[] = Yii::t('D2fixrModule.model', 'Level 1');
+$breadcrumbs[] = Yii::t('D2fixrModule.model', 'Home');
 
 $this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array(
     'links' => $breadcrumbs,

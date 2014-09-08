@@ -68,6 +68,7 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
         
         //search existing record
         $criteria = new CDbCriteria;
+        $criteria->compare('fdm3_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());        
         $criteria->compare('fdm3_fret_id', $fret_id);
         $criteria->compare('fdm3_fdm2_id', $fdm2_id);
         $criteria->compare('fdm3_ref_id', $ref_id);
@@ -80,6 +81,7 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
 
         //add record
         $fdm3 = new Fdm3Dimension3;
+        $fdm3->fdm3_sys_ccmp_id = Yii::app()->sysCompany->getActiveCompany();
         $fdm3->fdm3_fret_id = $fret_id;
         $fdm3->fdm3_ref_id = $ref_id;
         $fdm3->fdm3_fdm1_id = $fret->fret_fdm1_id;        
@@ -92,16 +94,7 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
     }    
     
     public static function getPositions($year,$fdm2_id){
-//        $sql = " 
-//            SELECT 
-//              fdm3_id row_id,
-//              fdm3_name name 
-//            FROM
-//              fdm3_dimension3
-//            WHERE 
-//              fdm3_fdm2_id = {$fdm2_id}
-//            ORDER BY fdm3_name 
-//               ";
+
               
         $sql = " 
                 SELECT 
@@ -118,14 +111,18 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
                     OR fdm3_id = fdsp_fdm3_id 
                   INNER JOIN fdst_dim_split_type 
                     ON fdsp_fdst_id = fdst_id 
-                WHERE fdm3_fdm2_id = {$fdm2_id}
+                WHERE 
+                    fdm3_fdm2_id = {$fdm2_id}
+                    AND fdm3_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."    
                 UNION
                 SELECT 
                   fdm3_id row_id,
                   fdm3_name name 
                 FROM
                   fdm3_dimension3 
-                WHERE fdm3_fdm2_id = {$fdm2_id} 
+                WHERE 
+                    fdm3_fdm2_id = {$fdm2_id} 
+                    AND fdm3_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."    
                 ORDER BY NAME             
                   ";      
         return Yii::app()->db->createCommand($sql)->queryAll();
