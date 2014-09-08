@@ -95,8 +95,29 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
     
     public static function getPositions($year,$fdm2_id){
 
+        $sys_company = Yii::app()->sysCompany->getActiveCompany();
               
         $sql = " 
+                SELECT 
+                  CONCAT(fdm3_id, '-', fdst_id, '-',vtrc_id) row_id,
+                  CONCAT(fdm3_name, '/', fdst_name,'/',vtrc_car_reg_nr) name 
+                FROM
+                  fdm3_dimension3 
+                  INNER JOIN fdsp_dimension_split 
+                    ON fdm3_fdm1_id = fdsp_fdm1_id 
+                        AND fdsp_fdm2_id IS NULL 
+                        AND fdsp_fdm3_id IS NULL 
+                    OR fdm3_fdm2_id = fdsp_fdm2_id 
+                        AND fdsp_fdm3_id IS NULL 
+                    OR fdm3_id = fdsp_fdm3_id 
+                  INNER JOIN fdst_dim_split_type 
+                    ON fdsp_fdst_id = fdst_id 
+                  INNER JOIN vtrc_truck
+                WHERE 
+                    fdm3_fdm2_id = {$fdm2_id} 
+                    AND fdst_id = 1 
+                    AND vtrc_cmmp_id = {$sys_company}
+                UNION
                 SELECT 
                   CONCAT(fdm3_id, '-', fdst_id) row_id,
                   CONCAT(fdm3_name, '/', fdst_name) name 
@@ -111,15 +132,17 @@ class Fdm3Dimension3 extends BaseFdm3Dimension3
                     OR fdm3_id = fdsp_fdm3_id 
                   INNER JOIN fdst_dim_split_type 
                     ON fdsp_fdst_id = fdst_id 
+
                 WHERE 
                     fdm3_fdm2_id = {$fdm2_id}
-                    AND fdm3_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."    
+                    AND fdst_id != 1     
                 UNION
                 SELECT 
                   fdm3_id row_id,
                   fdm3_name name 
                 FROM
                   fdm3_dimension3 
+              
                 WHERE 
                     fdm3_fdm2_id = {$fdm2_id} 
                     AND fdm3_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."    

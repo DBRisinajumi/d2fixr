@@ -116,16 +116,26 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
     }       
 
     public static function getDataLevelDim3($year,$fddp_fdm2_id){
+        
         $next_year = $year + 1;
+        
         $sql = " 
             SELECT 
-                case when fddp_fdst_id is null then 
-                    fddp_fdm3_id
-                else    
-                    concat(fddp_fdm3_id,'-',fddp_fdst_id)
-                end row_id,
+                case 
+                    when fddp_fdst_id is null 
+                        then fddp_fdm3_id
+                    when fddp_fdst_ref_id is null 
+                        then concat(fddp_fdm3_id,'-',fddp_fdst_id)
+                    else    
+                        concat(fddp_fdm3_id,'-',fddp_fdst_id,'-',fddp_fdst_ref_id)
+                    end row_id,
               fddp_fdpe_id,
-              SUM(fddp_amt) amt 
+              SUM(
+                CASE fddp_cd
+                    WHEN 'C' THEN fddp_amt
+                    ELSE -fddp_amt
+                END
+                ) amt
             FROM
               fddp_dim_data_period 
               INNER JOIN fdpe_dim_period 
@@ -135,7 +145,9 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
               AND fddp_fdm2_id = {$fddp_fdm2_id}
               AND fddp_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."        
             GROUP BY fddp_fdm3_id,
-              fddp_fdpe_id,fddp_fdst_id 
+              fddp_fdpe_id,
+              fddp_fdst_id,
+              fddp_fdst_ref_id
             ORDER BY fddp_fdm3_id,
               fdpe_dt_from 
                ";
