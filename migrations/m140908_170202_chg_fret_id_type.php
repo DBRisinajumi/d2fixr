@@ -44,6 +44,10 @@ class m140908_170202_chg_fret_id_type extends CDbMigration
             ALTER TABLE `fixr_fiit_x_ref` ADD FOREIGN KEY (`fixr_period_fret_id`) REFERENCES `fret_ref_type`(`fret_id`);
             ALTER TABLE  `fddp_dim_data_period` ADD FOREIGN KEY (`fddp_fret_id`) REFERENCES `fret_ref_type`(`fret_id`);
             
+            ALTER TABLE `fdst_dim_split_type`   
+              ADD COLUMN `fdst_type` CHAR(10) NULL AFTER `fdst_name`,
+              ADD COLUMN `fdst_dim_level` TINYINT NULL AFTER `fdst_type`;
+
         ");
 	}
 

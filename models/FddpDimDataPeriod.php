@@ -63,7 +63,7 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
               fddp_dim_data_period 
               INNER JOIN fdpe_dim_period 
                 ON fddp_fdpe_id = fdpe_id 
-            WHERE fdpe_dt_from > '{$year}.01.01' 
+            WHERE fdpe_dt_from >= '{$year}.01.01' 
               AND fdpe_dt_from < '{$next_year}.01.01' 
               AND fddp_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."        
             GROUP BY fddp_fdm1_id,
@@ -94,7 +94,7 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
               fddp_dim_data_period 
               INNER JOIN fdpe_dim_period 
                 ON fddp_fdpe_id = fdpe_id 
-            WHERE fdpe_dt_from > '{$year}.01.01' 
+            WHERE fdpe_dt_from >= '{$year}.01.01' 
               AND fdpe_dt_from < '{$next_year}.01.01' 
               AND fddp_fdm1_id = {$fddp_fdm1_id}
               AND fddp_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."    
@@ -140,7 +140,7 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
               fddp_dim_data_period 
               INNER JOIN fdpe_dim_period 
                 ON fddp_fdpe_id = fdpe_id 
-            WHERE fdpe_dt_from > '{$year}.01.01' 
+            WHERE fdpe_dt_from >= '{$year}.01.01' 
               AND fdpe_dt_from < '{$next_year}.01.01' 
               AND fddp_fdm2_id = {$fddp_fdm2_id}
               AND fddp_sys_ccmp_id = ".Yii::app()->sysCompany->getActiveCompany()."        

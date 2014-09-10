@@ -377,14 +377,16 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
                 $sql = "INSERT INTO `fddp_dim_data_period`
                         (
                             `fddp_fdda_id`, `fddp_fdpe_id`, `fddp_amt`, 
-                            `fddp_fixr_id`,fddp_fret_id,fddp_fdm2_id,
+                            `fddp_fixr_id`,fddp_fret_id,fddp_fdm1_id,
+                            fddp_fdm2_id,
                             fddp_fdm3_id,fddp_fdst_id,fddp_fdst_ref_id,
 							fddp_sys_ccmp_id
                         )
                         VALUES
                         (
                             {$fdda->fdda_id},{$period['period_id']},{$period['period_amt']},
-                            {$fdda->fdda_fixr_id},{$fdda->fdda_fret_id},{$fdda->fdda_fdm2_id},
+                            {$fdda->fdda_fixr_id},{$fdda->fdda_fret_id},{$fdda->fdda_fdm1_id},
+                            {$fdda->fdda_fdm2_id},    
                             {$fdda->fdda_fdm3_id},{$period['fdst_id']},{$period['fddp_fdst_ref_id']}
 							,".Yii::app()->sysCompany->getActiveCompany()."
                         )";
