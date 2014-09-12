@@ -51,5 +51,12 @@ class FdstDimSplitType extends BaseFdstDimSplitType
             'criteria' => $this->searchCriteria($criteria),
         ));
     }
+    
+    protected function beforeFind() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdst_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
+        $this->dbCriteria->mergeWith($criteria);
+        parent::beforeFind();
+    }    
 
 }

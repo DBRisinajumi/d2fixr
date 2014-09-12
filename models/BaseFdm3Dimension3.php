@@ -21,6 +21,8 @@
  * @property Fdm2Dimension2 $fdm3Fdm2
  * @property Fdm1Dimension1 $fdm3Fdm1
  * @property FdspDimensionSplit[] $fdspDimensionSplits
+ * @property VdimDimension[] $vdimDimensions
+ * @property VpdmPlaningDimension[] $vpdmPlaningDimensions
  */
 abstract class BaseFdm3Dimension3 extends CActiveRecord
 {
@@ -75,6 +77,8 @@ abstract class BaseFdm3Dimension3 extends CActiveRecord
                 'fdm3Fdm2' => array(self::BELONGS_TO, 'Fdm2Dimension2', 'fdm3_fdm2_id'),
                 'fdm3Fdm1' => array(self::BELONGS_TO, 'Fdm1Dimension1', 'fdm3_fdm1_id'),
                 'fdspDimensionSplits' => array(self::HAS_MANY, 'FdspDimensionSplit', 'fdsp_fdm3_id'),
+                'vdimDimensions' => array(self::HAS_MANY, 'VdimDimension', 'vdim_fdm3_id'),
+                'vpdmPlaningDimensions' => array(self::HAS_MANY, 'VpdmPlaningDimension', 'vpdm_fdm3_id'),
             )
         );
     }

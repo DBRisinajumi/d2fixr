@@ -52,6 +52,13 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
         ));
     }
     
+    protected function beforeFind() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdm2_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
+        $this->dbCriteria->mergeWith($criteria);
+        parent::beforeFind();
+    }    
+    
     /**
      * get or create record for table
      * @param int $fret_id - ref type (first dimension level)

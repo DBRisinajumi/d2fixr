@@ -245,9 +245,6 @@
         <!-- main inputs -->
 
             </div>
-    <div class="row">
-        
-    </div>
 
     <div class="alert">
         
@@ -266,4 +263,5 @@
     </div>
 
 
-    <?php $this->endWidget() ?>    <?php  ?></div> <!-- form -->
+    <?php $this->endWidget() ?>  
+</div>

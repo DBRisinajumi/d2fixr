@@ -76,7 +76,7 @@ public function accessRules()
         }
     }
 
-    public function actionCreate()
+    public function actionCreate($fdm1_id = false)
     {
         $model = new Fdm2Dimension2;
         $model->scenario = $this->scenario;
@@ -99,6 +99,10 @@ public function accessRules()
             }
         } elseif (isset($_GET['Fdm2Dimension2'])) {
             $model->attributes = $_GET['Fdm2Dimension2'];
+        }
+        
+        if($fdm1_id){
+            $model->fdm2_fdm1_id = $fdm1_id;
         }
 
         $this->render('create', array('model' => $model));
@@ -173,7 +177,7 @@ public function accessRules()
         }
     }
 
-    public function actionAdmin()
+    public function actionAdmin($fdm1_id)
     {
         $model = new Fdm2Dimension2('search');
         $scopes = $model->scopes();
@@ -184,9 +188,16 @@ public function accessRules()
 
         if (isset($_GET['Fdm2Dimension2'])) {
             $model->attributes = $_GET['Fdm2Dimension2'];
+            $model->fdm2_fdm1_id = $fdm1_id;
         }
-
-        $this->render('admin', array('model' => $model));
+        $model->fdm2_fdm1_id = $fdm1_id;
+        
+        $fdm1 = Fdm1Dimension1::model()->findByPk($fdm1_id);
+        
+        $this->render('admin', array(
+            'model' => $model,
+            'fdm1' => $fdm1,
+            ));
     }
 
     public function loadModel($id)

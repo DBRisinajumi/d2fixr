@@ -20,7 +20,7 @@ class FretRefType extends BaseFretRefType
 
     public function getItemLabel()
     {
-        return parent::getItemLabel();
+        return (string) $this->fret_model;
     }
 
     public function getRefIdFIeldName()

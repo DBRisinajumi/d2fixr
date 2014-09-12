@@ -52,6 +52,13 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         ));
     }
 
+    protected function beforeFind() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('fddp_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
+        $this->dbCriteria->mergeWith($criteria);
+        parent::beforeFind();
+    }     
+    
     public static function getDataLevelDim1($year){
         $next_year = $year + 1;
         $sql = " 

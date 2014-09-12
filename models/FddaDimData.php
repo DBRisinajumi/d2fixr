@@ -62,6 +62,13 @@ class FddaDimData extends BaseFddaDimData
         ));
     }
     
+    protected function beforeFind() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdda_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
+        $this->dbCriteria->mergeWith($criteria);
+        parent::beforeFind();
+    }    
+    
     public function save($runValidation = true, $attributes = null) {
         
         //get additional data for fdda

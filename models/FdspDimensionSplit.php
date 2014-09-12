@@ -52,4 +52,11 @@ class FdspDimensionSplit extends BaseFdspDimensionSplit
         ));
     }
 
+    protected function beforeFind() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdsp_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
+        $this->dbCriteria->mergeWith($criteria);
+        parent::beforeFind();
+    }    
+    
 }

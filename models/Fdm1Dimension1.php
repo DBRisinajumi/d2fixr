@@ -41,6 +41,7 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
           ) */
         );
     }
+    
 
     public function search($criteria = null)
     {
@@ -52,6 +53,20 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
         ));
     }
 
+    protected function beforeFind() {
+        $criteria = new CDbCriteria;
+        $criteria->compare('fdm1_sys_ccmp_id', Yii::app()->sysCompany->getActiveCompany());
+        $this->dbCriteria->mergeWith($criteria);
+        parent::beforeFind();
+    }
+
+    protected function beforeSave() {
+        
+        $this->fdm1_sys_ccmp_id = Yii::app()->sysCompany->getActiveCompany(); 
+        return parent::beforeSave();
+    }
+
+    
     public static function getPositions($year){
         $sql = " 
             SELECT 
