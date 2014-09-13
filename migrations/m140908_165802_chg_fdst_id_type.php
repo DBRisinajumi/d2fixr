@@ -1,6 +1,6 @@
 <?php
 
-class m140908_165801_chg_fdst_id_type extends CDbMigration
+class m140908_165802_chg_fdst_id_type extends CDbMigration
 {
 
 	/**
