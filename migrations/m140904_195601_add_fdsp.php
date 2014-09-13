@@ -18,7 +18,7 @@ class m140904_195601_add_fdsp extends CDbMigration
                     `fdst_code` CHAR(10) NOT NULL, 
                     `fdst_name` VARCHAR(20) NOT NULL, 
                     `fdst_notes` TEXT, 
-                    PRIMARY KEY (`fdst_id`); 
+                    PRIMARY KEY (`fdst_id`) ) ENGINE=INNODB CHARSET=utf8;
                 ALTER TABLE `fdsp_dimension_split` ADD FOREIGN KEY (`fdsp_fdst_id`) REFERENCES `eu`.`fdst_dim_split_type`(`fdst_id`); 
                 ALTER TABLE `fddp_dim_data_period` ADD COLUMN `fddp_fdst_id` TINYINT UNSIGNED NULL AFTER `fddp_fdm3_id`; 
                 ALTER TABLE `fddp_dim_data_period` ADD FOREIGN KEY (`fddp_fdst_id`) REFERENCES `eu`.`fdst_dim_split_type`(`fdst_id`); 
