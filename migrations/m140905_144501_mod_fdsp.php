@@ -10,7 +10,8 @@ class m140905_144501_mod_fdsp extends CDbMigration
 	{
 		$this->execute("
             ALTER TABLE `fddp_dim_data_period` 
-                CHANGE `fddp_fdst_id` `fddp_fdst_id` TINYINT(3) UNSIGNED NULL COMMENT 'dimension split type', 
+                CHANGE `fddp_fdst_id` `fddp_fdst_id` TINYINT(3) UNSIGNED NULL COMMENT 'dimension split type';
+            ALTER TABLE `fddp_dim_data_period` 
                 ADD COLUMN `fddp_cd` ENUM('C','D') DEFAULT 'C' NOT NULL COMMENT 'Credit/Debit' AFTER `fddp_fdst_id`, 
                 ADD COLUMN `fddp_fdst_ref_id` INT UNSIGNED NULL COMMENT 'link on ref table record' AFTER `fddp_cd`; 
 
