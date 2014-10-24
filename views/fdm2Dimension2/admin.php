@@ -9,7 +9,7 @@ $breadcrumbs = array(
         Yii::t('D2fixrModule.model', 'Home') => array('fdm1Dimension1/admin'),
         $fdm1->fdm1_name,
     );
-$this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array("links" => $breadcrumbs))
+$this->widget("TbD2Breadcrumbs", array("links" => $breadcrumbs))
 ?>
 
 

@@ -9,7 +9,7 @@ $breadcrumbs[$fdm1->itemLabel] = array(
     'fdm1_id'=>$fdm1_id,
     );
 $breadcrumbs[] = $fdm2->itemLabel;
-$this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array(
+$this->widget("TbD2Breadcrumbs", array(
     'links' => $breadcrumbs,
     ));
 ?>

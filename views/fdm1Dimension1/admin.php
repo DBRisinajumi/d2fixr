@@ -4,7 +4,7 @@ $this->setPageTitle(Yii::t('D2fixrModule.model', 'DIM 1 List'));
 $breadcrumbs = array(
         Yii::t('D2fixrModule.model', 'Home'),
     );
-$this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array("links" => $breadcrumbs))
+$this->widget("TbD2Breadcrumbs", array("links" => $breadcrumbs))
 ?>
 
 

@@ -3,7 +3,7 @@ $fdm1 = Fdm1Dimension1::model()->findByPk($fdm1_id);
 
 $breadcrumbs[Yii::t('D2fixrModule.model', 'Home')] = array('level1','year'=>$year);
 $breadcrumbs[] = $fdm1->itemLabel;
-$this->widget("vendor.uldisn.ace.widgets.TbAceBreadcrumbs", array(
+$this->widget("TbD2Breadcrumbs", array(
     'links' => $breadcrumbs,
     ));
 ?>
