@@ -19,7 +19,28 @@
         $total +=  $row['fddp_amt']/100;
         ?>
     <tr>
-        <td><?=$row['finv_number']?></td>
+        <td>
+            <?php 
+            $url = array('/d2finv/finvInvoice/view','finv_id'=>$row['finv_id']);
+            $htmlOptions = array(
+                    'title' => Yii::t('D2fixrModule.model', 'Details'),
+                    'data-toggle' => 'tooltip',
+                    'target' => '_blank',
+            );
+            echo $row['finv_number'] 
+                    . ' '
+                    . CHtml::link(Yii::t('D2fixrModule.model', 'Invoice') . ' <i class="icon-external-link"></i>',$url,$htmlOptions); 
+
+            $url = array('/d2fixr/FixrFiitXRef/viewFinv','finv_id'=>$row['finv_id']);
+            $htmlOptions = array(
+                    'title' => Yii::t('D2fixrModule.model', 'Invoice expenses postions'),
+                    'data-toggle' => 'tooltip',
+                    'target' => '_blank',                
+            );
+            echo ' '
+                    . CHtml::link(Yii::t('D2fixrModule.model', 'Positions') . ' <i class="icon-external-link"></i>',$url,$htmlOptions); 
+            ?>        
+        </td>
         <td><?=$row['finv_date']?></td>
         <td><?=$row['fiit_desc']?></td>
         <td class="numeric-column"><?=$row['fddp_amt']/100?></td>
