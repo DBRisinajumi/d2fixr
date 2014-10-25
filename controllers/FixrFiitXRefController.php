@@ -11,56 +11,48 @@ class FixrFiitXRefController extends Controller
     public $menu_route = "d2fixr/FixrFiitXRef/FinvInvoice";   
 
 
-public function filters()
-{
-    return array(
-        'accessControl',
-    );
-}
-
-public function accessRules()
-{
-     return array(
-        array(
-            'allow',
-            'actions' => array('popupPosition','popupPeriod','ShowPositionSubForm','ShowPeriodSubForm','savePositionSubForm','savePeriodSubForm','create', 'admin', 'view', 'update', 'editableSaver', 'delete','ajaxCreate','viewFinv'),
-            'roles' => array('D2finv.FixrFiitXRef.*'),
-        ),
-        array(
-            'allow',
-            'actions' => array('create','ajaxCreate'),
-            'roles' => array('D2finv.FixrFiitXRef.Create'),
-        ),
-        array(
-            'allow',
-            'actions' => array('view','finvInvoice', 'admin','FixrFiitXRef'), // let the user view the grid
-            'roles' => array('D2finv.FixrFiitXRef.View'),
-        ),
-        array(
-            'allow',
-            'actions' => array('update', 'editableSaver','viewFinv'),
-            'roles' => array('D2finv.FixrFiitXRef.Update'),
-        ),
-        array(
-            'allow',
-            'actions' => array('delete'),
-            'roles' => array('D2finv.FixrFiitXRef.Delete'),
-        ),
-        array(
-            'deny',
-            'users' => array('*'),
-        ),
-    );
-}
-
-    public function beforeAction($action)
+    public function filters()
     {
-        parent::beforeAction($action);
-        if ($this->module !== null) {
-            $this->breadcrumbs[$this->module->Id] = array('/' . $this->module->Id);
-        }
-        return true;
+        return array(
+            'accessControl',
+        );
     }
+
+    public function accessRules()
+    {
+         return array(
+            array(
+                'allow',
+                'actions' => array('popupPosition','popupPeriod','ShowPositionSubForm','ShowPeriodSubForm','savePositionSubForm','savePeriodSubForm','create', 'admin', 'view', 'update', 'editableSaver', 'delete','ajaxCreate','viewFinv'),
+                'roles' => array('D2finv.FixrFiitXRef.*'),
+            ),
+            array(
+                'allow',
+                'actions' => array('create','ajaxCreate'),
+                'roles' => array('D2finv.FixrFiitXRef.Create'),
+            ),
+            array(
+                'allow',
+                'actions' => array('view','finvInvoice', 'admin','FixrFiitXRef'), // let the user view the grid
+                'roles' => array('D2finv.FixrFiitXRef.View'),
+            ),
+            array(
+                'allow',
+                'actions' => array('update', 'editableSaver','viewFinv'),
+                'roles' => array('D2finv.FixrFiitXRef.Update'),
+            ),
+            array(
+                'allow',
+                'actions' => array('delete'),
+                'roles' => array('D2finv.FixrFiitXRef.Delete'),
+            ),
+            array(
+                'deny',
+                'users' => array('*'),
+            ),
+        );
+    }
+
     
     /**
      * Create popup with service type listbox and ajax loading form
@@ -274,7 +266,7 @@ public function accessRules()
             $form_model_name = $model_fixr->fixrPeriodFret->fret_model;            
         }
         
-        //vreate from model
+        //create from model
         $model = new $form_model_name;
         $model->scenario = $this->scenario;
 
@@ -301,13 +293,19 @@ public function accessRules()
                 $model->addError($model->tableSchema->primaryKey, $e->getMessage());
             }
             
-            //if period, do postion save() for full calculation
-            if($fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
-                $form_model_ref_field = $model_fixr->fixrPositionFret->getRefIdFIeldName();
-                $form_model_name = $model_fixr->fixrPositionFret->fret_model;   
-                $period_model = new $form_model_name;
-                $period_model->save();
-            }
+//            //if period, do postion save() for full calculation
+//            if($fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
+//                $fret = $model_fixr->fixrPeriodFret;
+//                $form_model_ref_field = $fret->getRefIdFIeldName();
+//                $form_model_name = $fret->fret_model;   
+//                if($form_model_name != 'FddaDimData'){
+//                $period_model = new $form_model_name;
+//                $period_model = $period_model->find(array($form_model_ref_field=>$fixr_id));
+//                if($period_model){
+//                    $period_model->save();
+//                }
+//                }
+//            }
         } 
 
     }

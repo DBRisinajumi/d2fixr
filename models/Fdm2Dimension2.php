@@ -47,8 +47,13 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
         if (is_null($criteria)) {
             $criteria = new CDbCriteria;
         }
+
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $this->searchCriteria($criteria),
+            'sort'=>array(
+                'defaultOrder'=>'fdm2_name',
+            )
+
         ));
     }
     
@@ -86,7 +91,6 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
         
         //add record
         $fdm2 = new Fdm2Dimension2;
-        $fdm2->fdm2_sys_ccmp_id = Yii::app()->sysCompany->getActiveCompany();
         $fdm2->fdm2_fret_id = $fret_id;
         $fdm2->fdm2_ref_id = $ref_id;
         $fdm2->fdm2_fdm1_id = $fret->fret_fdm1_id;
@@ -111,5 +115,17 @@ class Fdm2Dimension2 extends BaseFdm2Dimension2
                ";
         return Yii::app()->db->createCommand($sql)->queryAll();
     }        
+    
+    public function beforeSave()
+    {
+
+        $this->fdm2_sys_ccmp_id = Yii::app()->sysCompany->getActiveCompany();
+        
+        if(!parent::beforeSave()){
+            return false;
+        }
+        
+        return true;
+    }
     
 }

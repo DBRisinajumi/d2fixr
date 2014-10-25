@@ -8,6 +8,7 @@ class Fdm1Dimension1Controller extends Controller
     public $defaultAction = "admin";
     public $scenario = "crud";
     public $scope = "crud";
+    public $menu_route = "d2fixr/fdm1Dimension1";   
 
 
 public function filters()

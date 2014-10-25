@@ -23,7 +23,8 @@ public function accessRules()
      return array(
         array(
             'allow',
-            'actions' => array('level1','level2','level3'),
+            'actions' => array('level1','level2','level3'
+                ,'level1transactions','level2transactions','level3transactions'),
             'roles' => array('D2fixr.report.main'),
         ),
         array(
@@ -149,4 +150,70 @@ public function accessRules()
             ));
     }
 
+    /**
+     * level 1 month transactions
+     * @param type $fdm1_id
+     * @param type $year
+     * @param type $month
+     */
+    public function actionLevel1transactions($fdm1_id,$year,$month){
+        
+        $fdpe_id = FdpeDimPeriod::getIdByYearMonth($year,$month);
+        $data = FdpeDimPeriod::getDimMonthPositions($fdpe_id,$fdm1_id);
+
+        $fdm1 = Fdm1Dimension1::model()->findByPk($fdm1_id);
+        
+        $this->renderPartial('transactions', array(
+            'year' => $year,
+            'month' => $month,
+            'label' => $fdm1->fdm1_name,
+            'data' => $data,
+            ));        
+        
+    }
+
+    /**
+     * level 1 month transactions
+     * @param type $fdm1_id
+     * @param type $year
+     * @param type $month
+     */
+    public function actionLevel2transactions($fdm2_id,$year,$month){
+        
+        $fdpe_id = FdpeDimPeriod::getIdByYearMonth($year,$month);
+        $data = FdpeDimPeriod::getDimMonthPositions($fdpe_id,false,$fdm2_id);
+
+        $fdm2 = Fdm2Dimension2::model()->findByPk($fdm2_id);
+        
+        $this->renderPartial('transactions', array(
+            'year' => $year,
+            'month' => $month,
+            'label' => $fdm2->fdm2_name,
+            'data' => $data,
+            ));        
+        
+    }
+
+    /**
+     * level 1 month transactions
+     * @param type $fdm1_id
+     * @param type $year
+     * @param type $month
+     */
+    public function actionLevel3transactions($fdm3_id,$year,$month){
+        
+        $fdpe_id = FdpeDimPeriod::getIdByYearMonth($year,$month);
+        $data = FdpeDimPeriod::getDimMonthPositions($fdpe_id,false,false,$fdm3_id);
+
+        $fdm3 = Fdm3Dimension3::model()->findByPk($fdm3_id);
+        
+        $this->renderPartial('transactions', array(
+            'year' => $year,
+            'month' => $month,
+            'label' => $fdm3->fdm3_name,
+            'data' => $data,
+            ));        
+        
+    }
+    
 }

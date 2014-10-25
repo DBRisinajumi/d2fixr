@@ -231,7 +231,7 @@ class FddpDimDataPeriod extends BaseFddpDimDataPeriod
         if($bForExcel){
             return number_format($nAmt/100, 2, '.', '');
         }
-        return number_format($nAmt/100, 2, '.', ' ');
+        return number_format($nAmt/100, 2, '.', '');
     }    
 
     /**

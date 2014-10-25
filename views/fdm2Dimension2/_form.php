@@ -1,5 +1,4 @@
 <div class="crud-form">
-    <?php  ?>    
     <?php
         Yii::app()->bootstrap->registerPackage('select2');
         Yii::app()->clientScript->registerScript('crud/variant/update','$("#fdm2-dimension2-form select").select2();');
@@ -53,9 +52,7 @@
                             ?>                            </span>
                         </div>
                     </div>
-                    <?php  ?>
-                                    
-                    <?php  ?>
+
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'fdm2_name') ?>
@@ -69,7 +66,30 @@
                             ?>                            </span>
                         </div>
                     </div>
-                    <?php  ?>
+                
+                
+                    <div class="control-group">
+                        <div class='control-label'>
+                            <?php echo $form->labelEx($model, 'fdm2_fret_id') ?>
+                        </div>
+                        <div class='controls'>
+                            <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
+                                 title='<?php echo (($t = Yii::t('D2fixrModule.model', 'tooltip.fdm2_fret_id')) != 'tooltip.fdm2_fret_id')?$t:'' ?>'>
+                                <?php
+                            
+                            $find_all_param = array(
+                                'order'=>'fret_label',
+                                'condition'=>"fret_controller_action = 'FixrFiitXRef/popupPosition'",
+                                );                                
+                            $table_data = FretRefType::model()->findAll($find_all_param);
+                            $list_data = CHtml::listData($table_data,'fret_id','fret_label');
+                            echo $form->listBox($model,'fdm2_fret_id',$list_data,array('class'=>'span6'));
+                            echo $form->error($model,'fdm2_fret_id')
+                            ?>                            
+                            </span>
+                        </div>
+                    </div>
+
                                     
             </div>
         </div>

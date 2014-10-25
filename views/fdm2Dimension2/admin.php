@@ -30,15 +30,21 @@ $this->widget("TbD2Breadcrumbs", array("links" => $breadcrumbs))
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model', 'DIM 2 List');?>            </h1>
+                <?php echo Yii::t('D2fixrModule.model', $fdm1->fdm1_name);?>            </h1>
         </div>
     </div>
 </div>
 
-<?php Yii::beginProfile('Fdm2Dimension2.view.grid'); ?>
+<?php 
 
+Yii::beginProfile('Fdm2Dimension2.view.grid');
 
-<?php
+$find_all_param = array(
+    'order'=>'fret_label',
+    'condition'=>"fret_controller_action = 'FixrFiitXRef/popupPosition'",
+    );                                
+$fret_data = FretRefType::model()->findAll($find_all_param);
+
 $this->widget('TbGridView',
     array(
         'id' => 'fdm2-dimension2-grid',
@@ -75,7 +81,7 @@ $this->widget('TbGridView',
                 'editable' => array(
                     'type' => 'select',
                     'url' => $this->createUrl('/d2fixr/fdm2Dimension2/editableSaver'),
-                    'source' => CHtml::listData(FretRefType::model()->findAll(array('limit' => 1000)), 'fret_id', 'itemLabel'),
+                    'source' => CHtml::listData($fret_data, 'fret_id', 'itemLabel'),
                     //'placement' => 'right',
                 )
             ),
@@ -96,7 +102,12 @@ $this->widget('TbGridView',
                     'class' => 'numeric-column',
                 ),
             ),
-
+            array(
+                //tinyint(4)
+                'header' => 'DIM 3',
+                'type' => 'raw',
+                'value' => 'CHtml::link("OPEN", array("fdm3Dimension3/admin","fdm2_id" => $data->fdm2_id))',
+            ),
             array(
                 'class' => 'TbButtonColumn',
                 'buttons' => array(

@@ -48,8 +48,13 @@ class Fdm1Dimension1 extends BaseFdm1Dimension1
         if (is_null($criteria)) {
             $criteria = new CDbCriteria;
         }
+
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $this->searchCriteria($criteria),
+            'sort'=>array(
+                'defaultOrder'=>'fdm1_name',
+            )
+
         ));
     }
 

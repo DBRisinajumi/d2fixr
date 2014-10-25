@@ -446,4 +446,64 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         
     }
 
+    public static function getIdByYearMonth($year,$month){
+        $sql = " 
+            SELECT 
+                fdpe_id
+            FROM
+                fdpe_dim_period 
+            WHERE 
+                fdpe_type = '".FdpeDimPeriod::FDPE_TYPE_MONTLY."'
+                and fdpe_dt_from = :date_from
+               ";
+        
+        $rawData = Yii::app()->db->createCommand($sql);
+        $month_start_date =  $year.'-'.$month.'-01';
+        $rawData->bindParam(":date_from",$month_start_date);      
+        return $rawData->queryScalar();
+       
+    }
+    
+    public static function getDimMonthPositions($fdpe_id,$fdim1_id = false,$fdim2_id = false,$fdim3_id = false){
+        
+        $sql = " 
+            SELECT 
+              --	*
+              finv_id,
+              finv_number,
+              finv_date,
+              fiit_desc,
+              fixr_base_amt,
+              fddp_amt
+            FROM
+              fddp_dim_data_period 
+              INNER JOIN fixr_fiit_x_ref 
+                ON fddp_fixr_id = fixr_id 
+              INNER JOIN fiit_invoice_item 
+                ON fixr_fiit_id = fiit_id 
+              INNER JOIN finv_invoice 
+                ON fiit_finv_id = finv_id 
+            WHERE fddp_fdpe_id = :fdpe_id
+              AND fddp_fdm1_id = 9 
+              ";
+        
+        if($fdim1_id){
+            $sql .= ' AND fddp_fdm1_id = :fdim1_id';
+            $rawData = Yii::app()->db->createCommand($sql);
+            $rawData->bindParam(":fdim1_id",$fdim1_id);   
+        }elseif($fdim2_id){
+            $sql .= ' AND fddp_fdm2_id = :fdim2_id';
+            $rawData = Yii::app()->db->createCommand($sql);
+            $rawData->bindParam(":fdim2_id",$fdim2_id);   
+        }elseif($fdim3_id){
+            $sql .= ' AND fddp_fdm3_id = :fdim3_id';
+            $rawData = Yii::app()->db->createCommand($sql);
+            $rawData->bindParam(":fdim3_id",$fdim3_id);   
+        }
+        
+        $rawData->bindParam(":fdpe_id",$fdpe_id);      
+        return $rawData->queryAll();        
+        
+    }
+
 }
