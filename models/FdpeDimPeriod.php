@@ -371,6 +371,7 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
                 Yii::app()->db->createCommand($sql)->query();
                 
                 unset($periods[$kp]);
+                unset($fddp[$key]);
                 continue;
             } else {
                 //insert
@@ -396,16 +397,10 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
             }
         }
         //delete old records
-        foreach($periods as $period){
+        foreach($fddp as $row){
             $sql = "DELETE FROM `fddp_dim_data_period`
-                    SET
-                        fddp_amt = {$period['period_amt']},
-                        fddp_fixr_id = {$fdda->fdda_fixr_id},
-                        fddp_fret_id = {$fdda->fdda_fret_id},
-                        fddp_fdm2_id = {$fdda->fdda_fdm2_id},
-                        fddp_fdm3_id = {$fdda->fdda_fdm3_id}
                     WHERE
-                        fddp_id = {$fddp[$period['period_id']]['']}
+                        fddp_id = {$row['fddp_id']}
                     ";        
 
             Yii::app()->db->createCommand($sql)->query();            
