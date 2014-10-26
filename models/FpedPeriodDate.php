@@ -57,5 +57,21 @@ class FpedPeriodDate extends BaseFpedPeriodDate
             'criteria' => $this->searchCriteria($criteria),
         ));
     }
+    
+    /**
+     * common name for FddaDimData
+     * @return date
+     */
+    public function getFddaDateFrom(){
+        return $this->fped_start_date;
+    }
+
+    /**
+     * common name for FddaDimData
+     * @return date
+     */    
+    public function getFddaDateTo(){
+        return $this->fped_end_date;
+    }    
 
 }

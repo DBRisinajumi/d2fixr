@@ -34,7 +34,7 @@ $cancel_buton = $this->widget("bootstrap.widgets.TbButton", array(
 
         <?php
         $this->widget(
-            'TbDetailView',
+            'TbAceDetailView',
             array(
                 'data' => $model,
                 'attributes' => array(

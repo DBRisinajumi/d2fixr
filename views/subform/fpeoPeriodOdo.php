@@ -35,7 +35,51 @@
         </div>
     </div>
     <?php ?>
-
+    <?php  ?>
+    
+    <div class="control-group">
+        <div class='control-label'>
+            <?php echo $form->labelEx($model, 'fpeo_start_date') ?>
+        </div>
+        <div class='controls'>
+            <span class="tooltip-wrapper" data-toggle='tooltip' data-placement="right"
+                 title='<?php echo (($t = Yii::t('TrucksModule.model', 'tooltip.fpeo_start_date')) != 'tooltip.fpeo_start_date')?$t:'' ?>'>
+                <?php
+//            $this->widget('zii.widgets.jui.CJuiDatePicker',
+//         array(
+//                 'model' => $model,
+//                 'attribute' => 'fpeo_start_date',
+//                 'language' =>  strstr(Yii::app()->language.'_','_',true),
+//                 'htmlOptions' => array('size' => 10),
+//                 'options' => array(
+//                     'showButtonPanel' => true,
+//                     'changeYear' => true,
+//                     'changeYear' => true,
+//                     'dateFormat' => 'yy-mm-dd',
+//                     ),
+//                 )
+//             );
+            $this->widget('TbDatePicker', array(
+                          'model' => $model,
+                          'attribute' => 'fpeo_start_date',
+                          'htmlOptions' => array(
+                              'size' => 10,
+                              'class' => 'input-small'
+                          ),
+                          'options' => array(
+                              'autoclose' => true,
+                              'todayHighlight' => true,
+                              'showButtonPanel' => true,
+                              'changeYear' => true,
+                              'format' => 'yyyy-mm-dd',
+                          ),
+                              )
+                      ); 
+            echo $form->error($model,'fpeo_start_date')
+            ?>                            </span>
+        </div>
+    </div>
+    <?php  ?> 
     <?php ?>
     <div class="control-group">
         <div class='control-label'>

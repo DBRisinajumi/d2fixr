@@ -479,7 +479,6 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
               INNER JOIN finv_invoice 
                 ON fiit_finv_id = finv_id 
             WHERE fddp_fdpe_id = :fdpe_id
-              AND fddp_fdm1_id = 9 
               ";
         
         if($fdim1_id){

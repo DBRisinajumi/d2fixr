@@ -129,13 +129,15 @@ $this->endWidget('vendor.uldisn.ace.widgets.CJuiAceDialog');
 
 Yii::app()->clientScript->registerScript('ui_position_click', 
    '
-       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function() {
+       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPosition\']",function(event) {
+          event.preventDefault();
           var ui_dialog_ajax_url = $(this).attr("href");
           $("#ui_position_box").html("");
           $("#PositionDialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 
           return false;
        })   
-       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']",function() {
+       $(document ).on("click","a[href*=\'d2fixr/fixrFiitXRef/popupPeriod\']",function(event) {
+          event.preventDefault();
           var ui_dialog_ajax_url = $(this).attr("href");
           //$("#ui_period_box").html("");
           $("#PeriodDialog").data("opener", this).load(ui_dialog_ajax_url).dialog("open"); 

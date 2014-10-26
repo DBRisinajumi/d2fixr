@@ -69,6 +69,45 @@ class FddaDimData extends BaseFddaDimData
         parent::beforeFind();
     }    
     
+    public static function registre($fixr_id,$fdm2_ref,$fdm2_name,$fdm3_ref,$fdm3_name){
+
+        //get fixr record
+        $fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        if(empty($fixr->fixr_period_fret_id)){
+            return;
+        }
+        
+        //found fret record - definitiom
+        if(empty($fixr->fixrPeriodFret)){
+            return;            
+        }
+        $period_model = $fixr->fixrPeriodFret->fret_model;
+        $period_model_fixr_field = $fixr->fixrPeriodFret->fret_model_fixr_id_field;   
+       
+        
+        //get period
+        $attributes = array(
+            $period_model_fixr_field => $fixr->fixr_id,
+        );
+        
+        //$fped = FpedPeriodDate::model()->findByAttributes($attributes);
+        $period = call_user_func(array($period_model, 'model'))->findByAttributes($attributes);
+        if(empty($period)){
+            return;
+        }
+        
+        //save dim data
+        $fdda = FddaDimData::findByFixrId($fixr->fixr_id);
+        $fdda->fdda_fret_id = $fixr->fixr_position_fret_id;
+        $fdda->setFdm2Id($fdm2_ref, $fdm2_name);  
+        $fdda->setFdm3Id($fdm3_ref, $fdm3_name); 
+        $fdda->fdda_date_from = $period->getFddaDateFrom();
+        $fdda->fdda_date_to = $period->getFddaDateTo();
+        $fdda->save();
+        
+    }
+
+
     public function save($runValidation = true, $attributes = null) {
         
         //get additional data for fdda
