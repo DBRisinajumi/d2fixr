@@ -293,19 +293,10 @@ class FixrFiitXRefController extends Controller
                 $model->addError($model->tableSchema->primaryKey, $e->getMessage());
             }
             
-//            //if period, do postion save() for full calculation
-//            if($fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
-//                $fret = $model_fixr->fixrPeriodFret;
-//                $form_model_ref_field = $fret->getRefIdFIeldName();
-//                $form_model_name = $fret->fret_model;   
-//                if($form_model_name != 'FddaDimData'){
-//                $period_model = new $form_model_name;
-//                $period_model = $period_model->find(array($form_model_ref_field=>$fixr_id));
-//                if($period_model){
-//                    $period_model->save();
-//                }
-//                }
-//            }
+            //if period, do postion save() for full calculation
+            if($fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
+                $model_fixr->afterSaveUpdateRelatedModels();
+            }
         } 
 
     }
@@ -466,6 +457,13 @@ class FixrFiitXRefController extends Controller
     {
         $es = new EditableSaver('FixrFiitXRef'); // classname of model to be updated
         $es->update();
+        
+        $fixr_id = yii::app()->request->getParam('pk');
+        $field_name = yii::app()->request->getParam('name');
+        if($field_name == 'fixr_amt'){
+            $fixr = FixrFiitXRef::model()->findByPk($fixr_id)->afterSaveUpdateRelatedModels();
+        }
+        
     }
 
     /**

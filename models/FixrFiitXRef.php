@@ -242,7 +242,7 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         return parent::save($runValidation, $attributes);
     }    
     
-    public function afterSave() {
+    public function afterSaveUpdateRelatedModels() {
         
         //update in fret defined related records 
         $model_fret = FretRefType::model()->findAll();
@@ -255,7 +255,6 @@ class FixrFiitXRef extends BaseFixrFiitXRef
             }
         }
         
-        parent::afterSave();
     }
     
     

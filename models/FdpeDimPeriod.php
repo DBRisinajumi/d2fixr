@@ -336,12 +336,17 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
         }
 
         // get new data
-        $periods = self::splitAmtInPeriods($fdda->fdda_amt, $fdda->fdda_date_from, $fdda->fdda_date_to, $period_type);
+        $amt_periods = self::splitAmtInPeriods($fdda->fdda_amt, $fdda->fdda_date_from, $fdda->fdda_date_to, $period_type);
         
-        $periods = self::splitPeriodAmtInTypes($periods, $fdda->fdda_id);
+        /**
+         * patreiz atsleedzam auto splitingu pa pozīcijām - tā jau putra
+         */
+        //$amt_periods = self::splitPeriodAmtInTypes($date_periods, $fdda->fdda_id);
+        
+
         
         //udate or insert records
-        foreach ($periods as $kp => $period) {
+        foreach ($amt_periods as $kp => $period) {
 
             $key = $period['period_id'];
             if(isset($period['fdst_id']) && isset($period['fddp_fdst_ref_id'])){
@@ -370,7 +375,7 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
                             
                 Yii::app()->db->createCommand($sql)->query();
                 
-                unset($periods[$kp]);
+                unset($amt_periods[$kp]);
                 unset($fddp[$key]);
                 continue;
             } else {
@@ -392,7 +397,7 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
 							,".Yii::app()->sysCompany->getActiveCompany()."
                         )";
                 Yii::app()->db->createCommand($sql)->query();
-                unset($periods[$kp]);
+                unset($amt_periods[$kp]);
                 continue;
             }
         }
@@ -462,8 +467,7 @@ class FdpeDimPeriod extends BaseFdpeDimPeriod
     public static function getDimMonthPositions($fdpe_id,$fdim1_id = false,$fdim2_id = false,$fdim3_id = false){
         
         $sql = " 
-            SELECT 
-              --	*
+            SELECT DISTINCT
               finv_id,
               finv_number,
               finv_date,
