@@ -10,7 +10,6 @@ class FixrFiitXRefController extends Controller
     public $scope = "crud";
     public $menu_route = "d2fixr/FixrFiitXRef/FinvInvoice";   
 
-
     public function filters()
     {
         return array(
@@ -139,7 +138,7 @@ class FixrFiitXRefController extends Controller
 
     
     /**
-     * Service Subform
+     * Service Subform & Save
      * @param type $fret_id
      * @param type $fixr_id
      */
@@ -148,13 +147,14 @@ class FixrFiitXRefController extends Controller
         if(empty($fret_id)){
             return;
         }
-        
+
         //get model form detqails
         $model_fret = FretRefType::model()->findByPk($fret_id);
         $form_model_name = $model_fret->fret_model;
+        $form_model_ref_field = $model_fret->getRefIdFIeldName();        
         
         //search model form record
-        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
+        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);        
         
         $criteria = new CDbCriteria();
         $criteria->compare($model_fret->fret_model_fixr_id_field, $fixr_id);
@@ -163,7 +163,49 @@ class FixrFiitXRefController extends Controller
         if(!$form_model){
             $form_model = new $form_model_name;
         }
+        
+        //submited form
+        if (isset($_POST[$form_model_name])) {
+            if(!$model_fixr){
+                return false;
+            }
 
+            if($model_fret->fret_controller_action == 'FixrFiitXRef/popupPosition'){
+                $model_fixr->fixr_position_fret_id = $fret_id;
+            }  else {
+                $model_fixr->fixr_period_fret_id = $fret_id;            
+            }
+            if(!$model_fixr->save()){
+                 print_r($model_fixr->getErrors());exit;
+            }
+
+            $form_model->scenario = $this->scenario;
+            $post = Yii::app()->request->getPost($form_model_name);
+            $form_model_pk_name = $form_model->tableSchema->primaryKey;
+            if(isset($post[$form_model_pk_name])){
+                $form_model_pk_value = $post[$form_model_pk_name];
+                $form_model = $form_model->findByPk($form_model_pk_value);
+            }
+
+            $form_model->attributes = $_POST[$form_model_name];;
+            $form_model->$form_model_ref_field = $fixr_id;            
+
+            try {
+                if($form_model->save()){
+                    //if period, do postion save() for full calculation
+                    if($model_fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
+                        $model_fixr->afterSaveUpdateRelatedModels();
+                    }                        
+                    echo 'ok';          
+                    return;
+                }
+            } catch (Exception $e) {
+                $form_model->addError($form_model->tableSchema->primaryKey, $e->getMessage());
+            }
+         
+        }
+
+        //show form
         $cs = Yii::app()->clientScript;
         $cs->reset();        
         $cs->scriptMap = array(
@@ -180,185 +222,6 @@ class FixrFiitXRefController extends Controller
                 ),
                 true,
                 true);        
-    }
-    /**
-     * Service Subform
-     * @param type $fret_id
-     * @param type $fixr_id
-     */
-    public function actionShowPeriodSubForm($fret_id,$fixr_id){
-
-        if(empty($fret_id)){
-            return;
-        }
-        
-        //get model form detqails
-        $model_frep = FrepRefPeriod::model()->findByPk($fret_id);
-        $form_model_ref_field = $model_frep->getRefIdFIeldName();
-        $form_model_name = $model_frep->frep_model;
-        
-        //search model form record
-        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
-        
-        $criteria = new CDbCriteria();
-        $criteria->compare($form_model_ref_field, $fixr_id);
-        $form_model = new $form_model_name;
-        $form_model = $form_model->find($criteria);
-        
-        if(!$form_model){
-            $form_model = new $form_model_name;
-        }
-
-        echo $this->renderPartial(
-                '/subform/'.$form_model_name, 
-                array(
-                    'model' => $form_model,
-                    'fixr_id' => $fixr_id,
-                    'fret_id' => $fret_id,
-                ),
-                true,
-                true);        
-    }
-
-    /**
-     * save fancy box sub form
-     * 
-     * @return boolean
-     * @todo mainot tipu (fret_id), jāizdzēs iepriekšejā tipa ieraksts
-     * @todo pēc saglabāšanas automātiski jāaiztaisa Fancy Box
-     * @todo pēc saglabāšanas jāmaina labels
-     */
-    public function actionSavePositionSubForm(){
-
-        $fixr_id = Yii::app()->request->getPost('fixr_id');
-        if (empty($fixr_id)) {
-            return false;
-        }
-        
-        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
-        if(!$model_fixr){
-            return false;
-        }
-
-        //save 
-        $fret_id = Yii::app()->request->getPost('fret_id');        
-        if (empty($fret_id)) {
-            return false;
-        }
-        
-        $fret = FretRefType::model()->findByPk($fret_id);
-        
-        if($fret->fret_controller_action == 'FixrFiitXRef/popupPosition'){
-            $model_fixr->fixr_position_fret_id = $fret_id;
-        }  else {
-            $model_fixr->fixr_period_fret_id = $fret_id;            
-        }
-        if(!$model_fixr->save()){
-             print_r($model_fixr->getErrors());exit;
-        }
-        
-        //get model form details
-        if($fret->fret_controller_action == 'FixrFiitXRef/popupPosition'){
-            $form_model_ref_field = $model_fixr->fixrPositionFret->getRefIdFIeldName();
-            $form_model_name = $model_fixr->fixrPositionFret->fret_model;
-        } else {
-            $form_model_ref_field = $model_fixr->fixrPeriodFret->getRefIdFIeldName();
-            $form_model_name = $model_fixr->fixrPeriodFret->fret_model;            
-        }
-        
-        //create from model
-        $model = new $form_model_name;
-        $model->scenario = $this->scenario;
-
-        //$this->performAjaxValidation($model, 'fixr-fiit-xref-form');
-
-        if (isset($_POST[$form_model_name])) {
-            
-            $post = Yii::app()->request->getPost($form_model_name);
-            $form_model_pk_name = $model->tableSchema->primaryKey;
-            if(isset($post[$form_model_pk_name])){
-                $form_model_pk_value = $post[$form_model_pk_name];
-                $model = $model->findByPk($form_model_pk_value);
-            }
-            
-            $model->attributes = $_POST[$form_model_name];;
-            $model->$form_model_ref_field = $fixr_id;            
-
-            try {
-                if(!$model->save()){
-                    //print_r($model->getErrors());exit;
-                    $model->addError($model->tableSchema->primaryKey, $e->getMessage());
-                }
-            } catch (Exception $e) {
-                $model->addError($model->tableSchema->primaryKey, $e->getMessage());
-            }
-            
-            //if period, do postion save() for full calculation
-            if($fret->fret_controller_action != 'FixrFiitXRef/popupPosition'){
-                $model_fixr->afterSaveUpdateRelatedModels();
-            }
-        } 
-
-    }
-    /**
-     * save fancy box sub form
-     * 
-     * @return boolean
-     * @todo mainot tipu (fret_id), jāizdzēs iepriekšejā tipa ieraksts
-     * @todo pēc saglabāšanas automātiski jāaiztaisa Fancy Box
-     * @todo pēc saglabāšanas jāmaina labels
-     */
-    public function actionSavePeriodSubForm(){
-
-        $fixr_id = Yii::app()->request->getPost('fixr_id');
-        if(empty($fixr_id)){
-            return false;
-        }
-
-        $model_fixr = FixrFiitXRef::model()->findByPk($fixr_id);
-        if(!$model_fixr){
-            return false;
-        }
-
-        //save 
-        $frep_id = Yii::app()->request->getPost('frep_id');
-        if(empty($frep_id)){
-            return false;
-        }        
-        $model_fixr->fixr_period_fret_id = $frep_id;
-        if(!$model_fixr->save()){
-             print_r($model_fixr->getErrors());exit;
-        }
-        
-        //get model form details
-        $form_model_ref_field = $model_fixr->fixrPeriodFret->getRefIdFIeldName();
-        $form_model_name = $model_fixr->fixrPeriodFret->frep_model;
-        
-        //vreate from model
-        $model = new $form_model_name;
-        $model->scenario = $this->scenario;
-
-        //$this->performAjaxValidation($model, 'fixr-fiit-xref-form');
-
-        if (isset($_POST[$form_model_name])) {
-            $post = Yii::app()->request->getPost($form_model_name);
-            $form_model_pk_name = $model->tableSchema->primaryKey;
-            if(isset($post[$form_model_pk_name])){
-                $form_model_pk_value = $post[$form_model_pk_name];
-                $model = $model->findByPk($form_model_pk_value);
-            }
-            
-            $model->attributes = $_POST[$form_model_name];
-            $model->$form_model_ref_field = $fixr_id;            
-
-            try {
-                if(!$model->save()){
-                    print_r($model->getErrors());exit;
-                }
-            } catch (Exception $e) {
-                $model->addError($model->tableSchema->primaryKey, $e->getMessage());
-            }
-        } 
     }
     
     public function actionView($fixr_id, $ajax = false)
@@ -398,60 +261,7 @@ class FixrFiitXRefController extends Controller
 
     }
 
-    public function actionCreate()
-    {
-        $model = new FixrFiitXRef;
-        $model->scenario = $this->scenario;
 
-        $this->performAjaxValidation($model, 'fixr-fiit-xref-form');
-
-        if (isset($_POST['FixrFiitXRef'])) {
-            $model->attributes = $_POST['FixrFiitXRef'];
-
-            try {
-                if ($model->save()) {
-                    if (isset($_GET['returnUrl'])) {
-                        $this->redirect($_GET['returnUrl']);
-                    } else {
-                        $this->redirect(array('view', 'fixr_id' => $model->fixr_id));
-                    }
-                }
-            } catch (Exception $e) {
-                $model->addError('fixr_id', $e->getMessage());
-            }
-        } elseif (isset($_GET['FixrFiitXRef'])) {
-            $model->attributes = $_GET['FixrFiitXRef'];
-        }
-
-        $this->render('create', array('model' => $model));
-    }
-
-    public function actionUpdate($fixr_id)
-    {
-        $model = $this->loadModel($fixr_id);
-        $model->scenario = $this->scenario;
-
-        $this->performAjaxValidation($model, 'fixr-fiit-xref-form');
-
-        if (isset($_POST['FixrFiitXRef'])) {
-            $model->attributes = $_POST['FixrFiitXRef'];
-
-
-            try {
-                if ($model->save()) {
-                    if (isset($_GET['returnUrl'])) {
-                        $this->redirect($_GET['returnUrl']);
-                    } else {
-                        $this->redirect(array('view', 'fixr_id' => $model->fixr_id));
-                    }
-                }
-            } catch (Exception $e) {
-                $model->addError('fixr_id', $e->getMessage());
-            }
-        }
-
-        $this->render('update', array('model' => $model,));
-    }
 
     public function actionEditableSaver()
     {

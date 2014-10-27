@@ -25,7 +25,7 @@
             <tr>
                 <td><?= $fiit->fiit_desc ?></td>
                 <td class="numeric-column"><?= $fiit->fiit_quantity ?></td>
-                <td><?= $fiit->fiit_fqnt_id ?></td>
+                <td><?= $fiit->fiitFqnt->itemLabel ?></td>
                 <td class="numeric-column"><?= $fiit->fiit_price ?></td>
                 <td class="numeric-column"><?= $fiit->fiit_amt ?></td>
             </tr>
@@ -86,16 +86,7 @@
 </table>
 
 <?
-
-//Yii::app()->clientScript->registerScript('PositionDialogOnClose', 
-//   '
-//       $("#PositionDialog").live("pagehide",function(event) {
-//          console.log("pagehide");
-//       })   
-//    '    
-//      
-//);
-$ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePositionSubForm');        
+   
 $this->beginWidget('vendor.uldisn.ace.widgets.CJuiAceDialog',array(
     'id'=>'PositionDialog',
     'title' => Yii::t('D2fixrModule.model', 'Set expenses position'),

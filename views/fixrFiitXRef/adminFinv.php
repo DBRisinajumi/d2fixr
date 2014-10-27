@@ -8,7 +8,7 @@ function reinstallDatePicker(id, data) {
 
 $fcrn_model = FcrnCurrency::model()->findByPk(Yii::app()->sysCompany->getAttribute('base_fcrn_id'));
 $title = Yii::t('D2fixrModule.model', 'Invoices expense postions') . ' - ' . $fcrn_model->fcrn_code;
-$this->setPageTitle(Yii::t('D2fixrModule.model', $title));
+$this->setPageTitle( $title);
 
 
 ?>

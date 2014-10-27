@@ -9,7 +9,7 @@ $breadcrumbs[] = Yii::t('D2fixrModule.model', 'Fdm3 Dimension3s');
 
 $breadcrumbs = array(
         Yii::t('D2fixrModule.model', 'Home') => array('fdm1Dimension1/admin'),
-        Yii::t('D2fixrModule.model', $fdm2->fdm2Fdm1->fdm1_name) => array(
+        $fdm2->fdm2Fdm1->fdm1_name => array(
             'fdm2Dimension2/admin','fdm1_id' => $fdm2->fdm2_fdm1_id,
             ),
         $fdm2->fdm2_name,
@@ -34,7 +34,7 @@ $this->widget("TbD2Breadcrumbs", array("links" => $breadcrumbs))
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model', 'Dimension3:' . $fdm2->fdm2Fdm1->fdm1_name. ' - ' . $fdm2->fdm2_name);?>            </h1>
+                <?php echo $fdm2->fdm2Fdm1->fdm1_name . ' - ' . $fdm2->fdm2_name;?>            </h1>
         </div>
     </div>
 </div>

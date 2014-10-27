@@ -30,7 +30,7 @@ $this->widget("TbD2Breadcrumbs", array("links" => $breadcrumbs))
         <div class="btn-group">
             <h1>
                 <i class=""></i>
-                <?php echo Yii::t('D2fixrModule.model', $fdm1->fdm1_name);?>            </h1>
+                <?php echo $fdm1->fdm1_name;?>            </h1>
         </div>
     </div>
 </div>

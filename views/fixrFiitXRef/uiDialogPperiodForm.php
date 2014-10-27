@@ -67,7 +67,11 @@
             /**
              * submit UI form, close it and change opener text
              */
-            $ajax_submit_url = $this->createUrl('FixrFiitXRef/SavePositionSubForm');
+            $ajax_submit_url = $this->createUrl('FixrFiitXRef/ShowPositionSubForm',
+                    array(
+                        'fret_id'=>$model_fixr->fixr_period_fret_id,
+                        'fixr_id'=>$model_fixr->fixr_id,
+                        ));
             $this->widget("bootstrap.widgets.TbButton", array(
                 "label" => Yii::t("D2fixrModule.crud", "Save"),
                 "icon" => "icon-thumbs-up icon-white",
@@ -81,31 +85,35 @@
                             url: "' . $ajax_submit_url . '",
                             data: $("#expense_data_form").serialize(), // read and prepare all form fields
                             success: function(data) {
+                                    if(data != "ok"){
+                                        //on error for displaying error messages
+                                        $("#ui_period_ajax_form").html(data);
+                                    }else{
 
-                                    $("#ui_period_ajax_form").html("");
-                                    
-                                    //get dialog id
-                                    var dialog_id= $("div.ui-dialog-content:visible").attr("id");
-                                    
-                                    //opener html tag
-                                    var opener = $("#"+dialog_id).data("opener");
-                                    
-                                    //opener href
-                                    var href  = $(opener).attr("href");
-                                    $("#"+dialog_id).dialog("close");
+                                        $("#ui_period_ajax_form").html("");
 
-                                    //by ajax get new label for opener
-                                    var ajax_url = href + "&get_label=1";
-                                    var elThis = this;
-                                    $.ajax({
-                                            type: "GET",
-                                            url: ajax_url,
-                                            success: function(data) {
-                                                //fix opener label
-                                                $(\'a[href="\'+href+\'"]\').html(data);                                    
-                                            }   
-                                    });                      
+                                        //get dialog id
+                                        var dialog_id= $("div.ui-dialog-content:visible").attr("id");
 
+                                        //opener html tag
+                                        var opener = $("#"+dialog_id).data("opener");
+
+                                        //opener href
+                                        var href  = $(opener).attr("href");
+                                        $("#"+dialog_id).dialog("close");
+
+                                        //by ajax get new label for opener
+                                        var ajax_url = href + "&get_label=1";
+                                        var elThis = this;
+                                        $.ajax({
+                                                type: "GET",
+                                                url: ajax_url,
+                                                success: function(data) {
+                                                    //fix opener label
+                                                    $(\'a[href="\'+href+\'"]\').html(data);                                    
+                                                }   
+                                        });                      
+                                    }
                             }   
                     });                                 
                     ',

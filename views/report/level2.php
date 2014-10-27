@@ -69,7 +69,7 @@ $this->widget("TbD2Breadcrumbs", array(
                 ?><th><? echo $m['label']; ?></th><?
             }
             ?>
-                <th><?php echo yii::t('D2fixrModule.model', 'Total')?></th>    
+                <th><?php echo Yii::t('D2fixrModule.model', 'Total')?></th>    
         </tr>
     </thead>
     <tbody>
@@ -90,7 +90,7 @@ $this->widget("TbD2Breadcrumbs", array(
     }
     ?>
         <tr>
-            <td class="total-row"><?php echo yii::t('D2fixrModule.model', 'Total')?></td>
+            <td class="total-row"><?php echo Yii::t('D2fixrModule.model', 'Total')?></td>
     <?php
     foreach($columns_totals as $amt){
                 ?>

@@ -146,7 +146,7 @@ class FixrFiitXRef extends BaseFixrFiitXRef
         
         $fiit = FiitInvoiceItem::model()->findByPk($fiit_id);
         if(!$fiit){
-            throw new CHttpException(400, Yii::t('D2fixrModule.crud', 'Invalid fiit_id value: ' . $fiit_id));            
+            throw new CHttpException(400, 'Invalid fiit_id value: ' . $fiit_id);            
         }
         
         //calculate amt
