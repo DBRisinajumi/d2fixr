@@ -38,7 +38,7 @@
                     </div>
                     <?php  ?>
                                     
-                    <?php  ?>
+                    <?php if(false){ ?>
                     <div class="control-group">
                         <div class='control-label'>
                             <?php echo $form->labelEx($model, 'fdm1_code') ?>
@@ -52,7 +52,7 @@
                             ?>                            </span>
                         </div>
                     </div>
-                    <?php  ?>
+                    <?php } ?>
                                     
                     <?php  ?>
                     <div class="control-group">

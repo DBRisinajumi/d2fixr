@@ -72,15 +72,15 @@ $this->widget('TbGridView',
                 'name' => 'fdm3_fdm2_id',
                 'value' => '$data->fdm3Fdm2->fdm2_name',                
             ),
-            array(
-                //varchar(10)
-                'class' => 'editable.EditableColumn',
-                'name' => 'fdm3_code',
-                'editable' => array(
-                    'url' => $this->createUrl('/d2fixr/fdm3Dimension3/editableSaver'),
-                    //'placement' => 'right',
-                )
-            ),
+//            array(
+//                //varchar(10)
+//                'class' => 'editable.EditableColumn',
+//                'name' => 'fdm3_code',
+//                'editable' => array(
+//                    'url' => $this->createUrl('/d2fixr/fdm3Dimension3/editableSaver'),
+//                    //'placement' => 'right',
+//                )
+//            ),
             array(
                 //varchar(50)
                 'class' => 'editable.EditableColumn',

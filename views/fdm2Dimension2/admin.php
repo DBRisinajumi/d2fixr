@@ -57,22 +57,22 @@ $this->widget('TbGridView',
             'displayFirstAndLast' => true,
         ),
         'columns' => array(
-            array(
-                //varchar(10)
-                'class' => 'editable.EditableColumn',
-                'name' => 'fdm2_code',
-                'editable' => array(
-                    'url' => $this->createUrl('/d2fixr/fdm2Dimension2/editableSaver'),
-                    'placement' => 'right',
-                )
-            ),
+//            array(
+//                //varchar(10)
+//                'class' => 'editable.EditableColumn',
+//                'name' => 'fdm2_code',
+//                'editable' => array(
+//                    'url' => $this->createUrl('/d2fixr/fdm2Dimension2/editableSaver'),
+//                    'placement' => 'right',
+//                )
+//            ),
             array(
                 //varchar(50)
                 'class' => 'editable.EditableColumn',
                 'name' => 'fdm2_name',
                 'editable' => array(
                     'url' => $this->createUrl('/d2fixr/fdm2Dimension2/editableSaver'),
-                    //'placement' => 'right',
+                    'placement' => 'right',
                 )
             ),            
             array(
