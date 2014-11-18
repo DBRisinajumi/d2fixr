@@ -35,8 +35,8 @@ abstract class BaseFdm1Dimension1 extends CActiveRecord
     {
         return array_merge(
             parent::rules(), array(
-                array('fdm1_code, fdm1_name', 'required'),
-                array('fdm1_sys_ccmp_id, fdm1_hidden', 'default', 'setOnEmpty' => true, 'value' => null),
+                array('fdm1_name', 'required'),
+                array('fdm1_sys_ccmp_id, fdm1_code, fdm1_hidden', 'default', 'setOnEmpty' => true, 'value' => null),
                 array('fdm1_hidden', 'numerical', 'integerOnly' => true),
                 array('fdm1_sys_ccmp_id, fdm1_code', 'length', 'max' => 10),
                 array('fdm1_name', 'length', 'max' => 50),
