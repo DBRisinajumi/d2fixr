@@ -143,6 +143,10 @@ class FixrFiitXRefController extends Controller
      * @param type $fixr_id
      */
     public function actionShowPositionSubForm($fret_id,$fixr_id){
+        
+        if(empty($fret_id)){
+            $fret_id = Yii::app()->request->getPost('fret_id');
+        }
 
         if(empty($fret_id)){
             return;
@@ -165,11 +169,13 @@ class FixrFiitXRefController extends Controller
         }
         
         //submited form
-        if (isset($_POST[$form_model_name])) {
+        $post_form = Yii::app()->request->getPost($form_model_name);
+        if (!empty($post_form)) {
             if(!$model_fixr){
                 return false;
             }
 
+            //select postion or period
             if($model_fret->fret_controller_action == 'FixrFiitXRef/popupPosition'){
                 $model_fixr->fixr_position_fret_id = $fret_id;
             }  else {
@@ -180,14 +186,14 @@ class FixrFiitXRefController extends Controller
             }
 
             $form_model->scenario = $this->scenario;
-            $post = Yii::app()->request->getPost($form_model_name);
+            
             $form_model_pk_name = $form_model->tableSchema->primaryKey;
-            if(isset($post[$form_model_pk_name])){
-                $form_model_pk_value = $post[$form_model_pk_name];
+            if(isset($post_form[$form_model_pk_name])){
+                $form_model_pk_value = $post_form[$form_model_pk_name];
                 $form_model = $form_model->findByPk($form_model_pk_value);
             }
 
-            $form_model->attributes = $_POST[$form_model_name];;
+            $form_model->attributes = $post_form;
             $form_model->$form_model_ref_field = $fixr_id;            
 
             try {
