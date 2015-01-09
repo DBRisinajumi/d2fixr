@@ -118,8 +118,9 @@ class FddaDimData extends BaseFddaDimData
         $this->fdda_fret_id = $fdm3->fdm3_fret_id;
 
         $fixr = $this->fddaFixr;
+        $sys_ccmp_base_fcrn = Yii::app()->currency->getSysCcmpBaseCurrency($fixr->fixr_fcrn_dat);
         $this->fdda_amt = 100 * Yii::app()->currency->convertFromTo(
-            $fixr->fixr_fcrn_id, Yii::app()->currency->base, $fixr->fixr_amt, $fixr->fixr_fcrn_date
+            $fixr->fixr_fcrn_id, $sys_ccmp_base_fcrn, $fixr->fixr_amt, $fixr->fixr_fcrn_date
         );
 
         return parent::save($runValidation, $attributes);

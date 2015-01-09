@@ -224,10 +224,10 @@ class FixrFiitXRef extends BaseFixrFiitXRef
     
     public function save($runValidation = true, $attributes = null) {
         
-        $this->fixr_base_fcrn_id = Yii::app()->currency->base;
         if(!empty($this->fixr_fcrn_id) && !empty($this->fixr_amt) && !empty($this->fixr_fcrn_date)){
+            $this->fixr_base_fcrn_id = Yii::app()->currency->getSysCcmpBaseCurrency($this->fixr_fcrn_date);
             $this->fixr_base_amt = Yii::app()->currency->convertFromTo(
-                    $this->fixr_fcrn_id, Yii::app()->currency->base, $this->fixr_amt, $this->fixr_fcrn_date
+                    $this->fixr_fcrn_id, $this->fixr_base_fcrn_id, $this->fixr_amt, $this->fixr_fcrn_date
             );
         }
         
